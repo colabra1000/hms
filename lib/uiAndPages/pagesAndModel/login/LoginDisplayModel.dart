@@ -86,7 +86,7 @@ class LoginDisplayModel extends BaseModel implements InputAssignmentModelInterfa
 
   @override
   Future navigateToNextPage(BuildContext context) {
-    throw UnimplementedError();
+    return navigationService.navigateToUserPage(context);
   }
 
 

@@ -30,8 +30,7 @@ class UserModel extends BaseModel{
 
 
   void openUpdateInformationPopper(){
-
-
+    
     cModalController.changeModalState = CModalStateChanger(state:CModalState.custom1,
         onOutsideClick: (){
           popperOpened.value = false;

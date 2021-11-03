@@ -3,6 +3,7 @@ import 'package:hms/logger.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/landing/LandingPage.dart';
 import 'package:hms/uiAndPages/pagesAndModel/login/LoginDisplayPage.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/UserPage.dart';
 
 class NavigationService {
 
@@ -45,6 +46,14 @@ class NavigationService {
     return Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_)=> LoginDisplayPage())
+    );
+  }
+
+  Future navigateToUserPage(BuildContext context) {
+    return Navigator.pushAndRemoveUntil(
+      context, MaterialPageRoute(
+        builder: (context) => UserPage()),
+          (route)=> false,
     );
   }
 

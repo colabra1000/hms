@@ -85,11 +85,27 @@ class LoginDisplayPage extends StatelessWidget {
                                               model.confirmValidation = true;
 
 
+                                              //activate loading modal.
+                                              model.cModalController.changeModalState = CModalStateChanger(state: CModalState.loading);
+
+                                              //makeRequest is Login Request.
+                                              if(await model.makeRequest()){
+                                                await model.navigateToNextPage(context);
+
+                                                //deactivate loading modal.
+                                                 model.cModalController.changeModalState = CModalStateChanger(state: CModalState.none);
+
+                                                 return;
+                                              }
+
+                                              model.cModalController.changeModalState = CModalStateChanger(
+                                                  state: CModalState.error,
+                                                  displayMessage: model.loginErrorMessage
+                                              );
+
                                             }else{
                                               model.confirmValidation = false;
                                             }
-
-
 
                                     }
                                   ),
@@ -104,8 +120,6 @@ class LoginDisplayPage extends StatelessWidget {
                       ),
 
                     ),
-
-
 
 
                     footer:Container(
