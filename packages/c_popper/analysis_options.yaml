@@ -1,0 +1,9 @@
+include: package:flutter_lints/flutter.yaml
+
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options
+linter:
+  rules:
+    package_names:
+      lowercase_with_underscores: false
+    always_use_package_imports: true

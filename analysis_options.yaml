@@ -1,0 +1,11 @@
+
+
+
+include: package:flutter_lints/flutter.yaml
+
+linter:
+
+  rules:
+    package_names:
+      lowercase_with_underscores: false
+      always_use_package_imports: true
