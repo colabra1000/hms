@@ -11,6 +11,7 @@ import 'package:hms/services/api/ApiFetcher.dart';
 import 'package:hms/services/api/ApiFetcherInterface.dart';
 import 'package:hms/services/api/MockApiFetcher.dart';
 import 'package:hms/uiAndPages/pagesAndModel/landing/LandingPageModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/login/LoginDisplayModel.dart';
 import 'package:hms/variables/LiveVariables.dart';
 import 'package:hms/variables/TestVariables.dart';
 import 'package:hms/variables/VariableGetterInterface.dart';
@@ -51,5 +52,6 @@ void setupLocator() {
 
 
   locator.registerFactory(() => LandingPageModel());
+  locator.registerFactory(() => LoginDisplayModel());
 
 }

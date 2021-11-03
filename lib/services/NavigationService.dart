@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hms/logger.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/landing/LandingPage.dart';
+import 'package:hms/uiAndPages/pagesAndModel/login/LoginDisplayPage.dart';
 
 class NavigationService {
 
@@ -38,6 +39,13 @@ class NavigationService {
         )
     );
 
+  }
+
+  Future navigateToLoginPage(BuildContext context) {
+    return Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_)=> LoginDisplayPage())
+    );
   }
 
 }

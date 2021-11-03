@@ -14,7 +14,7 @@ class LandingPageModel extends BaseModel {
   CModalController cModalController = CModalController();
 
   void navigateToLoginPage(BuildContext context) {
-
+    navigationService.navigateToLoginPage(context);
   }
 
 
