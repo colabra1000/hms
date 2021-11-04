@@ -1,21 +1,18 @@
-import 'dart:math';
-
+import 'package:provider/provider.dart';
 import 'package:c_modal/c_modal.dart';
 import 'package:c_popper/c_popper.dart';
-import 'package:c_ui/c_ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hms/enums.dart';
 import 'package:hms/uiAndPages/decorations/PageBackgroundDecorator.dart';
 import 'package:hms/uiAndPages/documents/UserPageDocument.dart';
 import 'package:hms/uiAndPages/pagesAndModel/Base/BaseView.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/appointment/AppoitmentTab.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationTab.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/preference/AccessDoctorListDisplayPanel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/preference/PreferenceTab.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
 import 'package:hms/uiAndPages/shared/ui/ButtonAnimation2.dart';
-import 'package:hms/uiAndPages/shared/ui/ButtonAnimator1.dart';
 
 
 class UserPage extends StatefulWidget {
@@ -50,13 +47,23 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
 
               if(state == CModalState.custom1){
                 return PopperPanel(
-                    child: Container(),
+
+                    child: AccessDoctorListDisplayPanel(model.accessDoctorListDisplayController),
+
                     popperOpened: model.popperOpened,
-                    onOpen: (){},
+
+                    onOpen: (){
+                      print("zenbu");
+                      model.accessDoctorListDisplayController.onOpen!();
+                      // model.displayDoctorList = true;
+
+                    },
+
                     onClose: (){
                       model.cModalController.changeModalState = CModalStateChanger(
                         state: CModalState.none,
                       );
+                      // model.displayDoctorList = false;
                     }
                 );
               }

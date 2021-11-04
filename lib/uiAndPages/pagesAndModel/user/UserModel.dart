@@ -19,6 +19,10 @@ class UserModel extends BaseModel{
 
   //controllers declaration.
   CModalController cModalController = CModalController();
+
+  AccessDoctorListDisplayController accessDoctorListDisplayController = AccessDoctorListDisplayController();
+
+
   late TabController tabController;
 
   ValueNotifier<bool> popperOpened = ValueNotifier(false);
@@ -28,10 +32,19 @@ class UserModel extends BaseModel{
 
   bool get confirmValidation => _confirmValidation;
 
+  bool _displayDoctorList = false;
+  bool get displayDoctorList => _displayDoctorList;
+
+  set displayDoctorList(bool value){
+    _displayDoctorList = value;
+    notifyListeners();
+  }
+
 
   void openUpdateInformationPopper(){
-    
-    cModalController.changeModalState = CModalStateChanger(state:CModalState.custom1,
+
+    cModalController.changeModalState = CModalStateChanger(
+        state:CModalState.custom2,
         onOutsideClick: (){
           popperOpened.value = false;
         }
@@ -46,7 +59,7 @@ class UserModel extends BaseModel{
 
 
     cModalController.changeModalState = CModalStateChanger(
-        state:CModalState.custom2,
+        state:CModalState.custom1,
         onOutsideClick: (){
           popperOpened.value = false;
         }
@@ -68,5 +81,28 @@ class UserModel extends BaseModel{
     navigationService.navigateToLandingPage(context);
 
   }
+
+  Future<void> loadDoctorList() async {
+
+    //   _setDisplayDoctorList(false);
+    //
+    // _api.fetchDoctors(onError: (e){}, onSuccess: (result){
+    //
+    //   print("zimmer");
+    //   _setDisplayDoctorList(true);
+    //
+    //
+    // });
+    await Future.delayed(Duration(seconds: 5));
+    displayDoctorList = true;
+
+
+  }
+
+}
+
+class AccessDoctorListDisplayController{
+
+  Function()? onOpen;
 
 }

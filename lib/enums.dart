@@ -12,5 +12,6 @@ enum ColorType{
   warning,
   secondary,
   secondary2,
+  divergent,
 }
 

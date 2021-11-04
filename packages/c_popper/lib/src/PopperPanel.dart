@@ -69,7 +69,7 @@ class _PopperPanelState extends State<PopperPanel> {
                     widget.onClose();
                   }
 
-                  if(value == false){
+                  if(value == true){
                     widget.onOpen();
                   }
 

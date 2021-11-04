@@ -8,5 +8,11 @@ class ApiFetcher implements ApiFetcherInterface{
     throw UnimplementedError();
   }
 
+  @override
+  Future<bool> fetchDoctors({required Function(dynamic) onError, required Function(dynamic) onSuccess}) {
+    // TODO: implement fetchDoctors
+    throw UnimplementedError();
+  }
+
 
 }
