@@ -79,7 +79,7 @@ packages:
     source: hosted
     version: "1.0.3"
   date_format:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: date_format
       url: "https://pub.dartlang.org"

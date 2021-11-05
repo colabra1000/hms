@@ -13,5 +13,17 @@ enum ColorType{
   secondary,
   secondary2,
   divergent,
+  outlier,
+  success
+}
+
+enum AppointmentChatTab{
+  appointment,
+  chat
+}
+
+enum ChatOwner{
+  me,
+  doctor
 }
 

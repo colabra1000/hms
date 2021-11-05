@@ -118,7 +118,7 @@ class _AccessDoctorListDisplayPanelState extends State<AccessDoctorListDisplayPa
     return ButtonAnimator1(
 
       onTap2: (){
-        model.navigateToDoctorsPage(context, doctor: doctor);
+        model.navigateToAppointmentAndChatPage(context, doctor: doctor);
       },
 
       child: Container(

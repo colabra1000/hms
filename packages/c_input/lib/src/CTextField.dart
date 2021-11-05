@@ -22,7 +22,7 @@ dynamic _emailValidation(value){
 class CTextField extends StatefulWidget {
 
   final String? hintText;
-  final int? maxLines;
+  final int? minLines;
   final CInputController _cInputController;
   final bool isPassword;
 
@@ -52,7 +52,7 @@ class CTextField extends StatefulWidget {
 
 
 
-  CTextField(this._cInputController, {this.prefixIcon, this.suffixIcon, this.inputDecoration, this.doNotValidate:false, this.mKey, this.focusNode, this.hintColor, this.maxLength, this.borderWidth, this.borderColor, this.radius, this.enabled:true, this.readOnly:false, this.digitsOnly:false, this.hintText:"", this.maxLines:1, this.isPassword:false, this.isEmail:false, this.showCursor, this.style, this.shouldNotUpdateText:false}):
+  CTextField(this._cInputController, {this.prefixIcon, this.suffixIcon, this.inputDecoration, this.doNotValidate:false, this.mKey, this.focusNode, this.hintColor, this.maxLength, this.borderWidth, this.borderColor, this.radius, this.enabled:true, this.readOnly:false, this.digitsOnly:false, this.hintText:"", this.minLines:1, this.isPassword:false, this.isEmail:false, this.showCursor, this.style, this.shouldNotUpdateText:false}):
   assert((inputDecoration != null && radius == null && borderColor == null && borderWidth == null
   && prefixIcon == null && suffixIcon == null)
       || inputDecoration == null);
@@ -117,7 +117,7 @@ class _CTextFieldState extends State<CTextField> {
         inputFormatters: widget.digitsOnly == false ? null : <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
         obscureText: widget.isPassword,
         controller: widget._cInputController.textController,
-        maxLines: widget.maxLines,
+        maxLines: widget.minLines,
         onChanged:(dynamic s){
 
               widget._cInputController.setSelectedValue(s, setTextControllerValue: false);

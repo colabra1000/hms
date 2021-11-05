@@ -9,6 +9,10 @@ class SharedUi{
     switch(type){
       case ColorType.dark:
         return Colors.grey.shade900;
+      case ColorType.success:
+        return Colors.green.shade400;
+      case ColorType.outlier:
+        return Colors.purple.shade900;
       case ColorType.light:
         return Colors.grey.shade50;
       case ColorType.info:
@@ -93,7 +97,7 @@ class SharedUi{
 
 
   // input fields
-  static Widget mTextField(CInputController cInputController, String label, String hint, {bool? isDigit, bool? isEmail, bool? isPassword, GlobalKey<FormState>? mKey, bool doNotValidate:false, bool isEditable:true, int maxLine: 1, bool isRequired:true}){
+  static Widget mTextField(CInputController cInputController, String label, String hint, {bool? isDigit, bool? isEmail, bool? isPassword, GlobalKey<FormState>? mKey, bool doNotValidate:false, bool isEditable:true, int minLine: 1, bool isRequired:true}){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -103,7 +107,7 @@ class SharedUi{
         SizedBox(height: 10,),
 
         CTextField(cInputController,  doNotValidate: doNotValidate, mKey:mKey, hintText: hint,
-          readOnly: !isEditable, maxLines: maxLine,
+          readOnly: !isEditable, minLines: minLine,
           isEmail: isEmail ?? false, isPassword: isPassword ?? false, digitsOnly: isDigit ?? false,),
         SizedBox(height:20),
       ],

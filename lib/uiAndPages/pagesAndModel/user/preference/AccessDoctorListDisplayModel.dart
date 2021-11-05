@@ -2,14 +2,14 @@ import 'package:c_input/src/CInputController.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:hms/locator.dart';
 import 'package:hms/models/Doctor.dart';
-import 'package:hms/services/api/ApiFetcher.dart';
+import 'package:hms/services/DoctorService.dart';
 import 'package:hms/services/api/ApiFetcherInterface.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
-import 'package:hms/variables/GlobalData.dart';
 
 class AccessDoctorListDisplayModel extends BaseModel{
 
   ApiFetcherInterface _api = locator<ApiFetcherInterface>();
+  DoctorService _doctorService = locator<DoctorService>();
 
   late Widget _pageListToDisplay;
 
@@ -24,8 +24,11 @@ class AccessDoctorListDisplayModel extends BaseModel{
 
   CInputController searchInputController = CInputController();
 
-  void navigateToDoctorsPage(BuildContext context, {required Doctor doctor}) {
 
+  void navigateToAppointmentAndChatPage(BuildContext context, {required Doctor doctor}) {
+
+    _doctorService.doctor = doctor;
+    navigationService.navigateToAppointmentAndChatPage(context);
   }
 
   //should not return error;

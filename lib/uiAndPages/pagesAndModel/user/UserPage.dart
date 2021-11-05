@@ -1,4 +1,4 @@
-import 'package:provider/provider.dart';
+import 'package:hms/enums.dart';
 import 'package:c_modal/c_modal.dart';
 import 'package:c_popper/c_popper.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,7 +53,7 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
                     popperOpened: model.popperOpened,
 
                     onOpen: (){
-                      print("zenbu");
+                      
                       model.accessDoctorListDisplayController.onOpen!();
                       // model.displayDoctorList = true;
 
@@ -170,19 +170,19 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
-                  child: InfoBox(label: "appointments", icon: Icon(Icons.calendar_today_sharp, color: Colors.grey, size: 40,), onTap: (){
+                  child: InfoBox(label: "appointments", icon: Icon(Icons.calendar_today_sharp, color: SharedUi.getColor(ColorType.outlier), size: 40,), onTap: (){
                     model.tabController.animateTo(0);
                   }),
                 ),
 
                 Expanded(
-                  child: InfoBox(label: "Preference", icon: Icon(CupertinoIcons.gear, color: Colors.blue, size: 40,), onTap: (){
+                  child: InfoBox(label: "Preference", icon: Icon(CupertinoIcons.gear, color: SharedUi.getColor(ColorType.outlier), size: 40,), onTap: (){
                     model.tabController.animateTo(1);
                   }),
                 ),
 
                 Expanded(
-                  child: InfoBox(label: "Notification", icon: Icon(Icons.notification_important, color: Colors.red, size: 40,), onTap: (){
+                  child: InfoBox(label: "Notification", icon: Icon(Icons.notification_important, color: SharedUi.getColor(ColorType.outlier), size: 40,), onTap: (){
                     model.tabController.animateTo(2);
                   }),
                 ),
@@ -263,7 +263,7 @@ class InfoBox extends StatelessWidget {
                   Expanded(child: FittedBox(
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: SharedUi.smallText(label, maxLine: 2),
+                      child: SharedUi.smallText(label, maxLine: 2,),
                     ),
                   )),
                 ],
