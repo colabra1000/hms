@@ -4,7 +4,9 @@ import 'package:c_modal/c_modal.dart';
 import 'package:hms/locator.dart';
 import 'package:hms/logger.dart';
 import 'package:hms/models/LoginRequest.dart';
+import 'package:hms/models/User.dart';
 import 'package:hms/services/ErrorService.dart';
+import 'package:hms/services/UserService.dart';
 import 'package:hms/services/ValidationService.dart';
 import 'package:hms/services/api/ApiFetcherInterface.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
@@ -18,7 +20,8 @@ class LoginDisplayModel extends BaseModel implements InputAssignmentModelInterfa
   //services
   ApiFetcherInterface _api = locator<ApiFetcherInterface>();
   ErrorService _errorService = locator<ErrorService>();
-  
+  UserService _userService = locator<UserService>();
+
   //service getters
   ValidationService _validationService = locator<ValidationService>();
 
@@ -58,10 +61,10 @@ class LoginDisplayModel extends BaseModel implements InputAssignmentModelInterfa
   Future<bool> makeRequest() {
     return _api.login(loginRequest: _loginRequest, onError: (e){
 
-      loginErrorMessage = _errorService.getErrorMessageFrom("Error Loggin in");
+      loginErrorMessage = _errorService.getErrorMessageFrom("Error Logging in");
 
     }, onSuccess: (result){
-
+      _userService.user = User.fromJson(result);
     });
   }
 

@@ -1,10 +1,12 @@
 class Doctor{
 
-  String? name;
+  String? firstName;
+  String? lastName;
   String? jobDescription;
 
   Doctor.fromJson(Map json){
-    name = json['name'];
+    firstName = json['firstName'];
+    lastName = json['lastName'];
     jobDescription = json['jobDescription'];
   }
 

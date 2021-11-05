@@ -8,7 +8,8 @@ class MockApiFetcher implements ApiFetcherInterface{
   Future<bool> login({required LoginRequest loginRequest, required Function(dynamic) onError, required Function(dynamic) onSuccess}) async {
 
     await Future.delayed(Duration(seconds: 2));
-    await onSuccess(null);
+
+    await onSuccess(GlobalData.user);
     return true;
 
   }

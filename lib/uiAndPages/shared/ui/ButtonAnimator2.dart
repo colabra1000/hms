@@ -3,18 +3,18 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 
-class ButtonAnimation2 extends StatefulWidget {
+class ButtonAnimator2 extends StatefulWidget {
 
   final Widget child;
   final Function()? onTap;
 
-  const ButtonAnimation2({Key? key, this.onTap, required this.child,}) : super(key: key);
+  const ButtonAnimator2({Key? key, this.onTap, required this.child,}) : super(key: key);
 
   @override
-  _ButtonAnimation2State createState() => _ButtonAnimation2State();
+  _ButtonAnimator2State createState() => _ButtonAnimator2State();
 }
 
-class _ButtonAnimation2State extends State<ButtonAnimation2> with SingleTickerProviderStateMixin{
+class _ButtonAnimator2State extends State<ButtonAnimator2> with SingleTickerProviderStateMixin{
 
   late AnimationController animationController;
   late Animation<double> animation;

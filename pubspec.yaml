@@ -39,6 +39,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  table_calendar: ^3.0.3
   date_format: ^2.0.4
   dio: ^4.0.0
   flutter_lints: ^1.0.0

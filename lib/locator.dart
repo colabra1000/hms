@@ -8,6 +8,7 @@ import 'package:hms/services/ChatAutomationService.dart';
 import 'package:hms/services/DoctorService.dart';
 import 'package:hms/services/ErrorService.dart';
 import 'package:hms/services/NavigationService.dart';
+import 'package:hms/services/UserService.dart';
 import 'package:hms/services/ValidationService.dart';
 import 'package:hms/services/api/ApiFetcher.dart';
 import 'package:hms/services/api/ApiFetcherInterface.dart';
@@ -37,6 +38,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => ErrorService());
   locator.registerLazySingleton(() => DoctorService());
   locator.registerLazySingleton(() => ChatAutomationService());
+  locator.registerLazySingleton(() => UserService());
 
 
   locator.registerLazySingleton<ApiFetcherInterface>((){

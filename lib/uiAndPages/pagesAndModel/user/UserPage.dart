@@ -12,7 +12,7 @@ import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationTab.d
 import 'package:hms/uiAndPages/pagesAndModel/user/preference/AccessDoctorListDisplayPanel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/preference/PreferenceTab.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
-import 'package:hms/uiAndPages/shared/ui/ButtonAnimation2.dart';
+import 'package:hms/uiAndPages/shared/ui/ButtonAnimator2.dart';
 
 
 class UserPage extends StatefulWidget {
@@ -163,7 +163,7 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
       child: Column(
         children: [
           Expanded(child: SharedUi.femaleAvatar()),
-          SharedUi.normalText("Dr Nebular S."),
+          SharedUi.normalText("${model.nameOfUser}"),
 
           Expanded(
             child: Row(
@@ -171,6 +171,7 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
               children: [
                 Expanded(
                   child: InfoBox(label: "appointments", icon: Icon(Icons.calendar_today_sharp, color: SharedUi.getColor(ColorType.outlier), size: 40,), onTap: (){
+
                     model.tabController.animateTo(0);
                   }),
                 ),
@@ -244,7 +245,7 @@ class InfoBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-      return ButtonAnimation2(
+      return ButtonAnimator2(
           onTap: onTap,
           child: Container(
 

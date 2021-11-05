@@ -9,7 +9,7 @@ import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/appointment/Appo
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/chat/ChatPanel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseView.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
-import 'package:hms/uiAndPages/shared/ui/ButtonAnimation2.dart';
+import 'package:hms/uiAndPages/shared/ui/ButtonAnimator2.dart';
 import 'package:provider/provider.dart';
 import 'package:c_input/c_input.dart';
 
@@ -36,46 +36,87 @@ class _AppointmentAndChatPageState extends State<AppointmentAndChatPage> with Si
               pageTitle: "Book Appointment",
                 pageIcon: Icon(Icons.supervisor_account),
                 child: Container(
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      SharedUi.vHeaderSpace(),
+                  // padding: EdgeInsets.all(20),
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
 
-                      Selector(
+                          SizedBox(height: 20,),
 
-                        selector: (_, AppointmentAndChatModel model)=> model.selectedTab,
-                        builder: (_, AppointmentChatTab value, __)=> Row(
-                          children: [
-                            _tabButton("appointment", selected: value == AppointmentChatTab.appointment,
-                              onTap: (){
-                                model.selectedTab = AppointmentChatTab.appointment;
-                                model.tabController.animateTo(1);
-                              }
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            margin: EdgeInsets.symmetric(vertical: 10),
+                            decoration: BoxDecoration(
+                              color: SharedUi.getColor(ColorType.faint),
+                              borderRadius: BorderRadius.circular(20)
                             ),
-                            SizedBox(width: 30,),
-                            _tabButton("chat", selected: value == AppointmentChatTab.chat,
-                                onTap: (){
-                                  model.selectedTab = AppointmentChatTab.chat;
-                                  model.tabController.animateTo(0);
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Row(
+                                    children: [
 
-                                }
+                                      SharedUi.mediumText("Dr ${model.doctorName}", colorType: ColorType.outlier, bold: true),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.medical_services_outlined, color: SharedUi.getColor(ColorType.secondary),
+                                        size: 19,
+                                      ),
+                                      SizedBox(width: 5,),
+                                      SharedUi.smallText(model.doctorJobDescription, colorType: ColorType.secondary),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
+                          ),
 
-                      SizedBox(height: 20,),
+                          Selector(
 
-                      Expanded(
-                          child: TabBarView(
-                            controller: model.tabController,
-                            children: [
-                              ChatPanel(),
-                              AppointmentPanel(),
-                            ],
+                            selector: (_, AppointmentAndChatModel model)=> model.selectedTab,
+                            builder: (_, AppointmentChatTab value, __)=> Row(
+                              children: [
+                                _tabButton("appointment", selected: value == AppointmentChatTab.appointment,
+                                  onTap: (){
+                                    model.selectedTab = AppointmentChatTab.appointment;
+                                    model.tabController.animateTo(1);
+                                  }
+                                ),
+                                SizedBox(width: 30,),
+                                _tabButton("chat", selected: value == AppointmentChatTab.chat,
+                                    onTap: (){
+                                      model.selectedTab = AppointmentChatTab.chat;
+                                      model.tabController.animateTo(0);
+
+                                    }
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          SizedBox(height: 20,),
+
+                          Container(
+                            height: MediaQuery.of(context).size.height * .7,
+                              child: TabBarView(
+                                controller: model.tabController,
+                                children: [
+                                  ChatPanel(),
+
+                                  AppointmentPanel(),
+                                ],
+                              )
                           )
-                      )
-                    ],
+                        ],
+                      ),
+                    ),
                   ),
                 )
             ),
@@ -83,7 +124,7 @@ class _AppointmentAndChatPageState extends State<AppointmentAndChatPage> with Si
   }
 
   Widget _tabButton(String label, {required bool selected, required Function() onTap}){
-    return  ButtonAnimation2(
+    return  ButtonAnimator2(
       onTap: onTap,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
@@ -94,7 +135,7 @@ class _AppointmentAndChatPageState extends State<AppointmentAndChatPage> with Si
             borderRadius: BorderRadius.circular(20)
         ),
         child: SharedUi.smallText(label, colorType:
-        selected ? ColorType.divergent:ColorType.outlier
+        selected ? ColorType.light:ColorType.secondary
         ),
       ),
     );

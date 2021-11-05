@@ -6,8 +6,10 @@ enum EnvironmentType{
 }
 
 enum ColorType{
+  danger,
   info,
   infoLight,
+  faint,
   light,
   dark,
   warning,

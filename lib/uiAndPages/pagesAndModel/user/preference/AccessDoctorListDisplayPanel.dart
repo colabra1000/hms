@@ -139,7 +139,7 @@ class _AccessDoctorListDisplayPanelState extends State<AccessDoctorListDisplayPa
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SharedUi.mediumText(doctor.name ?? "", colorType: ColorType.dark,),
+                  SharedUi.mediumText("${doctor.firstName ?? ""} ${doctor.lastName ?? ""}" , colorType: ColorType.dark,),
                   SharedUi.smallText(doctor.jobDescription ?? "", colorType: ColorType.secondary,),
                 ],
               ),
