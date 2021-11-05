@@ -6,8 +6,11 @@ enum EnvironmentType{
 }
 
 enum ColorType{
+  danger,
+  error,
   info,
   infoLight,
+  faint,
   light,
   dark,
   warning,
@@ -26,5 +29,11 @@ enum AppointmentChatTab{
 enum ChatOwner{
   me,
   doctor
+}
+
+enum AppointmentBookingState{
+  enterAppointmentNote,
+  pickAppointmentDate,
+  idle
 }
 

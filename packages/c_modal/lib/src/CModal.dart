@@ -1,6 +1,5 @@
 library cmodal;
 
-
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +46,7 @@ class _CModalState extends State<CModal> {
 
     onWillPop:  () async {
 
-      // if modal is not display, the can pop freely.
+      // if modal is not display, then can pop freely.
       if(widget.controller._state == CModalState.none){
         return true;
       }
@@ -79,56 +78,35 @@ class _CModalState extends State<CModal> {
 
         widgetChildren.clear();
 
-
-        final modal = GestureDetector(
-
-          onTap: (){
-            //dismiss when user clicks outside the display modal.
-            if(widget.controller.dismissOnOutsideClick == true){
-              widget.controller._state = CModalState.none;
-            }
-
-            //calls user defined function.
-            widget.controller.onOutsideClick?.call();
-
-          },
-
-          //blurs the background
-          child: Center(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(
-                  sigmaX: 5.0,
-                  sigmaY: 5.0,
-                ),
-                child: Container(
-                  color: Colors.black.withOpacity(.7),
-                ),
-              )
-          ),
-
-
-        );
+        final modalBackGround = _getModalBackGround();
 
         //expose the context through the controller
         widget.controller.context = context;
 
+        //first add the parent display
+        //meant to always stay behind modal and modal background
         widgetChildren.add(widget.child);
 
-        Widget? topDisplay = widget.builder?.call(context, cState) ?? _defaultBuilder(context, cState);
+        //sets the modal display
+        Widget? modalDisplay = _getModalDisplay(cState);
 
+
+        //if to display modalDisplay
         if(cState != CModalState.none){
 
-          _addModalWidget(modal);
+          _addModalBackGroundWidget(modalBackGround);
 
-          if(topDisplay != null) {
+          //shouldn't even be null
+          if(modalDisplay != null) {
 
-            widgetChildren.add(topDisplay);
+            widgetChildren.add(modalDisplay);
           }
+
+          FocusScope.of(context).unfocus();
 
         }
         else{
-          widget.controller.displayMessage = null;
-          widget.controller.dismissOnOutsideClick = false;
+          _resetControllerState();
         }
 
         return Scaffold(
@@ -141,7 +119,26 @@ class _CModalState extends State<CModal> {
     );
   }
 
-  Widget _modalDisplay(CModalState modalState){
+  //resets states for this current state
+  //so that changes do not persist for the next call.
+  //not needed for now
+  _resetControllerState(){
+    // widget.controller.displayMessage = null;
+    // widget.controller.dismissOnOutsideClick = false;
+    // widget.controller.modalDisplay = null;
+
+  }
+
+  //determines the modal display based on modal state
+  _getModalDisplay(CModalState cState){
+    return widget.controller.modalDisplay ??
+        widget.builder?.call(context, cState) ?? _defaultBuilder(context, cState);
+  }
+
+
+  //constructs the modal display
+  //used to construct modal displays in default builder
+  Widget _constructModalDisplayDefaults(CModalState modalState){
 
     String text = modalState == CModalState.error ? widget.controller.displayMessage ?? "error!!" :
         modalState == CModalState.success ? widget.controller.displayMessage ?? "successful" :
@@ -187,6 +184,7 @@ class _CModalState extends State<CModal> {
     );
   }
 
+  //in use when user does not provide a builder
   Widget? _defaultBuilder(BuildContext context, CModalState cState) {
 
     if(cState == CModalState.loading){
@@ -195,26 +193,63 @@ class _CModalState extends State<CModal> {
 
     }else if (cState == CModalState.error){
 
-      return _modalDisplay(CModalState.error);
+      return _constructModalDisplayDefaults(CModalState.error);
 
     }else if (cState == CModalState.success){
 
-       return _modalDisplay(CModalState.success);
+       return _constructModalDisplayDefaults(CModalState.success);
 
     }
 
-    return _modalDisplay(CModalState.custom1);
+    return _constructModalDisplayDefaults(CModalState.custom1);
 
   }
 
-  void _addModalWidget(Widget topDisplay) {
+  //wrap modal background in do opacity effect and add to widgetChildren
+  void _addModalBackGroundWidget(Widget modalBackground) {
     widgetChildren.add(DoOpacity(
-      child: topDisplay
+      fadeDuration: widget.controller.fadeDuration,
+      child: modalBackground
     ));
 
 
 
   }
+
+  //constructs the modal background with gesture detector and backdrop filter
+  Widget _getModalBackGround(){
+    return GestureDetector(
+
+      onTap: (){
+        //dismiss when user clicks outside the display modal.
+        if(widget.controller.dismissOnOutsideClick == true){
+          widget.controller._state = CModalState.none;
+        }
+
+        //calls user defined function.
+        widget.controller.onOutsideClick?.call();
+
+      },
+
+      //blurs the background
+      child: Center(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: 5.0,
+              sigmaY: 5.0,
+            ),
+            child: Container(
+              color: Colors.black.withOpacity(.7),
+            ),
+          )
+      ),
+
+
+    );
+  }
+
+
+
 }
 
 
@@ -222,7 +257,8 @@ class _CModalState extends State<CModal> {
 class DoOpacity extends StatefulWidget {
 
   final Widget child;
-  DoOpacity({Key? key, required this.child}) : super(key: key);
+  final Duration? fadeDuration;
+  DoOpacity({Key? key, required this.child, this.fadeDuration}) : super(key: key);
 
   @override
   _DoOpacityState createState() => _DoOpacityState();
@@ -254,7 +290,7 @@ class _DoOpacityState extends State<DoOpacity> {
         builder:(_, value, __){
 
           return AnimatedOpacity(
-              duration: Duration(milliseconds: 600),
+              duration: widget.fadeDuration ?? Duration(milliseconds: 600),
               opacity: opacityValue.value,
               child: widget.child);
         },

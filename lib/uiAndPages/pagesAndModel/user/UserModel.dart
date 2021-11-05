@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:c_modal/c_modal.dart';
 import 'package:hms/locator.dart';
 import 'package:hms/logger.dart';
+import 'package:hms/models/User.dart';
+import 'package:hms/services/UserService.dart';
 import 'package:hms/services/ValidationService.dart';
 import 'package:hms/services/api/ApiFetcherInterface.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
@@ -13,9 +15,13 @@ class UserModel extends BaseModel{
   
   //services
   ApiFetcherInterface _api = locator<ApiFetcherInterface>();
-  
-  //service getters
+  UserService _userService = locator<UserService>();
   ValidationService _validationService = locator<ValidationService>();
+
+
+  //service getters
+  User get user => _userService.user!;
+  String get nameOfUser => "${user.firstName} ${user.lastName}";
 
   //controllers declaration.
   CModalController cModalController = CModalController();
@@ -34,6 +40,8 @@ class UserModel extends BaseModel{
 
   bool _displayDoctorList = false;
   bool get displayDoctorList => _displayDoctorList;
+
+
 
   set displayDoctorList(bool value){
     _displayDoctorList = value;
@@ -82,22 +90,22 @@ class UserModel extends BaseModel{
 
   }
 
-  Future<void> loadDoctorList() async {
-
-    //   _setDisplayDoctorList(false);
-    //
-    // _api.fetchDoctors(onError: (e){}, onSuccess: (result){
-    //
-    //   print("zimmer");
-    //   _setDisplayDoctorList(true);
-    //
-    //
-    // });
-    await Future.delayed(Duration(seconds: 5));
-    displayDoctorList = true;
-
-
-  }
+  // Future<void> loadDoctorList() async {
+  //
+  //   //   _setDisplayDoctorList(false);
+  //   //
+  //   // _api.fetchDoctors(onError: (e){}, onSuccess: (result){
+  //   //
+  //   //   print("zimmer");
+  //   //   _setDisplayDoctorList(true);
+  //   //
+  //   //
+  //   // });
+  //   await Future.delayed(Duration(seconds: 5));
+  //   displayDoctorList = true;
+  //
+  //
+  // }
 
 }
 

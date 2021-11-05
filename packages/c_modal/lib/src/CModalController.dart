@@ -12,6 +12,8 @@ class CModalController{
 
   CModalState get _state => _notify.value;
 
+  Widget? modalDisplay;
+
   set _state(CModalState value){
     _notify.value = value;
   }
@@ -44,6 +46,7 @@ class CModalController{
     this.onOutsideClick = cModalStateChanger.onOutsideClick;
     this.fadeDuration = cModalStateChanger.fadeDuration;
     this._state = cModalStateChanger.state;
+    this.modalDisplay = cModalStateChanger.modalDisplay;
 
   }
 

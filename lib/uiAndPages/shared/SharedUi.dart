@@ -2,6 +2,7 @@ import 'package:c_input/c_input.dart';
 import 'package:c_ui/c_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:hms/enums.dart';
+import 'package:hms/uiAndPages/shared/ui/ButtonAnimator2.dart';
 
 class SharedUi{
 
@@ -9,6 +10,12 @@ class SharedUi{
     switch(type){
       case ColorType.dark:
         return Colors.grey.shade900;
+      case ColorType.error:
+        return Colors.red.shade300;
+      case ColorType.danger:
+        return Colors.red.shade800;
+      case ColorType.faint:
+        return Colors.blue.shade50;
       case ColorType.success:
         return Colors.green.shade400;
       case ColorType.outlier:
@@ -31,10 +38,41 @@ class SharedUi{
         return Colors.red.shade300;
     }
   }
+
+
+  //button
+  static Widget mButton(String label, {required Function() onTap,
+    ColorType buttonColorType: ColorType.info,
+    ColorType textColorType : ColorType.light,
+    ColorType borderColorType : ColorType.divergent,
+    Icon? leadingIcon,
+
+  }){
+    return  ButtonAnimator2(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        decoration: BoxDecoration(
+            color: SharedUi.getColor(buttonColorType),
+            border: Border.all(color: SharedUi.getColor(ColorType.divergent)),
+            borderRadius: BorderRadius.circular(20)
+        ),
+
+        child: Row(
+
+          children: [
+            if(leadingIcon != null) leadingIcon,
+            SharedUi.smallText(label, colorType: textColorType),
+
+          ]
+        ),
+      ),
+    );
+  }
+
   
   //texts
-
-
   static Widget largeText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int maxLine:1}){
     return CText(text, size: size ?? 45, fontWeight: bold ? FontWeight.bold : FontWeight.w500,
       color: getColor(colorType), maxLine: maxLine, overflow: TextOverflow.ellipsis,
@@ -49,9 +87,9 @@ class SharedUi{
     );
   }
 
-  static Widget mediumText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int minLine:1}){
+  static Widget mediumText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int maxLine:1}){
     return CText(text, size: size ?? 19, fontWeight: bold ? FontWeight.bold : FontWeight.w500,
-      color: getColor(colorType), maxLine: minLine, overflow: TextOverflow.ellipsis,
+      color: getColor(colorType), maxLine: maxLine, overflow: TextOverflow.ellipsis,
     );
   }
 

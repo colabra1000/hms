@@ -20,24 +20,28 @@ class PreferenceTab extends StatelessWidget {
           SizedBox(height: 50,),
           Align(
               alignment: Alignment.centerLeft,
-              child: SharedUi.normalText("Preferences", colorType:ColorType.divergent,)),
+              child: SharedUi.normalText("Preferences", colorType:ColorType.outlier,)),
           SizedBox(height: 50,),
           Expanded(
               child: Column(
                 children: [
-                  _mListTile(context, label: "Access Doctor", icon: Icon(Icons.supervisor_account, size: 50, color: SharedUi.getColor(ColorType.divergent),),
+                  _mListTile(context,
+                      label: "Access Doctor",
+                      icon: Icon(Icons.supervisor_account, size: 50, color: SharedUi.getColor(ColorType.light),),
                       onTap2: (){
                         model.openChangeDoctorPopper();
                       }
 
                   ),
 
-                  _mListTile(context, label: "Update Information", icon: Icon(Icons.system_update_tv, size: 50, color: SharedUi.getColor(ColorType.divergent),),
+                  _mListTile(context, label: "Update Information",
+                      icon: Icon(Icons.system_update_tv, size: 50, color: SharedUi.getColor(ColorType.light),),
                       onTap2: (){
                         model.openUpdateInformationPopper();
                       }
                   ),
-                  _mListTile(context, label: "Update Plan", icon: Icon(Icons.next_plan_outlined, size: 50, color: SharedUi.getColor(ColorType.divergent))),
+                  _mListTile(context, label: "Update Plan",
+                      icon: Icon(Icons.next_plan_outlined, size: 50, color: SharedUi.getColor(ColorType.light))),
                 ],
               )
           )
@@ -73,7 +77,7 @@ class PreferenceTab extends StatelessWidget {
             SizedBox(width: 10,),
 
             Expanded(
-                child: SharedUi.mediumText(label, colorType:ColorType.light, minLine: 2)
+                child: SharedUi.mediumText(label, colorType:ColorType.light, maxLine: 2)
             ),
 
           ],

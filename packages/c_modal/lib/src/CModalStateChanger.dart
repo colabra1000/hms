@@ -2,6 +2,8 @@ part of cmodal;
 
 class CModalStateChanger{
 
+  Widget? modalDisplay;
+
   bool? dismissOnOutsideClick;
 
   CModalState state;
@@ -20,6 +22,8 @@ class CModalStateChanger{
 
   CModalStateChanger({required this.state, this.onBackPress,
     this.popOnBackPress, this.dismissOnBackPress: true,
-    this.displayMessage, this.onOutsideClick, this.dismissOnOutsideClick, this.fadeDuration});
+    this.displayMessage, this.onOutsideClick, this.dismissOnOutsideClick, this.fadeDuration,
+    this.modalDisplay
+  }):assert((modalDisplay != null && displayMessage == null) || displayMessage == null);
 
 }

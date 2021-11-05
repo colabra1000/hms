@@ -21,6 +21,12 @@ class _ButtonAnimator1State extends State<ButtonAnimator1> with SingleTickerProv
   late Animation<Offset> animation;
 
   @override
+  void dispose() {
+      animationController.dispose();
+     super.dispose();
+  }
+
+  @override
   void initState() {
 
     Duration halfDuration = Duration(milliseconds: 200);

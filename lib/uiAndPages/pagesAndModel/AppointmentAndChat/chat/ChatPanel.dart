@@ -5,7 +5,7 @@ import 'package:hms/services/HelperService.dart';
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/chat/ChatModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseView.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
-import 'package:hms/uiAndPages/shared/ui/ButtonAnimation2.dart';
+import 'package:hms/uiAndPages/shared/ui/ButtonAnimator2.dart';
 import 'package:provider/provider.dart';
 import 'package:c_input/c_input.dart';
 
@@ -74,7 +74,7 @@ class _ChatPanelState extends State<ChatPanel> with AutomaticKeepAliveClientMixi
 
                               SizedBox(width: 20,),
 
-                              ButtonAnimation2(
+                              ButtonAnimator2(
                                   onTap: (){
                                     FocusScope.of(context).unfocus();
                                     model.processChat(context: context);
@@ -89,7 +89,7 @@ class _ChatPanelState extends State<ChatPanel> with AutomaticKeepAliveClientMixi
                                         border: Border.all(color: SharedUi.getColor(ColorType.divergent))
                                     ),
 
-                                    child: Icon(Icons.send, size: 35, color: SharedUi.getColor(ColorType.light),),
+                                    child: Icon(Icons.send, size: 25, color: SharedUi.getColor(ColorType.light),),
 
 
                                   )

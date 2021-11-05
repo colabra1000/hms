@@ -216,7 +216,17 @@ class DisplayBox2 extends StatelessWidget {
                         padding: EdgeInsets.all(10), 
                         decoration: BoxDecoration(
                           color: SharedUi.getColor(ColorType.infoLight),
-                          borderRadius: BorderRadius.circular(10)
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: LinearGradient(
+
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+
+                            colors: [
+                              SharedUi.getColor(ColorType.infoLight),
+                              SharedUi.getColor(ColorType.divergent),
+                            ]
+                          )
 
                         ),
                         width: double.infinity,
