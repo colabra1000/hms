@@ -1,5 +1,6 @@
 import 'package:c_modal/c_modal.dart';
 import 'package:c_ui/c_ui.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hms/uiAndPages/decorations/BasePageScaffold.dart';
 import 'package:hms/uiAndPages/decorations/PageBackgroundDecorator.dart';
@@ -91,18 +92,17 @@ class LandingPageView extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Expanded(child:
-                                      DisplayBox2(title : "Public Search",
-                                        subTitle: "Search for existing entities",
-                                        buttonText: "Search Now" ,
+                                      DisplayBox2(title : "Tab 1",
+                                        subTitle: "Information about tab 1",
+                                        buttonText: "Select" ,
                                         onTap: (){
 
                                         },),),
 
                                     Expanded(child: DisplayBox2(
-                                      title: "Personnel",
-                                      subTitle: "Get information about our personnel!",
-                                      buttonText: "View Personnel"
-                                          "\nNow",
+                                      title: "Tab 2",
+                                      subTitle: "Information about Tab 2",
+                                      buttonText: "Select",
                                       onTap: (){
 
                                       },
@@ -127,9 +127,9 @@ class LandingPageView extends StatelessWidget {
                                     Expanded(
                                         child: Container(
                                           child: DisplayBox2(
-                                            title: "Register",
-                                            subTitle: "Register a new Account",
-                                            buttonText: "REGISTER!!",
+                                            title: "Tab 3",
+                                            subTitle: "Information about tab 3",
+                                            buttonText: "Select",
                                             onTap: () async {
 
                                             },
@@ -199,24 +199,34 @@ class DisplayBox2 extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
 
-                      SharedUi.smallText(title, bold: true),
-
-                      // Spacer(),
-
-                      Align(
-                          alignment: Alignment.centerLeft,
-                          child: CText(subTitle, color: SharedUi.getColor(ColorType.light), size: 15,)),
+                      SharedUi.normalText(title, colorType: ColorType.divergent),
 
                       Spacer(),
 
-                      SizedBox(
+                      Align(
+                          alignment: Alignment.center,
+                          child: SharedUi.smallText(subTitle, colorType:ColorType.light,  maxLine: 4)),
+
+                      Spacer(),
+
+                      Container(
+                        padding: EdgeInsets.all(10), 
+                        decoration: BoxDecoration(
+                          color: SharedUi.getColor(ColorType.infoLight),
+                          borderRadius: BorderRadius.circular(10)
+
+                        ),
                         width: double.infinity,
-                        child: CText(buttonText, padding: EdgeInsets.zero,
-                          color: SharedUi.getColor(ColorType.light), underline: true,
-                          fontWeight: FontWeight.bold,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: SharedUi.mediumText(buttonText,
+
+                            colorType: ColorType.info,
+                            bold: true,
+                          ),
                         ),
                       ),
 

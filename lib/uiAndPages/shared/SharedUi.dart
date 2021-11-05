@@ -16,7 +16,9 @@ class SharedUi{
       case ColorType.light:
         return Colors.grey.shade50;
       case ColorType.info:
-        return Colors.blue.shade300;
+        return Colors.blue.shade500;
+      case ColorType.infoLight:
+        return Colors.blue.shade100;
       case ColorType.warning:
         return Colors.orange.shade300;
       case ColorType.secondary:
@@ -47,9 +49,9 @@ class SharedUi{
     );
   }
 
-  static Widget mediumText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int maxLine:1}){
+  static Widget mediumText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int minLine:1}){
     return CText(text, size: size ?? 19, fontWeight: bold ? FontWeight.bold : FontWeight.w500,
-      color: getColor(colorType), maxLine: maxLine, overflow: TextOverflow.ellipsis,
+      color: getColor(colorType), maxLine: minLine, overflow: TextOverflow.ellipsis,
     );
   }
 

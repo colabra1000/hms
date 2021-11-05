@@ -7,6 +7,7 @@ enum EnvironmentType{
 
 enum ColorType{
   info,
+  infoLight,
   light,
   dark,
   warning,

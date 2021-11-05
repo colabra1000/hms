@@ -73,7 +73,7 @@ class PreferenceTab extends StatelessWidget {
             SizedBox(width: 10,),
 
             Expanded(
-                child: SharedUi.mediumText(label, colorType:ColorType.light, maxLine: 2)
+                child: SharedUi.mediumText(label, colorType:ColorType.light, minLine: 2)
             ),
 
           ],
