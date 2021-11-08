@@ -215,18 +215,19 @@ class DisplayBox2 extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(10), 
                         decoration: BoxDecoration(
-                          color: SharedUi.getColor(ColorType.infoLight),
+                          color: SharedUi.getColor(ColorType.successLight),
                           borderRadius: BorderRadius.circular(10),
-                          gradient: LinearGradient(
 
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-
-                            colors: [
-                              SharedUi.getColor(ColorType.infoLight),
-                              SharedUi.getColor(ColorType.divergent),
-                            ]
-                          )
+                          // gradient: LinearGradient(
+                          //
+                          //   begin: Alignment.topCenter,
+                          //   end: Alignment.bottomCenter,
+                          //
+                          //   colors: [
+                          //     SharedUi.getColor(ColorType.infoLight),
+                          //     SharedUi.getColor(ColorType.divergent),
+                          //   ]
+                          // )
 
                         ),
                         width: double.infinity,
@@ -234,7 +235,7 @@ class DisplayBox2 extends StatelessWidget {
                           alignment: Alignment.center,
                           child: SharedUi.mediumText(buttonText,
 
-                            colorType: ColorType.info,
+                            colorType: ColorType.outlier,
                             bold: true,
                           ),
                         ),

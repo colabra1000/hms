@@ -18,6 +18,8 @@ class SharedUi{
         return Colors.blue.shade50;
       case ColorType.success:
         return Colors.green.shade400;
+      case ColorType.successLight:
+        return Colors.green.shade200;
       case ColorType.outlier:
         return Colors.purple.shade900;
       case ColorType.light:

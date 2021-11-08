@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -42,20 +43,26 @@ class CTextField extends StatefulWidget {
   final Color? hintColor;
   final FocusNode? focusNode;
   final bool? showCursor;
-  final TextStyle? style;
+  final TextStyle? textStyle;
   final GlobalKey<FormState>? mKey;
   final bool doNotValidate;
   final InputDecoration? inputDecoration;
 
-  final Icon? prefixIcon;
-  final Icon? suffixIcon;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+
+  final double? fontSize;
+  final EdgeInsets? contentPadding;
 
 
 
-  CTextField(this._cInputController, {this.prefixIcon, this.suffixIcon, this.inputDecoration, this.doNotValidate:false, this.mKey, this.focusNode, this.hintColor, this.maxLength, this.borderWidth, this.borderColor, this.radius, this.enabled:true, this.readOnly:false, this.digitsOnly:false, this.hintText:"", this.minLines:1, this.isPassword:false, this.isEmail:false, this.showCursor, this.style, this.shouldNotUpdateText:false}):
+
+
+  CTextField(this._cInputController, {this.prefixIcon, this.suffixIcon, this.contentPadding, this.fontSize, this.inputDecoration, this.doNotValidate:false, this.mKey, this.focusNode, this.hintColor, this.maxLength, this.borderWidth, this.borderColor, this.radius, this.enabled:true, this.readOnly:false, this.digitsOnly:false, this.hintText:"", this.minLines:1, this.isPassword:false, this.isEmail:false, this.showCursor, this.textStyle, this.shouldNotUpdateText:false}):
   assert((inputDecoration != null && radius == null && borderColor == null && borderWidth == null
   && prefixIcon == null && suffixIcon == null)
-      || inputDecoration == null);
+      || inputDecoration == null),
+  assert((textStyle != null && fontSize == null) || textStyle == null);
 
 
   @override
@@ -72,7 +79,7 @@ class _CTextFieldState extends State<CTextField> {
 
   final Color defaultHintColor = Colors.grey[400]!;
 
-  final TextStyle defaultTextStyle = TextStyle(color: Colors.grey[600],);
+  late final TextStyle defaultTextStyle;
 
   GlobalKey<FormState>? previousKey;
 
@@ -85,6 +92,9 @@ class _CTextFieldState extends State<CTextField> {
 
   @override
   void initState() {
+
+    defaultTextStyle = TextStyle(color: Colors.grey[600], fontSize: widget.fontSize);
+
 
     previousKey = widget.mKey;
     widget._cInputController.shouldNotUpdateText = widget.shouldNotUpdateText;
@@ -106,8 +116,17 @@ class _CTextFieldState extends State<CTextField> {
       key: widget._cInputController.formKey,
       child: TextFormField(
 
+
+
+        // inputDecorationTheme: InputDecorationTheme(
+        //     isDense: true,// this will remove the default content padding
+        //     // now you can customize it here or add padding widget
+        //     contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+        //     ...
+        // ),
+
         enableSuggestions: true,
-        style: widget.style ?? defaultTextStyle,
+        style: widget.textStyle ?? defaultTextStyle,
         showCursor: widget.showCursor,
         focusNode: widget._cInputController.focusNode,
         maxLength: widget.maxLength,
@@ -133,6 +152,11 @@ class _CTextFieldState extends State<CTextField> {
         widget.inputDecoration ??
         InputDecoration(
 
+         contentPadding: widget.contentPadding,
+         // EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+          
+          isDense: true,
+
             prefixIcon: widget.prefixIcon,
             suffixIcon: widget.suffixIcon,
 
@@ -154,6 +178,7 @@ class _CTextFieldState extends State<CTextField> {
               borderSide: BorderSide(color: Colors.red, width: widget.borderWidth ?? defaultBorderWidth),
               borderRadius: BorderRadius.circular(widget.radius ??defaultRadius),
             ),
+
 
             focusColor: Colors.grey,
             hintText: widget.hintText,

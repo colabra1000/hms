@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hms/enums.dart';
 import 'package:hms/models/ChatMessage.dart';
 import 'package:hms/services/HelperService.dart';
+import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/AppointmentAndChatModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/chat/ChatModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseView.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
@@ -11,7 +12,11 @@ import 'package:c_input/c_input.dart';
 
 
 class ChatPanel extends StatefulWidget{
-  const ChatPanel({Key? key}) : super(key: key);
+
+  final void Function(ChatModel model,) exposeModel;
+
+
+  const ChatPanel({Key? key, required this.exposeModel,}) : super(key: key);
 
   @override
   State<ChatPanel> createState() => _ChatPanelState();
@@ -25,9 +30,17 @@ class _ChatPanelState extends State<ChatPanel> with AutomaticKeepAliveClientMixi
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BaseView<ChatModel>(builder: (_, model){
+    return BaseView<ChatModel>(
 
-      return Container(
+      onModelReady: (model){
+        model.chatBox = _chatMessageBox(model);
+        widget.exposeModel(model);
+        model.displayChatMessageBox = true;
+      },
+
+      builder: (_, model){
+
+        return Container(
           decoration: BoxDecoration(
               color: SharedUi.getColor(ColorType.divergent),
               borderRadius: BorderRadius.circular(20)
@@ -44,7 +57,16 @@ class _ChatPanelState extends State<ChatPanel> with AutomaticKeepAliveClientMixi
                       controller: model.scrollController,
                       itemBuilder: (_, int i){
 
-                        return _messageBox(chatMessage: model.chatMessages[i], context: context);
+                        if(i == model.chatMessages.length - 1)
+                          return Column(
+                            children: [
+                              _messageBoardBox(chatMessage: model.chatMessages[i], context: context),
+                              SizedBox(height: model.chatMessageBoxHeight,)
+                            ],
+                          );
+
+
+                        return _messageBoardBox(chatMessage: model.chatMessages[i], context: context);
 
                       },
 
@@ -56,50 +78,10 @@ class _ChatPanelState extends State<ChatPanel> with AutomaticKeepAliveClientMixi
 
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(.1),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 10,),
-                      Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
 
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(child: CTextField(model.messageInputController, minLines: 2,)),
+                // _chatBox(model),
 
-                              SizedBox(width: 20,),
-
-                              ButtonAnimator2(
-                                  onTap: (){
-                                    FocusScope.of(context).unfocus();
-                                    model.processChat(context: context);
-                                  },
-
-                                  child:
-                                  Container(
-                                    padding: EdgeInsets.all(13),
-                                    decoration: BoxDecoration(
-                                        color: SharedUi.getColor(ColorType.success),
-                                        shape: BoxShape.circle,
-                                        border: Border.all(color: SharedUi.getColor(ColorType.divergent))
-                                    ),
-
-                                    child: Icon(Icons.send, size: 25, color: SharedUi.getColor(ColorType.light),),
-
-
-                                  )
-                              )
-                            ],
-                          )),
-                      SizedBox(height: 20,)
-                    ],
-                  ),
-                ),
+                SizedBox(height: 20,)
 
               ]
           )
@@ -108,7 +90,52 @@ class _ChatPanelState extends State<ChatPanel> with AutomaticKeepAliveClientMixi
     });
   }
 
-  Widget _messageBox({required ChatMessage chatMessage, required BuildContext context}){
+
+  Widget _chatMessageBox(ChatModel model){
+    return Container(
+      decoration: BoxDecoration(
+        color: SharedUi.getColor(ColorType.light),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            height: 1,
+            color: SharedUi.getColor(ColorType.secondary),
+          ),
+
+          Spacer(),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: CTextField(
+
+              model.messageInputController, radius: 30,
+
+              contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+
+              fontSize: 20,
+
+              minLines: 2,
+
+              suffixIcon:  ButtonAnimator2(
+                onTap: (){
+                  FocusScope.of(context).unfocus();
+                  model.processChat(context: context);
+                },
+
+                child: Icon(Icons.send, size: 35, color: SharedUi.getColor(ColorType.success),)
+              ),
+            ),
+          ),
+          SizedBox(height: 20,),
+        ],
+      ),
+    );
+  }
+
+
+  Widget _messageBoardBox({required ChatMessage chatMessage, required BuildContext context}){
 
     BorderRadius borderRadius = BorderRadius.circular(10);
 
@@ -128,7 +155,7 @@ class _ChatPanelState extends State<ChatPanel> with AutomaticKeepAliveClientMixi
             borderRadius: borderRadius,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              width: MediaQuery.of(context).size.height * .3,
+              width: MediaQuery.of(context).size.width * .5,
               decoration: BoxDecoration(
                 color: SharedUi.getColor(ColorType.light),
                 borderRadius: borderRadius,

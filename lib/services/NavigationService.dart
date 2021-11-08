@@ -10,8 +10,6 @@ class NavigationService {
 
   late BaseModel baseModel;
 
-  late BaseModel previousModel;
-
   Logger _log = getLogger("NavigationService");
 
   //used to know which model is calling

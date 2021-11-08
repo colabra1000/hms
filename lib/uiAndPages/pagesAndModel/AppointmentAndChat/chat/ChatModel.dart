@@ -15,9 +15,22 @@ class ChatModel extends BaseModel{
   List<ChatMessage> chatMessages = [];
   int chatIndex = 0;
 
+  late Widget chatBox;
+
   CInputController messageInputController = CInputController();
   ScrollController scrollController = ScrollController();
 
+
+  bool _displayChat = false;
+
+  bool get displayChatMessageBox => _displayChat;
+
+  double get chatMessageBoxHeight => 130;
+
+  set displayChatMessageBox(bool value) {
+    _displayChat = value;
+    notifyListeners();
+  }
 
 
   bool _validateChatMessage(){
@@ -26,6 +39,13 @@ class ChatModel extends BaseModel{
     }
 
     return true;
+  }
+
+  //if not done like this, it doesn't work well.
+  void _scrollToLastMessage(){
+    Future.delayed(Duration(milliseconds: 100), (){
+      scrollController.jumpTo(scrollController.position.maxScrollExtent);
+    });
   }
 
   processChat({required BuildContext context}) async {
@@ -42,15 +62,23 @@ class ChatModel extends BaseModel{
     chatMessages.add(chatMessage);
     messageInputController.setSelectedValue("");
     notifyListeners();
-    scrollController.jumpTo(scrollController.position.maxScrollExtent);
+
+    _scrollToLastMessage();
 
     await _chatAutomationService.generateAutoMessage(chatMessages);
     if(mounted){
       notifyListeners();
-      scrollController.jumpTo(scrollController.position.maxScrollExtent);
+      _scrollToLastMessage();
     }
 
 
+  }
+
+
+  @override
+  void dispose() {
+    displayChatMessageBox = false;
+    super.dispose();
   }
 
 

@@ -52,65 +52,68 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
               child: Column(
                 children: [
                   SizedBox(height: 10,),
-                  Selector(
+                  Expanded(
+                    child: Selector(
 
-                    selector: (_, AppointmentModel model)=> model.appointmentBookingState,
+                      selector: (_, AppointmentModel model)=> model.appointmentBookingState,
 
-                    builder:(_, AppointmentBookingState value, __){
-                      bool bookingAppointment = model.appointmentBookingState != AppointmentBookingState.idle;
-                      return Column(
-                        children: [
-                          Row(
-                            children: [
-
-                                  _dualButton(),
-
-                                  Spacer(),
-
-                                  _affirmButton(value),
-
-                            ],
-                          ),
-
-                          SizedBox(height: 30,),
-
-                          Container(
-
-                            decoration: BoxDecoration(
-                                border: Border.all(color: SharedUi.getColor(ColorType.secondary2)),
-                                borderRadius: BorderRadius.circular(10),
-                                color: SharedUi.getColor(ColorType.faint)
-                            ),
-
-                            child: Stack(
+                      builder:(_, AppointmentBookingState value, __){
+                        bool bookingAppointment = model.appointmentBookingState != AppointmentBookingState.idle;
+                        return Column(
+                          children: [
+                            Row(
                               children: [
 
-                                value == AppointmentBookingState.enterAppointmentNote
+                                    _dualButton(),
 
-                                ?  _appointmentNote()
+                                    Spacer(),
 
-                                :AnimatedCrossFade(
-                                  duration: Duration(
-                                      milliseconds: 700
-                                  ),
-                                  crossFadeState: bookingAppointment ? CrossFadeState.showFirst :
-                                  CrossFadeState.showSecond,
-                                  firstChild: _calenderDisplay(),
-                                  secondChild: _appointmentListPanel(),
-                                ),
+                                    _affirmButton(value),
 
-                                _topLabel(value),
                               ],
                             ),
-                          )
+
+                            SizedBox(height: 30,),
+
+                            Expanded(
+                              child: Container(
+
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: SharedUi.getColor(ColorType.secondary2)),
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: SharedUi.getColor(ColorType.faint)
+                                ),
+
+                                child: Stack(
+                                  children: [
+
+                                    AnimatedSwitcher(
+                                        duration:  Duration(
+                                            milliseconds: 700
+                                        ),
+
+                                      child: !bookingAppointment ?
+                                        _appointmentListPanel() :
+                                      value == AppointmentBookingState.enterAppointmentNote  ?
+                                        _appointmentNote() : _calenderDisplay(),
 
 
-                        ],
-                      );
-                    },
+                                    ),
+
+                                    _topLabel(value),
+
+                                    // _topLabel(value),
+                                  ],
+                                ),
+                              ),
+                            )
+
+
+                          ],
+                        );
+                      },
+                    ),
                   ),
-
-
 
                   SizedBox(height: 20,),
                 ],
@@ -133,15 +136,16 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
           decoration: BoxDecoration(
               color: Colors.blue.shade300.withOpacity(.6)
           ),
-          child: Center(
-            child :
-            SharedUi.mediumText(appointmentBookingState == AppointmentBookingState.pickAppointmentDate ?
-            "Pick Appointment Date": appointmentBookingState == AppointmentBookingState.enterAppointmentNote ?
-            "Enter Note!": appointmentBookingState == AppointmentBookingState.idle ? "My Appointments"
-               : "Confirm Appointment",
-                colorType: ColorType.light
-            ),
-
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SharedUi.mediumText(appointmentBookingState == AppointmentBookingState.pickAppointmentDate ?
+              "Pick Appointment Date": appointmentBookingState == AppointmentBookingState.enterAppointmentNote ?
+              "Enter Note!": appointmentBookingState == AppointmentBookingState.idle ? "My Appointments"
+                 : "Confirm Appointment",
+                  colorType: ColorType.light
+              ),
+            ],
           ),
       ),
     );
@@ -234,33 +238,35 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
 
   Widget _appointmentNote(){
 
-    return Column(
-      children: [
-        SizedBox(height: 20,),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 30),
-          child: CTextField(model.appointmentNoteInputController, minLines: 4,),
-        ),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(height: 20,),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 30),
+            child: CTextField(model.appointmentNoteInputController, minLines: 4,),
+          ),
 
-        SharedUi.mediumText("Appointment Note!!"),
-        SizedBox(height: 40,),
+          SharedUi.mediumText("Appointment Note!!"),
+          SizedBox(height: 40,),
 
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SharedUi.mButton("back", buttonColorType: ColorType.error, onTap: (){
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SharedUi.mButton("back", buttonColorType: ColorType.error, onTap: (){
 
-                model.appointmentBookingState = AppointmentBookingState.pickAppointmentDate;
+                  model.appointmentBookingState = AppointmentBookingState.pickAppointmentDate;
 
-              }),
-            ),
-          ],
+                }),
+              ),
+            ],
 
-        ),
-        SizedBox(height: 40,),
-      ],
+          ),
+          SizedBox(height: 40,),
+        ],
+      ),
     );
 
   }
@@ -348,33 +354,39 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
 
       builder:(_, DateTime? value, __){
 
-        return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0),
-            child: TableCalendar(
-              firstDay: DateTime.utc(2010, 10, 16),
-              lastDay: DateTime.utc(2030, 3, 14),
-              focusedDay: model.appointmentDate ?? DateTime.now(),
-              onDaySelected: (selectedDay, focusedDay) {
+        return SingleChildScrollView( 
+          child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: TableCalendar(
+                firstDay: DateTime.utc(2010, 10, 16),
+                lastDay: DateTime.utc(2030, 3, 14),
+                focusedDay: model.appointmentDate ?? DateTime.now(),
+                onDaySelected: (selectedDay, focusedDay) {
 
-                model.appointmentDate = selectedDay;
+                  model.appointmentDate = selectedDay;
 
-               },
+                 },
 
-              selectedDayPredicate: (day) {
-                return isSameDay(model.appointmentDate, day);
-              },
+                selectedDayPredicate: (day) {
+                  return isSameDay(model.appointmentDate, day);
+                },
 
-              calendarFormat: model.calendarFormat,
-              onFormatChanged: (format) {
-                setState(() {
-                  model.calendarFormat = format;
-                });
-              },
+                availableGestures: AvailableGestures.none,
 
-              // onPageChanged: (focusedDay) {
-              //   model.appointmentDate = focusedDay;
-              // },
-            ),
+                // enabledDayPredicate: (DateTime day) => false,
+
+                calendarFormat: model.calendarFormat,
+                onFormatChanged: (format) {
+                  setState(() {
+                    model.calendarFormat = format;
+                  });
+                },
+
+                // onPageChanged: (focusedDay) {
+                //   model.appointmentDate = focusedDay;
+                // },
+              ),
+          ),
         );
       },
     );
@@ -384,10 +396,10 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
 
     return Container(
 
-      height: MediaQuery.of(context).size.height * .5,
-      constraints: BoxConstraints(
-        minHeight: 450
-      ),
+      // height: MediaQuery.of(context).size.height * .5,
+      // constraints: BoxConstraints(
+      //   minHeight: 450
+      // ),
       child: ListView.builder(
         itemBuilder: (_, int i){
           Appointment appointment = model.appointments[i];

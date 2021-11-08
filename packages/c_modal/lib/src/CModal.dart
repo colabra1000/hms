@@ -10,15 +10,30 @@ part 'CModalStateChanger.dart';
 part 'Enums.dart';
 
 
-
-
+/// Provides easy way to display modal on your page
+///
+/// Wrap around your widget to provide functionality to easily
+/// display modal on top of your widget.
 class CModal extends StatefulWidget {
 
 
-  final Widget child;
-  final CModalController controller;
-  final Widget? Function (BuildContext, CModalState)? builder;
 
+  /// The modal wraps around this widget.
+  ///
+  /// The modal is displayed on this widget.
+  final Widget child;
+
+  /// The modal controller.
+  ///
+  /// Controls the state of the modal.
+  final CModalController controller;
+
+  /// Builds your custom modal.
+  ///
+  /// Exposes the state `CModalState` of the modal which
+  /// allows you to build your custom modal based on
+  /// the current modal state.
+  final Widget? Function (BuildContext, CModalState)? builder;
 
   CModal({required this.child, required this.controller, this.builder});
 
@@ -27,41 +42,33 @@ class CModal extends StatefulWidget {
 }
 
 class _CModalState extends State<CModal> {
-  final List<Widget> widgetChildren = [];
 
-  final ValueNotifier<double> opacityValue = ValueNotifier(0);
+  final List<Widget> _widgetChildren = [];
 
-
-  @override
-  void initState() {
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-
 
     return WillPopScope(
 
     onWillPop:  () async {
 
-      // if modal is not display, then can pop freely.
+      // if modal is not displayed, then can pop freely.
       if(widget.controller._state == CModalState.none){
         return true;
       }
-
+      //else
       // calls user defined on back press function.
-      widget.controller.onBackPress?.call();
+      widget.controller._onBackPress?.call();
 
       //handle to dismiss when back is pressed.
-      if(widget.controller.dismissOnBackPress == true){
+      if(widget.controller._dismissOnBackPress == true){
         widget.controller.changeModalState = CModalStateChanger(state: CModalState.none);
         return false;
       }
 
       //handle to pop when back is pressed.
-      if(widget.controller.popOnBackPress == true){
+      if(widget.controller._popOnBackPress == true){
         return true;
       }
 
@@ -71,78 +78,65 @@ class _CModalState extends State<CModal> {
 
       child: ValueListenableBuilder(
 
-      valueListenable: widget.controller._notify,
+        valueListenable: widget.controller._notify,
 
-      builder: (BuildContext context, CModalState cState, _){
+        builder: (BuildContext context, CModalState cState, _){
+
+          _widgetChildren.clear();
+
+          final modalBackGround = _getModalBackGround();
+
+          //expose the context through the controller
+          widget.controller.context = context;
+
+          //first add the parent display
+          //meant to always stay behind modal and modal background
+          _widgetChildren.add(widget.child);
+
+          //sets the modal display
+          Widget? modalDisplay = _getModalDisplay(cState);
 
 
-        widgetChildren.clear();
+          //if to display modalDisplay
+          if(cState != CModalState.none){
 
-        final modalBackGround = _getModalBackGround();
+            _addModalBackGroundWidget(modalBackGround);
 
-        //expose the context through the controller
-        widget.controller.context = context;
+            //shouldn't be null
+            if(modalDisplay != null) {
+              _widgetChildren.add(modalDisplay);
+            }
+            //when modal is display, dismiss keyboard if it is visible
+            FocusScope.of(context).unfocus();
 
-        //first add the parent display
-        //meant to always stay behind modal and modal background
-        widgetChildren.add(widget.child);
-
-        //sets the modal display
-        Widget? modalDisplay = _getModalDisplay(cState);
-
-
-        //if to display modalDisplay
-        if(cState != CModalState.none){
-
-          _addModalBackGroundWidget(modalBackGround);
-
-          //shouldn't even be null
-          if(modalDisplay != null) {
-
-            widgetChildren.add(modalDisplay);
           }
 
-          FocusScope.of(context).unfocus();
 
-        }
-        else{
-          _resetControllerState();
-        }
-
-        return Scaffold(
-          body: Stack(
-            children: widgetChildren,
-          ),
-        );
-      },
-    ),
+          return Scaffold(
+            body: Stack(
+              children: _widgetChildren,
+            ),
+          );
+        },
+      ),
     );
   }
 
-  //resets states for this current state
-  //so that changes do not persist for the next call.
-  //not needed for now
-  _resetControllerState(){
-    // widget.controller.displayMessage = null;
-    // widget.controller.dismissOnOutsideClick = false;
-    // widget.controller.modalDisplay = null;
 
-  }
 
   //determines the modal display based on modal state
   _getModalDisplay(CModalState cState){
-    return widget.controller.modalDisplay ??
+    return widget.controller._modalDisplay ??
         widget.builder?.call(context, cState) ?? _defaultBuilder(context, cState);
   }
-
 
   //constructs the modal display
   //used to construct modal displays in default builder
   Widget _constructModalDisplayDefaults(CModalState modalState){
 
-    String text = modalState == CModalState.error ? widget.controller.displayMessage ?? "error!!" :
-        modalState == CModalState.success ? widget.controller.displayMessage ?? "successful" :
-            widget.controller.displayMessage ?? "Hey!";
+    String text = modalState == CModalState.error ? widget.controller._displayMessage ?? "error!!" :
+        modalState == CModalState.success ? widget.controller._displayMessage ?? "successful" :
+            widget.controller._displayMessage ?? "Hey!";
 
     Color color = modalState == CModalState.error ? Colors.red :
     modalState == CModalState.success ? Colors.green :
@@ -151,35 +145,34 @@ class _CModalState extends State<CModal> {
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      // crossAxisAlignment: CrossAxisAlignment.center,
       children: [
 
-
         Container(
-
           margin: EdgeInsets.all(20),
-
           alignment: Alignment.center,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(20)
-            ),
+          width: double.infinity,
+
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(20)
+          ),
+
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
                 text, style: TextStyle(fontSize: 15, color: Colors.white),
-              ),
+            ),
           ),
         ),
 
 
 
         ElevatedButton(
-            onPressed: (){
-          widget.controller._state = CModalState.none;
-        },
-            child: Text("OK", style: TextStyle(fontSize: 19),)),
+          onPressed: (){
+            widget.controller._state = CModalState.none;
+          },
+          child: Text("OK", style: TextStyle(fontSize: 19),)
+        ),
       ],
     );
   }
@@ -207,13 +200,15 @@ class _CModalState extends State<CModal> {
 
   //wrap modal background in do opacity effect and add to widgetChildren
   void _addModalBackGroundWidget(Widget modalBackground) {
-    widgetChildren.add(DoOpacity(
-      fadeDuration: widget.controller.fadeDuration,
-      child: modalBackground
-    ));
+    _widgetChildren.add(
 
+      widget.controller._fadeDuration == null ? modalBackground :
 
-
+      ModalBackGroundFadeTransition(
+        fadeDuration: widget.controller._fadeDuration,
+        child: modalBackground
+      )
+    );
   }
 
   //constructs the modal background with gesture detector and backdrop filter
@@ -222,49 +217,44 @@ class _CModalState extends State<CModal> {
 
       onTap: (){
         //dismiss when user clicks outside the display modal.
-        if(widget.controller.dismissOnOutsideClick == true){
+        if(widget.controller._dismissOnOutsideClick == true){
           widget.controller._state = CModalState.none;
         }
 
         //calls user defined function.
-        widget.controller.onOutsideClick?.call();
+        widget.controller._onOutsideClick?.call();
 
       },
 
       //blurs the background
       child: Center(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: 5.0,
-              sigmaY: 5.0,
-            ),
-            child: Container(
-              color: Colors.black.withOpacity(.7),
-            ),
-          )
+        child: BackdropFilter(
+          filter: ImageFilter.blur(
+            sigmaX: 5.0,
+            sigmaY: 5.0,
+          ),
+          child: Container(
+            color: Colors.black.withOpacity(.7),
+          ),
+        )
       ),
-
-
     );
   }
-
-
-
 }
 
 
-
-class DoOpacity extends StatefulWidget {
+// Fades in the modal background.
+class ModalBackGroundFadeTransition extends StatefulWidget {
 
   final Widget child;
   final Duration? fadeDuration;
-  DoOpacity({Key? key, required this.child, this.fadeDuration}) : super(key: key);
+  ModalBackGroundFadeTransition({Key? key, required this.child, this.fadeDuration}) : super(key: key);
 
   @override
-  _DoOpacityState createState() => _DoOpacityState();
+  _ModalBackGroundFadeTransitionState createState() => _ModalBackGroundFadeTransitionState();
 }
 
-class _DoOpacityState extends State<DoOpacity> {
+class _ModalBackGroundFadeTransitionState extends State<ModalBackGroundFadeTransition> {
 
   late ValueNotifier<double> opacityValue;
 
@@ -282,20 +272,17 @@ class _DoOpacityState extends State<DoOpacity> {
 
   @override
   Widget build(BuildContext context) {
-    return
+    return ValueListenableBuilder(
+      valueListenable: opacityValue,
+      builder:(_, value, __){
 
-
-      ValueListenableBuilder(
-        valueListenable: opacityValue,
-        builder:(_, value, __){
-
-          return AnimatedOpacity(
-              duration: widget.fadeDuration ?? Duration(milliseconds: 600),
-              opacity: opacityValue.value,
-              child: widget.child);
-        },
-      );
-
+        return AnimatedOpacity(
+          duration: widget.fadeDuration ?? Duration(milliseconds: 100),
+          opacity: opacityValue.value,
+          child: widget.child
+        );
+      },
+    );
   }
 }
 

@@ -6,12 +6,29 @@ import 'package:hms/services/NavigationService.dart';
 abstract class BaseModel extends ChangeNotifier {
 
   NavigationService _navigationService  = locator<NavigationService>();
-  NavigationService get navigationService => _navigationService.injectModel(this);
+  NavigationService get navigationService {
+    // It is expected that when navigation Service is called
+    // Navigation To another page happens.
+    // Therefore mounted should be set to false.
+    _mounted = false;
+    return _navigationService.injectModel(this);
+  }
+
+
+
+  @override
+  void dispose() {
+    _mounted = false;
+    super.dispose();
+  }
+
+
 
 
   //is true when page is current scope and false otherwise.
   bool _mounted = true;
   bool get mounted => _mounted;
+
 
 
   notifyListeners1(){
@@ -21,12 +38,7 @@ abstract class BaseModel extends ChangeNotifier {
   }
 
 
-  @override
-  void dispose() {
 
-    _mounted = false;
-    super.dispose();
-  }
 
 
   void disMount() {

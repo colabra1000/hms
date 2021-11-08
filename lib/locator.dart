@@ -16,6 +16,7 @@ import 'package:hms/services/api/MockApiFetcher.dart';
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/AppointmentAndChatModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/appointment/AppointmentModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/chat/ChatModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/landing/LandingPageModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/login/LoginDisplayModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
@@ -29,9 +30,56 @@ import 'package:get_it/get_it.dart';
 
 GetIt locator = GetIt.instance;
 
+// class NK{
+//
+//   List<BaseModel> models = [];
+//   // late BaseModel model;
+//
+//   void register(BaseModel model){
+//     // this.model = model;
+//     models.add(model);
+//   }
+//
+//   BaseModel? find(Type type, BaseModel model){
+//     int idx = models.indexOf(model);
+//
+//     //search back.
+//     while(idx >= 0){
+//       idx -= 1;
+//       if(models[idx].runtimeType == type){
+//         return models[idx];
+//       }
+//
+//     }
+//
+//     return null;
+//
+//     List sub = models.sublist(0, idx);
+//     print(sub);
+//     return sub.firstWhere((element) => element.runtimeType == type);
+//   }
+//
+//   void unRegisterAll() {
+//     models.clear();
+//   }
+//
+//   void unRegister(BaseModel model) {
+//     models.remove(model);
+//   }
+//
+//   void log() {
+//     print(models);
+//   }
+//
+// }
+
 void setupLocator() {
 
   Logger _log = getLogger("setUpLocator");
+
+  //my new experimental feature
+
+  // locator.registerLazySingleton(() => NK());
 
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => ValidationService());
