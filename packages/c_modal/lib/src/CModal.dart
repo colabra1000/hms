@@ -106,8 +106,16 @@ class _CModalState extends State<CModal> {
             if(modalDisplay != null) {
               _widgetChildren.add(modalDisplay);
             }
+
+            //very annoying bug
+            //difficult to trace.
+            //dont even know what it was doing here
+            //the culprit...
+
             //when modal is display, dismiss keyboard if it is visible
-            FocusScope.of(context).unfocus();
+            // FocusScope.of(context).unfocus();
+
+            //...
 
           }
 
