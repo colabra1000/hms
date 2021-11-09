@@ -17,6 +17,7 @@ enum ColorType{
   secondary,
   secondary2,
   divergent,
+  divergentLight,
   outlier,
   successLight,
   success

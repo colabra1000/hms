@@ -81,7 +81,7 @@ class AppointmentModel extends BaseModel{
     notifyListeners();
   }
 
-  //appointment Date
+  //messages Date
   DateTime? _appointmentDate;
 
   DateTime? get appointmentDate => _appointmentDate;

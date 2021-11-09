@@ -20,7 +20,7 @@ import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/landing/LandingPageModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/login/LoginDisplayModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
-import 'package:hms/uiAndPages/pagesAndModel/user/preference/AccessDoctorListDisplayModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/preference/DoctorListDisplay/PopDoctorListDisplayModel.dart';
 import 'package:hms/variables/LiveVariables.dart';
 import 'package:hms/variables/TestVariables.dart';
 import 'package:hms/variables/VariableGetterInterface.dart';
@@ -115,7 +115,7 @@ void setupLocator() {
   locator.registerFactory(() => LandingPageModel());
   locator.registerFactory(() => LoginDisplayModel());
   locator.registerFactory(() => UserModel());
-  locator.registerFactory(() => AccessDoctorListDisplayModel());
+  locator.registerFactory(() => PopDoctorListDisplayModel());
   locator.registerFactory(() => AppointmentAndChatModel());
   locator.registerFactory(() => ChatModel());
   locator.registerFactory(() => AppointmentModel());

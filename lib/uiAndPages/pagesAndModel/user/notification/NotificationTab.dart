@@ -8,7 +8,7 @@ class NotificationTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: CText("notifications")
+        child: CText("Notifications")
     );
   }
 }

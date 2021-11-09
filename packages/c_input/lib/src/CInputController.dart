@@ -19,6 +19,7 @@ class CInputController {
 
   CInputController({this.autoValidate:true, this.initialValue,
     this.validationRule}) {
+
        // textController.text = initialValue ?? "";
 
       setSelectedValue(initialValue);

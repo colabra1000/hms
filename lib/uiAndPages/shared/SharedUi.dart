@@ -36,6 +36,8 @@ class SharedUi{
         return Colors.blueGrey;
       case ColorType.divergent:
         return Colors.yellow.shade200;
+      case ColorType.divergentLight:
+        return Colors.yellow.shade100;
       default:
         return Colors.red.shade300;
     }

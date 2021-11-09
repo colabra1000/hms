@@ -7,9 +7,9 @@ import 'package:hms/uiAndPages/decorations/PageBackgroundDecorator.dart';
 import 'package:hms/uiAndPages/documents/UserPageDocument.dart';
 import 'package:hms/uiAndPages/pagesAndModel/Base/BaseView.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
-import 'package:hms/uiAndPages/pagesAndModel/user/appointment/AppoitmentTab.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/messages/MessagesTab.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationTab.dart';
-import 'package:hms/uiAndPages/pagesAndModel/user/preference/AccessDoctorListDisplayPanel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/preference/DoctorListDisplay/PopDoctorListDisplayPanel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/preference/PreferenceTab.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
 import 'package:hms/uiAndPages/shared/ui/ButtonAnimator2.dart';
@@ -24,12 +24,8 @@ class UserPage extends StatefulWidget {
 
 class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin{
 
+  late UserModel model;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context){
@@ -38,6 +34,7 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
 
       onModelReady: (model){
         model.tabController = TabController(initialIndex: 0, vsync: this, length: 3);
+        this.model = model;
       },
 
         builder: (context, model)=> CModal(
@@ -46,25 +43,30 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
             builder:(_, CModalState state){
 
               if(state == CModalState.custom1){
-                return PopperPanel(
+                return SingleChildScrollView(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: PopperPanel(
 
-                    child: AccessDoctorListDisplayPanel(model.accessDoctorListDisplayController),
+                        child: PopDoctorListDisplayPanel(model.accessDoctorListDisplayController,),
 
-                    popperOpened: model.popperOpened,
+                        popperOpened: model.popperOpened,
 
-                    onOpen: (){
-                      
-                      model.accessDoctorListDisplayController.onOpen!();
-                      // model.displayDoctorList = true;
+                        onOpen: (){
 
-                    },
+                          model.accessDoctorListDisplayController.onOpen!();
+                          // model.displayDoctorList = true;
 
-                    onClose: (){
-                      model.cModalController.changeModalState = CModalStateChanger(
-                        state: CModalState.none,
-                      );
-                      // model.displayDoctorList = false;
-                    }
+                        },
+
+                        onClose: (){
+                          model.cModalController.changeModalState = CModalStateChanger(
+                            state: CModalState.none,
+                          );
+                          // model.displayDoctorList = false;
+                        }
+                    ),
+                  ),
                 );
               }
 
@@ -87,54 +89,37 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
 
             child: SafeArea(
               child: Scaffold(
-                  // pageTitle: "User",
                   body:PageBackGroundDecorator(
-                    child: SingleChildScrollView(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          children: [
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        children: [
 
-                            SizedBox(height: 10,),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  TextButton(
-                                    onPressed: (){
+                          SizedBox(height: 10,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _logoutButton((){
+                                  model.navigateToLandingPage(context);
+                              }),
 
-                                      model.navigateToLandingPage(context);
+                              Icon(CupertinoIcons.ellipsis)
+                            ],
+                          ),
 
-                                    },
-                                    child: Row(
-                                      children: [
-                                        SharedUi.smallText("logout", bold: true),
-                                        Icon(Icons.logout),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          _categorySelectors(context, model),
 
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: UserPageDocument.greetings
-                            ),
+                          SizedBox(
+                            height: 30,
+                          ),
 
-                            _section1(context, model),
+                          Expanded(child: _tabView()),
 
-                            SizedBox(
-                              height: 30,
-                            ),
+                          SizedBox(
+                            height: 30,
+                          ),
 
-                            _section2(context, model),
-
-                            SharedUi.vFooterSpace()
-
-                          ],
-                        ),
+                        ],
                       ),
                     ),
                   ),
@@ -145,23 +130,63 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
   }
 
 
+  Widget _tabView(){
+    return TabBarView(
+      controller: model.tabController,
+      physics: NeverScrollableScrollPhysics(),
+      children: [
+        PreferenceTab(model: model),
+        MessagesTab(),
+        NotificationTab(),
 
-  Widget _section1(BuildContext context, UserModel model){
+      ],
+    );
+  }
+
+  Widget _logoutButton(Function() onTap){
+    return  Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          TextButton(
+            onPressed: onTap,
+            child: Row(
+              children: [
+                SharedUi.smallText("logout", bold: true),
+                Icon(Icons.logout),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget _categorySelectors(BuildContext context, UserModel model){
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade50),
+          border: Border.all(color: SharedUi.getColor(ColorType.infoLight)),
           borderRadius: BorderRadius.circular(20),
-          color: Colors.grey.withOpacity(.2)
+          color: Colors.grey.withOpacity(.1)
+
       ),
 
       constraints: BoxConstraints(
           minHeight: 300,
           minWidth: double.infinity
       ),
+      
+      padding: EdgeInsets.all(10),
 
       height: MediaQuery.of(context).size.height * .5,
       child: Column(
         children: [
+          Align(
+              alignment: Alignment.centerLeft,
+              child: UserPageDocument.greetings
+          ),
           Expanded(child: SharedUi.femaleAvatar()),
           SharedUi.normalText("${model.nameOfUser}"),
 
@@ -170,14 +195,14 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
-                  child: InfoBox(label: "appointments", icon: Icon(Icons.calendar_today_sharp, color: SharedUi.getColor(ColorType.outlier), size: 40,), onTap: (){
+                  child: InfoBox(label: "Preference", icon: Icon(Icons.calendar_today_sharp, color: SharedUi.getColor(ColorType.outlier), size: 40,), onTap: (){
 
                     model.tabController.animateTo(0);
                   }),
                 ),
 
                 Expanded(
-                  child: InfoBox(label: "Preference", icon: Icon(CupertinoIcons.gear, color: SharedUi.getColor(ColorType.outlier), size: 40,), onTap: (){
+                  child: InfoBox(label: "Messages", icon: Icon(CupertinoIcons.gear, color: SharedUi.getColor(ColorType.outlier), size: 40,), onTap: (){
                     model.tabController.animateTo(1);
                   }),
                 ),
@@ -195,38 +220,6 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
       ),
 
     );
-  }
-
-  Widget _section2(BuildContext context, UserModel model){
-
-    return Container(
-
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade50),
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.blue.withOpacity(.3),
-      ),
-
-      constraints: BoxConstraints(
-          minHeight: 600,
-          minWidth: double.infinity
-      ),
-
-      height: MediaQuery.of(context).size.height * .7,
-
-      child: TabBarView(
-        controller: model.tabController,
-        physics: NeverScrollableScrollPhysics(),
-        children: [
-          AppointmentTab(),
-          PreferenceTab(model: model,),
-          NotificationTab()
-        ],
-      ),
-
-
-    );
-
   }
 
 }
@@ -252,7 +245,7 @@ class InfoBox extends StatelessWidget {
             height: MediaQuery.of(context).size.width * .25,
             margin: EdgeInsets.all(10),
             decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade50),
+                // border: Border.all(color: Colors.grey.shade50),
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.grey.shade50.withOpacity(.3)
             ),
@@ -280,4 +273,104 @@ class InfoBox extends StatelessWidget {
 
 
 
+
+// Widget _lowerButton2({required Color color, required Icon icon, required String label, Function()? onTap}){
+//
+//   return ButtonAnimator2(
+//     onTap2: onTap,
+//     child: ClipRRect(
+//       borderRadius: BorderRadius.circular(20),
+//
+//       child: Stack(
+//         children: [
+//           ColorFiltered(
+//             colorFilter: ColorFilter.mode(
+//                 color,
+//                 BlendMode.srcOut
+//             ),
+//             child: Container(
+//               decoration: BoxDecoration(
+//                 color: Colors.transparent,
+//                 // borderRadius: BorderRadius.circular(20)
+//               ),
+//               child: Align(
+//                 alignment: Alignment.topLeft,
+//                 child: Container(
+//                   margin: const EdgeInsets.all(10),
+//                   height: 50,
+//                   width: 50,
+//                   decoration: BoxDecoration(
+//                     color: Colors.blue, // Color does not matter but should not be transparent
+//                     borderRadius: BorderRadius.circular(10),
+//                   ),
+//
+//                 ),
+//               ),
+//             ),
+//           ),
+//
+//           Column(
+//             children: [
+//               Align(
+//                 alignment: Alignment.topLeft,
+//                 child: Container(
+//                   margin: const EdgeInsets.all(10),
+//                   height: 50,
+//                   width: 50,
+//                   decoration: BoxDecoration(
+//                     borderRadius: BorderRadius.circular(10),
+//                   ),
+//                   child: icon,
+//                 ),
+//               ),
+//
+//               Padding(
+//                 padding: const EdgeInsets.all(8.0),
+//                 child: FittedBox(
+//                     child: SharedUi.mediumText(
+//                         label, maxLine: 5,
+//                         colorType: ColorType.outlier
+//                     )
+//                 ),
+//               )
+//             ],
+//           ),
+//         ],
+//       ),
+//     ),
+//   );
+//
+//
+//
+//
+//   // return ButtonAnimator2(
+//   //   onTap: (){},
+//   //   child: Stack(
+//   //     children: [
+//   //       Container(
+//   //
+//   //         padding: EdgeInsets.all(10),
+//   //         height: double.infinity,
+//   //
+//   //         decoration: BoxDecoration(
+//   //           borderRadius: BorderRadius.circular(20),
+//   //           color: color,
+//   //         ),
+//   //
+//   //         child: SharedUi.mediumText("BookAppointment And Chat with Doctors", maxLine: 5),
+//   //
+//   //
+//   //       ),
+//   //       Align(
+//   //         alignment: Alignment.topLeft,
+//   //         child: Container(
+//   //           width: 50,
+//   //           height: 50,
+//   //           color: Colors.purple,
+//   //         ),
+//   //       ),
+//   //     ],
+//   //   ),
+//   // );
+// }
 

@@ -7,8 +7,9 @@ class ButtonAnimator2 extends StatefulWidget {
 
   final Widget child;
   final Function()? onTap;
+  final Function()? onTap2;
 
-  const ButtonAnimator2({Key? key, this.onTap, required this.child,}) : super(key: key);
+  const ButtonAnimator2({Key? key, this.onTap, this.onTap2, required this.child,}) : super(key: key);
 
   @override
   _ButtonAnimator2State createState() => _ButtonAnimator2State();
@@ -22,7 +23,6 @@ class _ButtonAnimator2State extends State<ButtonAnimator2> with SingleTickerProv
   @override
   void dispose() {
     animationController.dispose();
-
     super.dispose();
   }
 
@@ -37,6 +37,12 @@ class _ButtonAnimator2State extends State<ButtonAnimator2> with SingleTickerProv
           curve: CustomCurve(),
         ));
 
+    animationController.addStatusListener((status) {
+      if(status == AnimationStatus.completed){
+        widget.onTap2?.call();
+      }
+    });
+
     super.initState();
   }
 
@@ -45,6 +51,7 @@ class _ButtonAnimator2State extends State<ButtonAnimator2> with SingleTickerProv
 
     return ScaleTransition(
       scale: animation,
+
 
       child: GestureDetector(
         onTap: (){

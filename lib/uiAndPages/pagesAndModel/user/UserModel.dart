@@ -19,6 +19,7 @@ class UserModel extends BaseModel{
   ValidationService _validationService = locator<ValidationService>();
 
 
+
   //service getters
   User get user => _userService.user!;
   String get nameOfUser => "${user.firstName} ${user.lastName}";
@@ -63,14 +64,15 @@ class UserModel extends BaseModel{
 
 
 
-  void openChangeDoctorPopper() {
+  void openSelectDoctorPopper() {
 
 
     cModalController.changeModalState = CModalStateChanger(
         state:CModalState.custom1,
-        onOutsideClick: (){
-          popperOpened.value = false;
-        }
+        fadeDuration: Duration(milliseconds: 700),
+        // onOutsideClick: (){
+          // popperOpened.value = false;
+        // }
     );
     popperOpened.value = true;
 

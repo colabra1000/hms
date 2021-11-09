@@ -6,19 +6,21 @@ import 'package:hms/services/DoctorService.dart';
 import 'package:hms/services/api/ApiFetcherInterface.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 
-class AccessDoctorListDisplayModel extends BaseModel{
+class PopDoctorListDisplayModel extends BaseModel{
+
 
   ApiFetcherInterface _api = locator<ApiFetcherInterface>();
   DoctorService _doctorService = locator<DoctorService>();
 
-  late Widget _pageListToDisplay;
+  bool _loading = true;
 
-  Widget get panelDisplay => _pageListToDisplay;
+  bool get loading => _loading;
 
-  set panelDisplay(Widget value) {
-    _pageListToDisplay = value;
+  set loading(bool value) {
+    _loading = value;
     notifyListeners();
   }
+
 
   late List doctors;
 
@@ -26,7 +28,6 @@ class AccessDoctorListDisplayModel extends BaseModel{
 
 
   void navigateToAppointmentAndChatPage(BuildContext context, {required Doctor doctor}) {
-
     _doctorService.doctor = doctor;
     navigationService.navigateToAppointmentAndChatPage(context);
   }
