@@ -1,7 +1,7 @@
+import 'package:c_input/c_input.dart';
+import 'package:c_input/src/CInputController.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'CData.dart';
-import 'CInputController.dart';
 
 class CDropDownSearch extends StatefulWidget {
 

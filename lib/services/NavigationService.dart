@@ -4,6 +4,7 @@ import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/AppointmentAndCh
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/landing/LandingPage.dart';
 import 'package:hms/uiAndPages/pagesAndModel/login/LoginDisplayPage.dart';
+import 'package:hms/uiAndPages/pagesAndModel/message/MessagePage.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/UserPage.dart';
 
 class NavigationService {
@@ -60,6 +61,13 @@ class NavigationService {
     return Navigator.push(
       context, MaterialPageRoute(
         builder: (context) => AppointmentAndChatPage()),
+    );
+  }
+
+  Future navigateToMessagePage(BuildContext context) {
+    return Navigator.push(
+      context, MaterialPageRoute(
+        builder: (context) => MessagePage()),
     );
   }
 

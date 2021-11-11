@@ -7,6 +7,7 @@ import 'package:hms/uiAndPages/pagesAndModel/base/BaseView.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
+import 'package:hms/uiAndPages/shared/SharedWidget.dart';
 import 'package:hms/uiAndPages/shared/ui/ButtonAnimator1.dart';
 import 'package:provider/provider.dart';
 
@@ -114,8 +115,7 @@ class _MessageListDisplayPopperPanelState extends State<MessageListDisplayPopper
     return ButtonAnimator1(
 
       onTap2: (){
-        // model.navigateToMessagePage(context, message: message);
-        print(message.readStatus);
+        model.navigateToMessagePage(context, message: message);
       },
 
       child: Container(
@@ -132,16 +132,7 @@ class _MessageListDisplayPopperPanelState extends State<MessageListDisplayPopper
         child: Row(
           children: [
 
-            Container(
-               height: 45,
-               decoration: BoxDecoration(
-                 color: Colors.blue.shade100,
-                 borderRadius: BorderRadius.circular(10),
-               ),
-               child: AspectRatio(
-                 aspectRatio: 1,
-               ),
-             ),
+            SharedWidgets.profileBox(),
 
             SizedBox(width: 10,),
 
@@ -155,7 +146,7 @@ class _MessageListDisplayPopperPanelState extends State<MessageListDisplayPopper
               ),
             ),
 
-           _readStatus(message.readStatus ?? ""),
+           SharedWidgets.readStatus(message.readStatus ?? ""),
             
             
           ],
@@ -165,21 +156,7 @@ class _MessageListDisplayPopperPanelState extends State<MessageListDisplayPopper
   }
 
 
-  _readStatus(String readStatus){
-    return  Container(
-      height: 10,
-      decoration: BoxDecoration(
-          color: readStatus == "UNSEEN" ? SharedUi.getColor(ColorType.danger) :
-          readStatus == "UNREAD" ? SharedUi.getColor(ColorType.success) :
-              null,
 
-          borderRadius: BorderRadius.circular(5)
-      ),
-      child: AspectRatio(
-        aspectRatio: 1,
-      ),
-    );
-  }
 
 
 

@@ -74,40 +74,44 @@ class LoginDisplayPage extends StatelessWidget {
 
                               Row(
                                 children: [
-                                  SharedUi.successButton([Icon(Icons.login, color: Colors.grey.shade50,), "Login"],
-                                    padding: EdgeInsets.symmetric(horizontal: 20),
-                                    onTap: ()async{
+                                  SharedUi.mButton(
+                                      append : Icon(Icons.login, color: Colors.grey.shade50,),
+                                      label : "login",
 
-                                      model.setInputFields();
+                                      onTap: ()async{
 
-                                            //validate input fields.
-                                            if(model.validateInputFields()){
-                                              model.confirmValidation = true;
+                                        model.setInputFields();
+
+                                        //validate input fields.
+                                        if(model.validateInputFields()){
+                                          model.confirmValidation = true;
 
 
-                                              //activate loading modal.
-                                              model.cModalController.changeModalState = CModalStateChanger(state: CModalState.loading);
+                                          //activate loading modal.
+                                          model.cModalController.changeModalState = CModalStateChanger(state: CModalState.loading);
 
-                                              //makeRequest is Login Request.
-                                              if(await model.makeRequest()){
-                                                await model.navigateToNextPage(context);
+                                          //makeRequest is Login Request.
+                                          if(await model.makeRequest()){
+                                            await model.navigateToNextPage(context);
 
-                                                //deactivate loading modal.
-                                                 model.cModalController.changeModalState = CModalStateChanger(state: CModalState.none);
+                                            //deactivate loading modal.
+                                            model.cModalController.changeModalState = CModalStateChanger(state: CModalState.none);
 
-                                                 return;
-                                              }
+                                            return;
+                                          }
 
-                                              model.cModalController.changeModalState = CModalStateChanger(
-                                                  state: CModalState.error,
-                                                  displayMessage: model.loginErrorMessage
-                                              );
+                                          model.cModalController.changeModalState = CModalStateChanger(
+                                              state: CModalState.error,
+                                              displayMessage: model.loginErrorMessage
+                                          );
 
-                                            }else{
-                                              model.confirmValidation = false;
-                                            }
+                                        }else{
+                                          model.confirmValidation = false;
+                                        }
 
-                                    }
+                                      }
+
+
                                   ),
                                 ],
                               ),

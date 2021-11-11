@@ -1,6 +1,7 @@
 import 'package:c_input/src/CInputController.dart';
 import 'package:c_ui/c_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:hms/enums.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
 import 'package:hms/variables/GlobalData.dart';
 import 'package:provider/provider.dart';
@@ -78,6 +79,36 @@ class SharedWidgets{
     return SharedUi.mDropDown(dropDownList: GlobalData.gender,
         inputController: genderInputController, label: label, hint: hint,);
 
+  }
+
+  static Widget profileBox() {
+    return   Container(
+      height: 45,
+      decoration: BoxDecoration(
+        color: Colors.blue.shade100,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: AspectRatio(
+        aspectRatio: 1,
+      ),
+    );
+  }
+
+
+  static Widget readStatus(String readStatus){
+    return  Container(
+      height: 10,
+      decoration: BoxDecoration(
+          color: readStatus == "UNSEEN" ? SharedUi.getColor(ColorType.danger) :
+          readStatus == "UNREAD" ? SharedUi.getColor(ColorType.success) :
+          null,
+
+          borderRadius: BorderRadius.circular(5)
+      ),
+      child: AspectRatio(
+        aspectRatio: 1,
+      ),
+    );
   }
 
 

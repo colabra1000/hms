@@ -43,7 +43,7 @@ class MessageListDisplayPopperModel extends BaseModel{
 
   void navigateToMessagePage(BuildContext context, {required Message message}) {
     _messageService.message = message;
-    navigationService.navigateToAppointmentAndChatPage(context);
+    navigationService.navigateToMessagePage(context);
   }
 
 

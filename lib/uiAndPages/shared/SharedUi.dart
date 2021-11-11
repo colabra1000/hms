@@ -17,13 +17,15 @@ class SharedUi{
       case ColorType.faint:
         return Colors.blue.shade50;
       case ColorType.success:
-        return Colors.green.shade400;
+        return Colors.green.shade700;
       case ColorType.successLight:
         return Colors.green.shade200;
       case ColorType.outlier:
         return Colors.purple.shade900;
       case ColorType.light:
         return Colors.grey.shade50;
+      case ColorType.light2:
+        return Colors.grey.shade100;
       case ColorType.info:
         return Colors.blue.shade500;
       case ColorType.infoLight:
@@ -43,62 +45,34 @@ class SharedUi{
     }
   }
 
-
-  //button
-  static Widget mButton(String label, {required Function() onTap,
-    ColorType buttonColorType: ColorType.info,
-    ColorType textColorType : ColorType.light,
-    ColorType borderColorType : ColorType.divergent,
-    Icon? leadingIcon,
-
-  }){
-    return  ButtonAnimator2(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-        decoration: BoxDecoration(
-            color: SharedUi.getColor(buttonColorType),
-            border: Border.all(color: SharedUi.getColor(ColorType.divergent)),
-            borderRadius: BorderRadius.circular(20)
-        ),
-
-        child: Row(
-
-          children: [
-            if(leadingIcon != null) leadingIcon,
-            SharedUi.smallText(label, colorType: textColorType),
-
-          ]
-        ),
-      ),
-    );
-  }
-
   
   //texts
-  static Widget largeText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int maxLine:1}){
+  static Widget largeText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int maxLine:1, double? letterSpacing, double? wordSpacing, double? height}){
     return CText(text, size: size ?? 45, fontWeight: bold ? FontWeight.bold : FontWeight.w500,
+      letterSpacing: letterSpacing, wordSpacing: wordSpacing, height: height,
       color: getColor(colorType), maxLine: maxLine, overflow: TextOverflow.ellipsis,
     );
   }
 
 
 
-  static Widget normalText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int maxLine: 1}){
+  static Widget normalText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int maxLine: 1, double? letterSpacing, double? wordSpacing, double? height}){
     return CText(text, size: size ?? 25, fontWeight: bold ? FontWeight.bold : FontWeight.w500,
+      letterSpacing: letterSpacing, wordSpacing: wordSpacing, height: height,
       color: getColor(colorType), maxLine: maxLine, overflow: TextOverflow.ellipsis,
     );
   }
 
-  static Widget mediumText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int maxLine:1}){
+  static Widget mediumText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int maxLine:1, double? letterSpacing, double? wordSpacing, double? height}){
     return CText(text, size: size ?? 19, fontWeight: bold ? FontWeight.bold : FontWeight.w500,
+      letterSpacing: letterSpacing, wordSpacing: wordSpacing, height: height,
       color: getColor(colorType), maxLine: maxLine, overflow: TextOverflow.ellipsis,
     );
   }
 
-  static Widget smallText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int maxLine:1}){
+  static Widget smallText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int maxLine:1, double? letterSpacing, double? wordSpacing, double? height}){
     return CText(text, size: size ?? 15, fontWeight: bold ? FontWeight.bold : FontWeight.w500,
+      letterSpacing: letterSpacing, wordSpacing: wordSpacing, height: height,
       color: getColor(colorType), maxLine: maxLine, overflow: TextOverflow.ellipsis,
     );
   }
@@ -210,49 +184,92 @@ class SharedUi{
 
 
   //buttons
-  static Widget _button(List<dynamic> head, Color color, {
-    EdgeInsets? padding,
-    void Function()? onTap,}){
+  static Widget mButton({Widget? append, Widget? prepend, String? label,ColorType? buttonColorType, ColorType? textColorType, void Function()? onTap,
+    double? height, double? edgePads, double factor: 10, double? fontSize}){
+
+    Widget child;
+
+    if(append != null || prepend != null){
+      child = Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          if(append != null) append,
+          CText(label ?? "      ", size: fontSize ?? 15, color: getColor(textColorType ?? ColorType.light),),
+          if(prepend != null) prepend,
+        ],
+      );
+    }else
+      child = CText(label ?? "      ", size: fontSize ?? 15, color: getColor(textColorType ?? ColorType.light));
 
 
-    List<Widget> headWidgets = head.map((e) {
-      assert(e != null);
-      if(e is String){
-        return CText(e, size: 15, color: Colors.grey.shade50,);
-      }else{
-        return e as Widget;
-      }
 
-    }).toList();
+    return ButtonAnimator2(
+      onTap2: onTap,
 
-    return CButton(
-      onTapHandler: onTap,
-      elevation: 2,
-      borderRadius: 19,
-      color: color,
-      padding: EdgeInsets.all(9),
-      child: Padding(
-        padding: padding ?? EdgeInsets.zero,
-
-        child: Row(
-          children: [...headWidgets],
+      child: Container(
+        alignment: Alignment.center,
+        height: height != null ? height * factor : null,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(22),
+          color: getColor(buttonColorType ?? ColorType.success),
         ),
+        padding: EdgeInsets.symmetric(horizontal: edgePads ?? 9,),
+        child: child,
       ),
     );
 
   }
 
-  static Widget successButton(List<dynamic> head,  {void Function()? onTap, EdgeInsets? padding,}){
+  // static Widget successButton({Widget? append, Widget? prepend, String? label,
+  //   Function()? onTap, double? edgePads, double? fontSize}){
+  //
+  //   return _button(append: append, prepend: prepend, label: label, buttonColorType: ColorType.success,
+  //     textColorType: ColorType.light, fonsize: fontSize,
+  //     onTap: onTap, height: 3, edgePads: edgePads ?? 20,);
+  //
+  // }
+  //
+  // static Widget cancelButton({Widget? append, Widget? prepend, String? label,
+  //   Function()? onTap, double? edgePads, double? fontSize}){
+  //
+  //   return _button(append: append, prepend: prepend, label: label, buttonColorType: ColorType.danger,
+  //     textColorType: ColorType.light,
+  //     onTap: onTap, height: 3, edgePads: edgePads ?? 20, fontSize: fontSize);
+  //
+  // }
 
-    return _button(head, Colors.green ,onTap: onTap, padding: padding);
 
-  }
 
-  static Widget cancelButton(List<dynamic> head,  {void Function()? onTap, EdgeInsets? padding,}){
-
-    return _button(head, Colors.red ,onTap: onTap);
-
-  }
+  //button
+  // static Widget mButton(String label, {required Function() onTap,
+  //   ColorType buttonColorType: ColorType.info,
+  //   ColorType textColorType : ColorType.light,
+  //   ColorType borderColorType : ColorType.divergent,
+  //   Icon? leadingIcon,
+  //
+  // }){
+  //   return  ButtonAnimator2(
+  //     onTap: onTap,
+  //     child: AnimatedContainer(
+  //       duration: Duration(milliseconds: 300),
+  //       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+  //       decoration: BoxDecoration(
+  //           color: SharedUi.getColor(buttonColorType),
+  //           border: Border.all(color: SharedUi.getColor(ColorType.divergent)),
+  //           borderRadius: BorderRadius.circular(20)
+  //       ),
+  //
+  //       child: Row(
+  //
+  //           children: [
+  //             if(leadingIcon != null) leadingIcon,
+  //             SharedUi.smallText(label, colorType: textColorType),
+  //
+  //           ]
+  //       ),
+  //     ),
+  //   );
+  // }
 
 
 
@@ -265,12 +282,7 @@ class SharedUi{
     );
   }
 
-  static Widget logo2() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Image(image: AssetImage("assets/images/cac-Logo.png"),),
-    );
-  }
+
 
   static Widget femaleAvatar(){
     return ClipOval(
@@ -280,6 +292,8 @@ class SharedUi{
       ),
     );
   }
+
+  static slimButton() {}
 
   // get femaleAvatar => null;
 

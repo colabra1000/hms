@@ -34,12 +34,19 @@ class CText extends StatelessWidget {
   final TextStyle? _textStyle;
   final TextStyle? _asterixTextStyle;
 
+  final double? letterSpacing;
+  final double? wordSpacing;
+  final double? height;
 
-  CText(this.text, {this.fontStyle, this.fontFamily, this.textStyle, this.asterixColor, this.required:false, this.size:20, this.overflow:TextOverflow.visible, this.fontWeight = FontWeight.normal, this.alignment:TextAlign.center, this.color, this.padding:const EdgeInsets.all(3), this.underline = false, this.maxLine, }):
+
+  CText(this.text, {this.fontStyle, this.fontFamily, this.height, this.letterSpacing, this.wordSpacing, this.textStyle, this.asterixColor, this.required:false, this.size:20, this.overflow:TextOverflow.visible, this.fontWeight = FontWeight.normal, this.alignment:TextAlign.center, this.color, this.padding:const EdgeInsets.all(3), this.underline = false, this.maxLine, }):
 
 
    _textStyle= textStyle ?? TextStyle(fontSize: size, color: color ?? Colors.grey[800],
                  fontWeight: fontWeight,
+                  height: height,
+                  letterSpacing: letterSpacing ,
+                  wordSpacing: wordSpacing,
                   decoration: underline == true ? TextDecoration.underline : TextDecoration.none,
                   fontFamily: fontFamily ?? "Quicksand",
                   fontStyle: fontStyle,),

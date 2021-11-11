@@ -209,20 +209,20 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
-                  child: InfoBox(label: "Appointment\n & Messages", icon: Icon(Icons.calendar_today_sharp, color: SharedUi.getColor(ColorType.info), size: 40,), onTap: (){
+                  child: InfoBox(label: "Appointment\n & Messages", icon: Icon(Icons.calendar_today_sharp, color: SharedUi.getColor(ColorType.dark), size: 40,), onTap: (){
 
                     model.tabController.animateTo(0);
                   }),
                 ),
 
                 Expanded(
-                  child: InfoBox(label: "Notification", icon: Icon(CupertinoIcons.bell, color: SharedUi.getColor(ColorType.info), size: 40,), onTap: (){
+                  child: InfoBox(label: "Notification", icon: Icon(CupertinoIcons.bell, color: SharedUi.getColor(ColorType.dark), size: 40,), onTap: (){
                     model.tabController.animateTo(1);
                   }),
                 ),
 
                 Expanded(
-                  child: InfoBox(label: "My Plan", icon: Icon(Icons.align_vertical_bottom, color: SharedUi.getColor(ColorType.info), size: 40,), onTap: (){
+                  child: InfoBox(label: "My Plan", icon: Icon(Icons.align_vertical_bottom, color: SharedUi.getColor(ColorType.dark), size: 40,), onTap: (){
                     model.tabController.animateTo(2);
                   }),
                 ),

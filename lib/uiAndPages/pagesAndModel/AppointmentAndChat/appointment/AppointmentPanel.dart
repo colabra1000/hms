@@ -255,7 +255,9 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SharedUi.mButton("back", buttonColorType: ColorType.error, onTap: (){
+                child: SharedUi.mButton(label: "back", buttonColorType: ColorType.error,
+                    height: 3, edgePads: 20,
+                    onTap: (){
 
                   model.appointmentBookingState = AppointmentBookingState.pickAppointmentDate;
 
@@ -314,7 +316,11 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children:[
-                        SharedUi.mButton("ok", onTap: (){
+
+                      SharedUi.mButton(label: "ok",
+                        buttonColorType: ColorType.info,
+                        edgePads: 35, height: 3,
+                        onTap: (){
 
                           model.addNewAppointment();
                           model.appointmentBookingState = AppointmentBookingState.idle;
@@ -323,15 +329,18 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
                               state: CModalState.none,
                           );
 
-                        }),
+                        }
+                      ),
 
-                      SharedUi.mButton("cancel", buttonColorType: ColorType.danger, onTap: (){
 
-                        model.pageModalController.changeModalState = CModalStateChanger(
-                          state: CModalState.none,
-                        );
+                      SharedUi.mButton(
+                          label: "cancel", height: 3,
+                          edgePads: 18, buttonColorType: ColorType.danger,
+                          onTap: (){
+                            model.pageModalController.dismissModal();
+                          }
+                      ),
 
-                      }),
                     ]
                   ),
 
@@ -396,10 +405,6 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
 
     return Container(
 
-      // height: MediaQuery.of(context).size.height * .5,
-      // constraints: BoxConstraints(
-      //   minHeight: 450
-      // ),
       child: ListView.builder(
         itemBuilder: (_, int i){
           Appointment appointment = model.appointments[i];
@@ -425,7 +430,7 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
 
 
     return ButtonAnimator1(
-      onTap: (){
+      onTap2: (){
 
         model.pageModalController.changeModalState = CModalStateChanger(
             state: CModalState.custom1,
@@ -481,7 +486,7 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SharedUi.mButton("Dismiss", leadingIcon: Icon(Icons.close_rounded),
+                  SharedUi.mButton(label: "Dismiss", append: Icon(Icons.close_rounded),
                       buttonColorType: ColorType.danger,
                       onTap: (){
                         model.pageModalController.changeModalState = CModalStateChanger(

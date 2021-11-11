@@ -19,6 +19,7 @@ import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/appointment/Appo
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/chat/ChatModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/landing/LandingPageModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/login/LoginDisplayModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/message/MessageModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/AppointmentAndMessagePanelModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationListDisplayPopperModel.dart';
@@ -124,5 +125,6 @@ void setupLocator() {
   locator.registerFactory(() => ChatModel());
   locator.registerFactory(() => AppointmentModel());
   locator.registerFactory(() => AppointmentAndMessagePanelModel());
+  locator.registerFactory(() => MessageModel());
 
 }

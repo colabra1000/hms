@@ -6,12 +6,14 @@ enum EnvironmentType{
 }
 
 enum ColorType{
+
   danger,
   error,
   info,
   infoLight,
   faint,
   light,
+  light2,
   dark,
   warning,
   secondary,

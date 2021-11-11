@@ -1,5 +1,5 @@
- import 'package:flutter/material.dart';
- import 'CInputController.dart';
+ import 'package:c_input/src/CInputController.dart';
+import 'package:flutter/material.dart';
 
 class CDropDown extends StatefulWidget {
 
