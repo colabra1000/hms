@@ -108,8 +108,8 @@ class AppointmentModel extends BaseModel{
     _appointmentDate!.toString() : "";
 
     _appointment!.accepted = false;
-    _appointment!.doctorId = _organisationService.organisation.id;
-    _appointment!.doctorName = DataHelper.getOrganisationName(_appointment!.doctorId, GlobalData.doctors);
+    _appointment!.organisationId = _organisationService.organisation.id;
+    _appointment!.organisationName = DataHelper.getOrganisationName(_appointment!.organisationId, GlobalData.doctors);
     _appointment!.message = appointmentNote;
 
   }
@@ -121,6 +121,11 @@ class AppointmentModel extends BaseModel{
     _appointment = null;
   }
 
+  void deleteAppointment(Appointment appointment) {
+    appointments.remove(appointment);
+    notifyListeners();
+
+  }
 
   _sortAppointments(){
     _appointments.sort((a, b){
@@ -137,6 +142,8 @@ class AppointmentModel extends BaseModel{
     _sortAppointments();
 
   }
+
+
 
 
 

@@ -43,9 +43,10 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
         builder: (_, model){
           return Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
+              margin: EdgeInsets.symmetric(horizontal: 15),
 
               decoration: BoxDecoration(
-                  color: SharedUi.getColor(ColorType.secondary2),
+                  color: SharedUi.getColor(ColorType.light2),
                   borderRadius: BorderRadius.circular(20)
               ),
 
@@ -79,9 +80,9 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
                               child: Container(
 
                                 decoration: BoxDecoration(
-                                    border: Border.all(color: SharedUi.getColor(ColorType.secondary2)),
                                     borderRadius: BorderRadius.circular(10),
-                                    color: SharedUi.getColor(ColorType.faint)
+                                    border: Border.all(color: SharedUi.getColor(ColorType.dark2))
+                                    // color: SharedUi.getColor(ColorType.light)
                                 ),
 
                                 child: Stack(
@@ -134,7 +135,8 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
       child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
-              color: Colors.blue.shade300.withOpacity(.6)
+              color: Colors.blue.shade300.withOpacity(.6),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10))
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -176,7 +178,7 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
             color: bookingAppointment ? SharedUi.getColor(ColorType.error)
                 : SharedUi.getColor(ColorType.light),
 
-            border: Border.all(color: SharedUi.getColor(ColorType.light)),
+            border: Border.all(color: SharedUi.getColor(ColorType.dark2)),
             borderRadius:
             bookingAppointment ? BorderRadius.circular(20) :
             BorderRadius.circular(20)
@@ -194,7 +196,8 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
     bool bookingAppointment = appointmentState != AppointmentBookingState.idle;
 
     return ButtonAnimator2(
-      onTap: (){
+      onTap2: (){
+        FocusScope.of(context).unfocus();
         if(appointmentState == AppointmentBookingState.pickAppointmentDate)
           model.appointmentBookingState = AppointmentBookingState.enterAppointmentNote;
 
@@ -276,81 +279,59 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
 
   Widget _confirmAppointmentModal(){
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
+    return _modalScaffold(
+        child: Column(
 
-          margin: EdgeInsets.symmetric(horizontal: 10),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
 
-          decoration: BoxDecoration(
-              color: Colors.grey.shade900,
-              borderRadius: BorderRadius.circular(20),
-          ),
-
-          height: MediaQuery.of(context).size.height * .5,
-
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
 
 
-                  SizedBox(height: 40,),
-                  SharedUi.normalText("Book Appointment with", maxLine: 10, colorType: ColorType.divergent),
-                  SharedUi.normalText("Dr ${model.organisationName}", bold: true, maxLine: 10, colorType: ColorType.divergent),
-                  SharedUi.mediumText("${model.getLongAppointmentDateDescription(model.appointmentDate.toString())}", maxLine: 10, colorType: ColorType.light),
+            SizedBox(height: 40,),
+            SharedUi.normalText("Book Appointment with", maxLine: 10, colorType: ColorType.divergent),
+            SharedUi.normalText("Dr ${model.organisationName}", bold: true, maxLine: 10, colorType: ColorType.divergent),
+            SharedUi.mediumText("${model.getLongAppointmentDateDescription(model.appointmentDate.toString())}", maxLine: 10, colorType: ColorType.light),
 
-                  SizedBox(height: 20,),
+            SizedBox(height: 20,),
 
-                  SharedUi.mediumText("Note: ", maxLine: 10, colorType: ColorType.light),
-                  SharedUi.smallText(model.appointmentNote, maxLine: 2, colorType: ColorType.light),
+            SharedUi.mediumText("Note: ", maxLine: 10, colorType: ColorType.light),
+            SharedUi.smallText(model.appointmentNote, maxLine: 2, colorType: ColorType.light),
 
-                  SizedBox(height: 20,),
+            SizedBox(height: 20,),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children:[
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children:[
 
-                      SharedUi.mButton(label: "ok",
-                        buttonColorType: ColorType.info,
-                        edgePads: 35, height: 3,
-                        onTap: (){
+                  SharedUi.mButton(label: "ok",
+                      buttonColorType: ColorType.info,
+                      edgePads: 35, height: 3,
+                      onTap: (){
 
-                          model.addNewAppointment();
-                          model.appointmentBookingState = AppointmentBookingState.idle;
+                        model.addNewAppointment();
+                        model.appointmentBookingState = AppointmentBookingState.idle;
 
-                          model.pageModalController.changeModalState = CModalStateChanger(
-                              state: CModalState.none,
-                          );
+                        model.pageModalController.dismissModal();
 
-                        }
-                      ),
-
-
-                      SharedUi.mButton(
-                          label: "cancel", height: 3,
-                          edgePads: 18, buttonColorType: ColorType.danger,
-                          onTap: (){
-                            model.pageModalController.dismissModal();
-                          }
-                      ),
-
-                    ]
+                      }
                   ),
 
 
-                ],
-              ),
+                  SharedUi.mButton(
+                      label: "cancel", height: 3,
+                      edgePads: 18, buttonColorType: ColorType.danger,
+                      onTap: (){
+                        model.pageModalController.dismissModal();
+                      }
+                  ),
+
+                ]
             ),
-          ),
+
+
+          ],
         ),
-      ],
     );
 
   }
@@ -403,26 +384,33 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
 
   Widget _appointmentListPanel(){
 
-    return Container(
+    return Selector(
 
-      child: ListView.builder(
-        itemBuilder: (_, int i){
-          Appointment appointment = model.appointments[i];
+      selector: (_, AppointmentModel model)=>model.appointments.length,
 
-          if(i == 0)
-            return Column(
-              children: [
-                SizedBox(height: 20,),
-                _appointmentListItem(appointment),
-              ],
-            );
+      builder: (_, int value, __) {
+        return Container(
 
-          return _appointmentListItem(appointment);
-        },
+          child: ListView.builder(
+            itemBuilder: (_, int i){
+              Appointment appointment = model.appointments[i];
 
-        itemCount: model.appointments.length,
+              if(i == 0)
+                return Column(
+                  children: [
+                    SizedBox(height: 20,),
+                    _appointmentListItem(appointment),
+                  ],
+                );
 
-      ),
+              return _appointmentListItem(appointment);
+            },
+
+            itemCount: model.appointments.length,
+
+          ),
+        );
+      }
     );
   }
 
@@ -434,7 +422,7 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
 
         model.pageModalController.changeModalState = CModalStateChanger(
             state: CModalState.custom1,
-            modalDisplay: _appointmentListItemDescription(appointment),
+            modalDisplay: _appointmentListItemDescriptionModal(appointment),
             dismissOnOutsideClick: true,
         );
 
@@ -444,19 +432,39 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
 
           decoration: BoxDecoration(
-            border: Border.all(color: SharedUi.getColor(ColorType.secondary2)),
+            border: Border.all(color: SharedUi.getColor(ColorType.dark2)),
             borderRadius: BorderRadius.circular(10),
-            color: SharedUi.getColor(ColorType.dark)
+            color: SharedUi.getColor(ColorType.light2)
           ),
 
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SharedUi.mediumText(appointment.doctorName ?? "", colorType: ColorType.light),
+              SharedUi.mediumText(appointment.organisationName ?? "", colorType: ColorType.dark),
               Row(
                 children: [
-                  Expanded(child: SharedUi.smallText(appointment.accepted == true ? model.getShortAppointmentDateFormat(appointment.time) : "Pending", colorType: ColorType.light)),
-                  Icon(Icons.close_rounded, color: SharedUi.getColor(ColorType.warning),)
+                  Expanded(child: SharedUi.smallText(appointment.accepted == true ? model.getShortAppointmentDateFormat(appointment.time) : "Pending", colorType: ColorType.secondary)),
+
+                  GestureDetector(
+                    onTap: (){
+                      model.pageModalController.changeModalState =
+                      CModalStateChanger(
+                          state: CModalState.custom1,
+                          modalDisplay: _deleteAppointmentConfirmationModal(appointment),
+                          dismissOnOutsideClick: true,
+
+                      );
+
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(7),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        color: SharedUi.getColor(ColorType.light),
+                        ),
+                        child: Icon(Icons.close_rounded, color: SharedUi.getColor(ColorType.warning),)),
+                  )
+
                 ],
               ),
             ],
@@ -466,7 +474,7 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
     );
   }
 
-  Widget _appointmentListItemDescription(Appointment appointment){
+  Widget _appointmentListItemDescriptionModal(Appointment appointment){
 
     String verb = appointment.accepted == false ? "booked" : "have";
 
@@ -478,7 +486,7 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
                 SizedBox(height: 30,),
-              SharedUi.mediumText("You $verb an appointment booked with Dr${appointment.doctorName}", maxLine: 10, colorType: ColorType.light),
+              SharedUi.mediumText("You $verb an appointment with ${appointment.organisationName}", maxLine: 10, colorType: ColorType.light),
               SizedBox(height: 30,),
               SharedUi.mediumText("${model.getLongAppointmentDateDescription(appointment.time)}", maxLine: 10, colorType: ColorType.light),
               SizedBox(height: 50,),
@@ -486,12 +494,13 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SharedUi.mButton(label: "Dismiss", append: Icon(Icons.close_rounded),
+                  SharedUi.mButton(label: "Dismiss", 
+                      height: 3, append: Icon(Icons.close_rounded, color: SharedUi.getColor(ColorType.light),),
                       buttonColorType: ColorType.danger,
                       onTap: (){
                         model.pageModalController.changeModalState = CModalStateChanger(
                           state: CModalState.none,
-                          modalDisplay: _appointmentListItemDescription(appointment),
+                          modalDisplay: _appointmentListItemDescriptionModal(appointment),
                           dismissOnOutsideClick: true,
                         );
                   }),
@@ -528,6 +537,60 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
           ),
         ),
       ],
+    );
+  }
+
+  Widget _deleteAppointmentConfirmationModal(Appointment appointment){
+    return _modalScaffold(
+        child: Column(
+
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+
+          children: [
+            SizedBox(height: 40,),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: SharedUi.mediumText("Are you sure you want to cancel appointment at ${appointment.organisationName}",
+                  height: 2,
+                  colorType: ColorType.light, maxLine: 50),
+            ),
+
+            SizedBox(height: 30,),
+
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children:[
+
+                  SharedUi.mButton(label: "Yes",
+                      buttonColorType: ColorType.danger,
+                      edgePads: 35, height: 3,
+                      onTap: (){
+
+                        model.deleteAppointment(appointment);
+                       model.pageModalController.dismissModal();
+
+                      }
+                  ),
+
+
+
+
+                  SharedUi.mButton(
+                      label: "No", height: 3, textColorType: ColorType.dark,
+                      edgePads: 40, buttonColorType: ColorType.dark2,
+                      onTap: (){
+                        model.pageModalController.dismissModal();
+                      }
+                  ),
+
+                ]
+            ),
+
+            SizedBox(height: 40,)
+
+          ],
+        )
     );
   }
 

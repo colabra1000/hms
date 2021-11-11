@@ -1,7 +1,7 @@
 class Appointment{
 
-  int? doctorId;
-  String? doctorName;
+  int? organisationId;
+  String? organisationName;
   String? time;
   bool? accepted;
   String? message;
@@ -9,8 +9,8 @@ class Appointment{
   Appointment();
 
   Appointment.fromJson(Map json){
-    doctorId = json["doctorId"];
-    doctorName = json["doctorName"];
+    organisationId = json["organisationId"];
+    organisationName = json["organisationName"];
     time = json["time"];
     accepted = json["accepted"];
     message = json["message"];

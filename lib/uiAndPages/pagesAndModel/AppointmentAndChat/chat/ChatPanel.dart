@@ -41,9 +41,10 @@ class _ChatPanelState extends State<ChatPanel> with AutomaticKeepAliveClientMixi
       builder: (_, model){
 
         return Container(
+          margin: EdgeInsets.symmetric(horizontal: 15),
           decoration: BoxDecoration(
-              color: SharedUi.getColor(ColorType.divergent),
-              borderRadius: BorderRadius.circular(20)
+              color: SharedUi.getColor(ColorType.light2),
+              borderRadius: BorderRadius.circular(10)
           ),
 
           child: Column(
@@ -101,7 +102,7 @@ class _ChatPanelState extends State<ChatPanel> with AutomaticKeepAliveClientMixi
         children: [
           Container(
             height: 1,
-            color: SharedUi.getColor(ColorType.secondary),
+            color: SharedUi.getColor(ColorType.dark2),
           ),
 
           Spacer(),
@@ -124,7 +125,7 @@ class _ChatPanelState extends State<ChatPanel> with AutomaticKeepAliveClientMixi
                   model.processChat(context: context);
                 },
 
-                child: Icon(Icons.send, size: 35, color: SharedUi.getColor(ColorType.success),)
+                child: Icon(Icons.send, size: 35, color: SharedUi.getColor(ColorType.dark),)
               ),
             ),
           ),

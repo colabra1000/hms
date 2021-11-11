@@ -10,6 +10,8 @@ class SharedUi{
     switch(type){
       case ColorType.dark:
         return Colors.grey.shade900;
+      case ColorType.dark2:
+        return Colors.grey.shade400;
       case ColorType.error:
         return Colors.red.shade300;
       case ColorType.danger:

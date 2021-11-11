@@ -15,6 +15,7 @@ enum ColorType{
   light,
   light2,
   dark,
+  dark2,
   warning,
   secondary,
   secondary2,

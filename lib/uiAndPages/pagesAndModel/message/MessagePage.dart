@@ -63,7 +63,14 @@ class MessagePage extends StatelessWidget {
                                   children: [
                                     SharedWidgets.profileBox(),
                                     SizedBox(width: 20,),
-                                    SharedUi.smallText(model.message.subject ?? "", bold: true),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SharedUi.smallText(model.message.organisationName ?? "", colorType: ColorType.info),
+                                        SharedUi.smallText(model.message.subject ?? "", bold: true),
+
+                                      ],
+                                    ),
                                     Spacer(),
                                     SharedWidgets.readStatus(model.message.readStatus ?? ""),
                                   ],

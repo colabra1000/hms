@@ -12,28 +12,30 @@ class BasePageScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: GestureDetector(
-        onTap: (){
-          FocusScopeNode currentFocus = FocusScope.of(context);
+    return GestureDetector(
+      onTap: (){
+        FocusScopeNode currentFocus = FocusScope.of(context);
 
-          if(!currentFocus.hasPrimaryFocus){
-            currentFocus.unfocus();
-          }
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.blue.shade200,
-            title: Row(
-              children: [
-                if(pageIcon != null)pageIcon!,
+        if(!currentFocus.hasPrimaryFocus){
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.blue.shade200,
+          title: Row(
+            children: [
+              if(pageIcon != null)pageIcon!,
 
-                CText(pageTitle ?? "", color: Colors.grey.shade50, maxLine: 1, overflow: TextOverflow.ellipsis, size: 22, fontWeight: FontWeight.w600,),
-              ],
-            ),
+              CText(pageTitle ?? "", color: Colors.grey.shade50, maxLine: 1, overflow: TextOverflow.ellipsis, size: 22, fontWeight: FontWeight.w600,),
+            ],
           ),
+        ),
 
-          body: child,
+        body: Builder(
+          builder: (context) {
+            return child;
+          }
         ),
       ),
     );

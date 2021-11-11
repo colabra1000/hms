@@ -45,6 +45,11 @@ class _CModalState extends State<CModal> {
 
   final List<Widget> _widgetChildren = [];
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {

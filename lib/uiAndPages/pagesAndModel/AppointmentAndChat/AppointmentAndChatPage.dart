@@ -44,153 +44,160 @@ class _AppointmentAndChatPageState extends State<AppointmentAndChatPage> with Si
         },
 
         builder: (_, model)=>
-            BasePageScaffold(
-              pageTitle: "Book Appointment",
-                pageIcon: Icon(Icons.supervisor_account),
-                child: CModal(
+            Builder(
+              builder: (context) {
+
+                return CModal(
                   controller : model.cModalController,
-                  child: Stack(
-                    clipBehavior: Clip.hardEdge,
-                    children: [
 
-                      //background
-                      Container(
-                        color: Colors.green,
-                        child: Center(
-                          child: SharedUi.mediumText("mt"),
-                        ),
-                      ),
+                  child: BasePageScaffold(
+                    pageTitle: "Book Appointment",
+                    pageIcon: Icon(Icons.supervisor_account),
+                    child: Builder(
+                      builder: (context) {
+                        return SingleChildScrollView(
+                          child: SizedBox(
+                              height: MediaQuery.of(context).size.height
+                              - Scaffold.of(context).appBarMaxHeight!,
 
+                            child: Stack(
+                              children: [
 
-                      Align(
-                        alignment: Alignment.topCenter,
-                        child: Container(
-                          // height: ,
-                          child: Column(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                margin: EdgeInsets.symmetric(vertical: 10),
-                                decoration: BoxDecoration(
-                                  color: SharedUi.getColor(ColorType.faint),
-                                  borderRadius: BorderRadius.circular(20)
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                                    children: [
-                                      Row(
+                                Align(
+                                    alignment: Alignment.topCenter,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 15),
+                                      child: Column(
                                         children: [
+                                          Container(
+                                            padding: EdgeInsets.symmetric(horizontal: 20),
+                                            margin: EdgeInsets.symmetric(vertical: 10),
+                                            decoration: BoxDecoration(
+                                                color: SharedUi.getColor(ColorType.light2),
+                                                borderRadius: BorderRadius.circular(10)
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                children: [
+                                                  Row(
+                                                    children: [
 
-                                          SharedUi.mediumText("Dr ${model.organisationName}", colorType: ColorType.outlier, bold: true),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(Icons.medical_services_outlined, color: SharedUi.getColor(ColorType.secondary),
-                                            size: 19,
+                                                      SharedUi.mediumText(model.organisation.name ?? "", colorType: ColorType.dark, bold: true),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Icon(Icons.medical_services_outlined, color: SharedUi.getColor(ColorType.secondary),
+                                                        size: 19,
+                                                      ),
+                                                      SizedBox(width: 5,),
+                                                      SharedUi.smallText(model.organisation.city ?? "", colorType: ColorType.secondary),
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            ),
                                           ),
-                                          SizedBox(width: 5,),
-                                          SharedUi.smallText(model.doctorJobDescription, colorType: ColorType.secondary),
+
+
+                                          Selector(
+
+                                            selector: (_, AppointmentAndChatModel model)=> model.selectedTab,
+                                            builder: (_, AppointmentChatTab value, __){
+
+
+
+                                              return Row(
+                                                children: [
+                                                  _tabButton("appointment", selected: value == AppointmentChatTab.appointment,
+                                                      onTap: (){
+                                                        model.selectedTab = AppointmentChatTab.appointment;
+                                                        model.tabController.animateTo(1);
+                                                      }
+                                                  ),
+                                                  SizedBox(width: 30,),
+                                                  _tabButton("chat", selected: value == AppointmentChatTab.chat,
+                                                      onTap: (){
+                                                        model.selectedTab = AppointmentChatTab.chat;
+                                                        model.tabController.animateTo(0);
+                                                        // print(model.chatModel);
+
+                                                      }
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ),
+
                                         ],
-                                      )
-                                    ],
-                                  ),
+                                      ),
+                                    )
                                 ),
-                              ),
-
-
-                              Selector(
-
-                                selector: (_, AppointmentAndChatModel model)=> model.selectedTab,
-                                builder: (_, AppointmentChatTab value, __){
 
 
 
-                                  return Row(
-                                    children: [
-                                      _tabButton("appointment", selected: value == AppointmentChatTab.appointment,
-                                        onTap: (){
-                                          model.selectedTab = AppointmentChatTab.appointment;
-                                          model.tabController.animateTo(1);
-                                        }
+                                Column(
+                                  children: [
+                                    SizedBox(height: 140,),
+                                    Expanded(
+                                      child: Container(
+
+                                          child: TabBarView(
+
+                                            controller: model.tabController,
+                                            children: [
+                                              ChatPanel(exposeModel: (ChatModel model){
+                                                this.model.chatModel = model;
+                                                this.model.chatModel?.displayChatMessageBox = true;
+
+                                              },),
+
+                                              AppointmentPanel(model.cModalController),
+                                            ],
+                                          )
                                       ),
-                                      SizedBox(width: 30,),
-                                      _tabButton("chat", selected: value == AppointmentChatTab.chat,
-                                          onTap: (){
-                                            model.selectedTab = AppointmentChatTab.chat;
-                                            model.tabController.animateTo(0);
-                                            // print(model.chatModel);
+                                    )
+                                  ],
+                                ),
 
-                                          }
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
 
-                            ],
+                                Selector(
+
+                                    selector: (_, AppointmentAndChatModel model)=>model.chatModel?.displayChatMessageBox,
+                                    //
+                                    builder: (_, bool? value, __){
+
+
+                                      double wHeight = model.chatModel?.chatMessageBoxHeight ?? MediaQuery.of(context).size.height;
+
+
+                                      return AnimatedPositioned(
+                                          duration: Duration(milliseconds: 200),
+                                          curve: Curves.easeIn,
+                                          bottom: value == true ? 0 : -wHeight,
+                                          height: wHeight,
+                                          width: MediaQuery.of(context).size.width,
+                                          child: Container(
+                                              height: wHeight,
+                                              child: model.chatModel?.chatBox ?? Container()
+                                          )
+                                      );
+
+                                    }
+                                ),
+
+
+                              ],
+                            ),
                           ),
-                        )
-                      ),
-
-
-
-                      Column(
-                        children: [
-                          SizedBox(height: 140,),
-                          Expanded(
-                             child: Container(
-
-                                 child: TabBarView(
-
-                                   controller: model.tabController,
-                                   children: [
-                                     ChatPanel(exposeModel: (ChatModel model){
-                                       this.model.chatModel = model;
-                                       this.model.chatModel?.displayChatMessageBox = true;
-
-                                     },),
-
-                                     AppointmentPanel(model.cModalController),
-                                   ],
-                                 )
-                             ),
-                          )
-                        ],
-                      ),
-
-
-                      Selector(
-
-                        selector: (_, AppointmentAndChatModel model)=>model.chatModel?.displayChatMessageBox,
-                        //
-                        builder: (_, bool? value, __){
-
-
-                          double wHeight = model.chatModel?.chatMessageBoxHeight ?? MediaQuery.of(context).size.height;
-
-
-                          return AnimatedPositioned(
-                            duration: Duration(milliseconds: 200),
-                            curve: Curves.easeIn,
-                            bottom: value == true ? 0 : -wHeight,
-                              height: wHeight,
-                            width: MediaQuery.of(context).size.width,
-                            child: Container(
-                                height: wHeight,
-                                child: model.chatModel?.chatBox ?? Container()
-                            )
-                          );
-
-                        }
-                      ),
-
-
-                    ],
-                  ),
-                )
+                        );
+                      }
+                    ),
+                  )
+                );
+              }
             ),
     );
   }
@@ -207,8 +214,9 @@ class _AppointmentAndChatPageState extends State<AppointmentAndChatPage> with Si
         duration: Duration(milliseconds: 300),
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         decoration: BoxDecoration(
-            color: selected ? Colors.blue.shade500 :Colors.grey.shade200,
-            border: Border.all(color: SharedUi.getColor(ColorType.divergent)),
+            color: selected ? SharedUi.getColor(ColorType.info) :
+            SharedUi.getColor(ColorType.light2),
+            border: Border.all(color: SharedUi.getColor(ColorType.dark2)),
             borderRadius: BorderRadius.circular(20)
         ),
         child: SharedUi.smallText(label, colorType:

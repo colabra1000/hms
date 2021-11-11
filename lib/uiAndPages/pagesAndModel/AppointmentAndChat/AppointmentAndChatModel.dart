@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hms/enums.dart';
 import 'package:hms/locator.dart';
+import 'package:hms/models/Organisation.dart';
 import 'package:hms/services/OrganisationService.dart';
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/chat/ChatModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
@@ -11,8 +12,9 @@ class AppointmentAndChatModel extends BaseModel{
   OrganisationService _organisationService  = locator<OrganisationService>();
   //keep track of page tab
 
-  String get organisationName => "${_organisationService.organisation.name ?? ""}" ;
-  String get doctorJobDescription => "to be filled";
+  // String get organisationName => "${_organisationService.organisation.name ?? ""}" ;
+  // String get doctorJobDescription => "to be filled";
+  Organisation get organisation => _organisationService.organisation;
 
   AppointmentChatTab _selectedTab = AppointmentChatTab.chat;
 
