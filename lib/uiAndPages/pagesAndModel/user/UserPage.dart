@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:hms/uiAndPages/decorations/PageBackgroundDecorator.dart';
 import 'package:hms/uiAndPages/documents/UserPageDocument.dart';
 import 'package:hms/uiAndPages/pagesAndModel/Base/BaseView.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/AppointmentAndMessagePanelView.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperPanel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationiListDisplayPopperPanel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
-import 'package:hms/uiAndPages/pagesAndModel/user/messages/MessagesTab.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/myPlan/MyPlanTab.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationTab.dart';
-import 'package:hms/uiAndPages/pagesAndModel/user/preference/DoctorListDisplay/PopDoctorListDisplayPanel.dart';
-import 'package:hms/uiAndPages/pagesAndModel/user/preference/PreferenceTab.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
 import 'package:hms/uiAndPages/shared/ui/ButtonAnimator2.dart';
 
@@ -48,13 +49,13 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
                     height: MediaQuery.of(context).size.height,
                     child: PopperPanel(
 
-                        child: PopDoctorListDisplayPanel(model.accessDoctorListDisplayController,),
+                        child: OrganisationListDisplayPopperPanel((model)=>this.model.organisationListDisplayPopperModel = model),
 
                         popperOpened: model.popperOpened,
 
                         onOpen: (){
 
-                          model.accessDoctorListDisplayController.onOpen!();
+                          model.organisationListDisplayPopperModel.onOpen();
                           // model.displayDoctorList = true;
 
                         },
@@ -71,19 +72,32 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
               }
 
               if(state == CModalState.custom2){
-                return PopperPanel(
-                    child: Container(),
-                    popperOpened: model.popperOpened,
-                    onOpen: (){},
-                    onClose: (){
-                      model.cModalController.changeModalState = CModalStateChanger(
-                        state: CModalState.none,
-                      );
-                    }
+
+                return SingleChildScrollView(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: PopperPanel(
+
+                        child: MessageListDisplayPopperPanel((model)=>this.model.messageListDisplayPopperModel = model),
+
+                        popperOpened: model.popperOpened,
+
+                        onOpen: (){
+
+                          model.messageListDisplayPopperModel.onOpen();
+
+                        },
+
+                        onClose: (){
+                          model.cModalController.changeModalState = CModalStateChanger(
+                            state: CModalState.none,
+                          );
+                          // model.displayDoctorList = false;
+                        }
+                    ),
+                  ),
                 );
               }
-
-
 
             },
 
@@ -135,9 +149,9 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
       controller: model.tabController,
       physics: NeverScrollableScrollPhysics(),
       children: [
-        PreferenceTab(model: model),
-        MessagesTab(),
+        AppointmentAndMessagePanelView(userModel: model),
         NotificationTab(),
+        MyPlanTab(),
 
       ],
     );
@@ -195,20 +209,20 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
-                  child: InfoBox(label: "Preference", icon: Icon(Icons.calendar_today_sharp, color: SharedUi.getColor(ColorType.outlier), size: 40,), onTap: (){
+                  child: InfoBox(label: "Appointment\n & Messages", icon: Icon(Icons.calendar_today_sharp, color: SharedUi.getColor(ColorType.info), size: 40,), onTap: (){
 
                     model.tabController.animateTo(0);
                   }),
                 ),
 
                 Expanded(
-                  child: InfoBox(label: "Messages", icon: Icon(CupertinoIcons.gear, color: SharedUi.getColor(ColorType.outlier), size: 40,), onTap: (){
+                  child: InfoBox(label: "Notification", icon: Icon(CupertinoIcons.bell, color: SharedUi.getColor(ColorType.info), size: 40,), onTap: (){
                     model.tabController.animateTo(1);
                   }),
                 ),
 
                 Expanded(
-                  child: InfoBox(label: "Notification", icon: Icon(Icons.notification_important, color: SharedUi.getColor(ColorType.outlier), size: 40,), onTap: (){
+                  child: InfoBox(label: "My Plan", icon: Icon(Icons.align_vertical_bottom, color: SharedUi.getColor(ColorType.info), size: 40,), onTap: (){
                     model.tabController.animateTo(2);
                   }),
                 ),
@@ -257,7 +271,7 @@ class InfoBox extends StatelessWidget {
                   Expanded(child: FittedBox(
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: SharedUi.smallText(label, maxLine: 2,),
+                      child: SharedUi.smallText(label, maxLine: 2, colorType: ColorType.secondary),
                     ),
                   )),
                 ],

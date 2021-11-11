@@ -16,10 +16,20 @@ class MockApiFetcher implements ApiFetcherInterface{
 
 
   @override
-  Future<bool> fetchDoctors({required Function(dynamic) onError, required Function(dynamic) onSuccess}) async {
+  Future<bool> fetchOrganisations({required Function(dynamic) onError, required Function(dynamic) onSuccess}) async {
 
-    // await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 3));
     await onSuccess(GlobalData.doctors);
+    // await onError("e");
+    return true;
+
+  }
+
+  @override
+  Future<bool> fetchMessages({required Function(dynamic) onError, required Function(dynamic) onSuccess}) async {
+
+    await Future.delayed(Duration(seconds: 3));
+    await onSuccess(GlobalData.messages);
     // await onError("e");
     return true;
 

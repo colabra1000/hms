@@ -83,7 +83,7 @@ class _AppointmentAndChatPageState extends State<AppointmentAndChatPage> with Si
                                       Row(
                                         children: [
 
-                                          SharedUi.mediumText("Dr ${model.doctorName}", colorType: ColorType.outlier, bold: true),
+                                          SharedUi.mediumText("Dr ${model.organisationName}", colorType: ColorType.outlier, bold: true),
                                         ],
                                       ),
                                       Row(
