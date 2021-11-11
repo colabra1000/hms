@@ -21,7 +21,7 @@ class CModalStateChanger{
   /// Modals are assigned to state from [CModal.builder] or by default.
   CModalState state;
 
-  /// Assigns messages to be displayed for the modals when default modal is
+  /// Assigns myPlan to be displayed for the modals when default modal is
   /// provided.
   String? displayMessage;
 

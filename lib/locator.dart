@@ -5,7 +5,7 @@ import 'package:hms/enums.dart';
 import 'package:hms/environment.dart';
 import 'package:hms/logger.dart';
 import 'package:hms/services/ChatAutomationService.dart';
-import 'package:hms/services/DoctorService.dart';
+import 'package:hms/services/OrganisationService.dart';
 import 'package:hms/services/ErrorService.dart';
 import 'package:hms/services/NavigationService.dart';
 import 'package:hms/services/UserService.dart';
@@ -16,11 +16,11 @@ import 'package:hms/services/api/MockApiFetcher.dart';
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/AppointmentAndChatModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/appointment/AppointmentModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/chat/ChatModel.dart';
-import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/landing/LandingPageModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/login/LoginDisplayModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/AppointmentAndMessagePanelModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
-import 'package:hms/uiAndPages/pagesAndModel/user/preference/DoctorListDisplay/PopDoctorListDisplayModel.dart';
 import 'package:hms/variables/LiveVariables.dart';
 import 'package:hms/variables/TestVariables.dart';
 import 'package:hms/variables/VariableGetterInterface.dart';
@@ -84,7 +84,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => ValidationService());
   locator.registerLazySingleton(() => ErrorService());
-  locator.registerLazySingleton(() => DoctorService());
+  locator.registerLazySingleton(() => OrganisationService());
   locator.registerLazySingleton(() => ChatAutomationService());
   locator.registerLazySingleton(() => UserService());
 
@@ -115,9 +115,10 @@ void setupLocator() {
   locator.registerFactory(() => LandingPageModel());
   locator.registerFactory(() => LoginDisplayModel());
   locator.registerFactory(() => UserModel());
-  locator.registerFactory(() => PopDoctorListDisplayModel());
+  locator.registerFactory(() => OrganisationListDisplayPopperModel());
   locator.registerFactory(() => AppointmentAndChatModel());
   locator.registerFactory(() => ChatModel());
   locator.registerFactory(() => AppointmentModel());
+  locator.registerFactory(() => AppointmentAndMessagePanelModel());
 
 }

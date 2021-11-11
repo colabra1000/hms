@@ -5,7 +5,7 @@ import 'package:hms/locator.dart';
 import 'package:hms/models/Appointment.dart';
 import 'package:hms/models/ChatMessage.dart';
 import 'package:hms/services/ChatAutomationService.dart';
-import 'package:hms/services/DoctorService.dart';
+import 'package:hms/services/OrganisationService.dart';
 import 'package:hms/services/UserService.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 import 'package:c_input/src/CInputController.dart';
@@ -20,7 +20,7 @@ class AppointmentModel extends BaseModel{
 
   //service getters
   UserService _userService = locator<UserService>();
-  DoctorService _doctorService = locator<DoctorService>();
+  OrganisationService _organisationService = locator<OrganisationService>();
 
   //controllers
   late CModalController pageModalController;
@@ -38,7 +38,7 @@ class AppointmentModel extends BaseModel{
 
   CInputController appointmentNoteInputController = CInputController();
 
-  String get doctorName => "${_doctorService.doctor.firstName ?? ""} ${_doctorService.doctor.lastName ?? ""}";
+  String get organisationName => "${_organisationService.organisation.name}";
 
   String get appointmentNote => appointmentNoteInputController.selectedValue ?? "...";
 
@@ -108,8 +108,8 @@ class AppointmentModel extends BaseModel{
     _appointmentDate!.toString() : "";
 
     _appointment!.accepted = false;
-    _appointment!.doctorId = _doctorService.doctor.id;
-    _appointment!.doctorName = DataHelper.getDoctorName(_appointment!.doctorId, GlobalData.doctors);
+    _appointment!.doctorId = _organisationService.organisation.id;
+    _appointment!.doctorName = DataHelper.getOrganisationName(_appointment!.doctorId, GlobalData.doctors);
     _appointment!.message = appointmentNote;
 
   }

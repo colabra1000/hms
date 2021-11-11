@@ -301,7 +301,7 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
 
                   SizedBox(height: 40,),
                   SharedUi.normalText("Book Appointment with", maxLine: 10, colorType: ColorType.divergent),
-                  SharedUi.normalText("Dr ${model.doctorName}", bold: true, maxLine: 10, colorType: ColorType.divergent),
+                  SharedUi.normalText("Dr ${model.organisationName}", bold: true, maxLine: 10, colorType: ColorType.divergent),
                   SharedUi.mediumText("${model.getLongAppointmentDateDescription(model.appointmentDate.toString())}", maxLine: 10, colorType: ColorType.light),
 
                   SizedBox(height: 20,),

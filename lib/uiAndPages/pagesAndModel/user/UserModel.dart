@@ -7,6 +7,8 @@ import 'package:hms/services/UserService.dart';
 import 'package:hms/services/ValidationService.dart';
 import 'package:hms/services/api/ApiFetcherInterface.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationListDisplayPopperModel.dart';
+
 
 class UserModel extends BaseModel{
 
@@ -14,9 +16,14 @@ class UserModel extends BaseModel{
   final _log = getLogger("User Page");
   
   //services
-  ApiFetcherInterface _api = locator<ApiFetcherInterface>();
   UserService _userService = locator<UserService>();
   ValidationService _validationService = locator<ValidationService>();
+
+
+  //controllers declaration.
+  CModalController cModalController = CModalController();
+
+  late OrganisationListDisplayPopperModel organisationListDisplayPopperModel = OrganisationListDisplayPopperModel();
 
 
 
@@ -24,10 +31,8 @@ class UserModel extends BaseModel{
   User get user => _userService.user!;
   String get nameOfUser => "${user.firstName} ${user.lastName}";
 
-  //controllers declaration.
-  CModalController cModalController = CModalController();
 
-  AccessDoctorListDisplayController accessDoctorListDisplayController = AccessDoctorListDisplayController();
+
 
 
   late TabController tabController;
@@ -43,14 +48,13 @@ class UserModel extends BaseModel{
   bool get displayDoctorList => _displayDoctorList;
 
 
-
   set displayDoctorList(bool value){
     _displayDoctorList = value;
     notifyListeners();
   }
 
 
-  void openUpdateInformationPopper(){
+  void openMessageListDisplayPopper(){
 
     cModalController.changeModalState = CModalStateChanger(
         state:CModalState.custom2,
@@ -64,7 +68,7 @@ class UserModel extends BaseModel{
 
 
 
-  void openSelectDoctorPopper() {
+  void openDoctorListDisplayPopper() {
 
 
     cModalController.changeModalState = CModalStateChanger(
@@ -79,40 +83,12 @@ class UserModel extends BaseModel{
   }
 
 
-
-
-
-  set confirmValidation(bool value) {
-    _confirmValidation = value;
-    notifyListeners();
-  }
-
   void navigateToLandingPage(BuildContext context) {
     navigationService.navigateToLandingPage(context);
 
   }
 
-  // Future<void> loadDoctorList() async {
-  //
-  //   //   _setDisplayDoctorList(false);
-  //   //
-  //   // _api.fetchDoctors(onError: (e){}, onSuccess: (result){
-  //   //
-  //   //   print("zimmer");
-  //   //   _setDisplayDoctorList(true);
-  //   //
-  //   //
-  //   // });
-  //   await Future.delayed(Duration(seconds: 5));
-  //   displayDoctorList = true;
-  //
-  //
-  // }
 
-}
 
-class AccessDoctorListDisplayController{
-
-  Function()? onOpen;
 
 }
