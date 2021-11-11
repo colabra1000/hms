@@ -7,6 +7,7 @@ import 'package:hms/logger.dart';
 import 'package:hms/services/ChatAutomationService.dart';
 import 'package:hms/services/OrganisationService.dart';
 import 'package:hms/services/ErrorService.dart';
+import 'package:hms/services/MessageService.dart';
 import 'package:hms/services/NavigationService.dart';
 import 'package:hms/services/UserService.dart';
 import 'package:hms/services/ValidationService.dart';
@@ -19,6 +20,7 @@ import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/chat/ChatModel.d
 import 'package:hms/uiAndPages/pagesAndModel/landing/LandingPageModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/login/LoginDisplayModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/AppointmentAndMessagePanelModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
 import 'package:hms/variables/LiveVariables.dart';
@@ -85,6 +87,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => ValidationService());
   locator.registerLazySingleton(() => ErrorService());
   locator.registerLazySingleton(() => OrganisationService());
+  locator.registerLazySingleton(() => MessageService());
   locator.registerLazySingleton(() => ChatAutomationService());
   locator.registerLazySingleton(() => UserService());
 
@@ -116,6 +119,7 @@ void setupLocator() {
   locator.registerFactory(() => LoginDisplayModel());
   locator.registerFactory(() => UserModel());
   locator.registerFactory(() => OrganisationListDisplayPopperModel());
+  locator.registerFactory(() => MessageListDisplayPopperModel());
   locator.registerFactory(() => AppointmentAndChatModel());
   locator.registerFactory(() => ChatModel());
   locator.registerFactory(() => AppointmentModel());

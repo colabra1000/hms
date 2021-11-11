@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:c_modal/c_modal.dart';
 import 'package:hms/locator.dart';
 import 'package:hms/logger.dart';
+import 'package:hms/models/Message.dart';
 import 'package:hms/models/User.dart';
+import 'package:hms/services/MessageService.dart';
 import 'package:hms/services/UserService.dart';
 import 'package:hms/services/ValidationService.dart';
 import 'package:hms/services/api/ApiFetcherInterface.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationListDisplayPopperModel.dart';
 
 
@@ -23,6 +26,7 @@ class UserModel extends BaseModel{
   //controllers declaration.
   CModalController cModalController = CModalController();
 
+  late MessageListDisplayPopperModel messageListDisplayPopperModel = MessageListDisplayPopperModel();
   late OrganisationListDisplayPopperModel organisationListDisplayPopperModel = OrganisationListDisplayPopperModel();
 
 

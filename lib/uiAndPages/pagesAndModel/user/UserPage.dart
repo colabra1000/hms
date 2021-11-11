@@ -7,6 +7,7 @@ import 'package:hms/uiAndPages/decorations/PageBackgroundDecorator.dart';
 import 'package:hms/uiAndPages/documents/UserPageDocument.dart';
 import 'package:hms/uiAndPages/pagesAndModel/Base/BaseView.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/AppointmentAndMessagePanelView.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperPanel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationiListDisplayPopperPanel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/myPlan/MyPlanTab.dart';
@@ -77,11 +78,13 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
                     height: MediaQuery.of(context).size.height,
                     child: PopperPanel(
 
-                        child: Container(),
+                        child: MessageListDisplayPopperPanel((model)=>this.model.messageListDisplayPopperModel = model),
+
                         popperOpened: model.popperOpened,
 
                         onOpen: (){
 
+                          model.messageListDisplayPopperModel.onOpen();
 
                         },
 

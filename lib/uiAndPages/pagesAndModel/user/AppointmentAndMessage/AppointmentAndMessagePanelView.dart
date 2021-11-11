@@ -26,40 +26,48 @@ class AppointmentAndMessagePanelView extends StatelessWidget {
         children: [
           Expanded(
               child:
-              _lowerButton(context,
-                onTap: (){
-                  userModel.openMessageListDisplayPopper();
+              Selector(
+
+                selector:(_, AppointmentAndMessagePanelModel model) => model.messages,
+
+                builder : (_, List? value, __){
+               
+                  return _lowerButton(context,
+                    onTap: (){
+                      userModel.openMessageListDisplayPopper();
+                    },
+                    color: SharedUi.getColor(ColorType.success),
+                    icon: Icon(CupertinoIcons.mail, color: SharedUi.getColor(ColorType.light),),
+                    label: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SharedUi.mediumText("New", colorType: ColorType.secondary),
+
+                            _badge(model.unSeenMessage, ColorType.secondary)
+                          ],
+                        ),
+
+                        SizedBox(height: 3,),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SharedUi.mediumText("Unread", colorType: ColorType.secondary),
+                            SizedBox(width: 50,),
+                            _badge(model.unReadMessage, ColorType.secondary)
+                          ],
+                        ),
+
+
+
+                      ],
+                    ),
+                );
                 },
-                color: SharedUi.getColor(ColorType.success),
-                icon: Icon(CupertinoIcons.mail, color: SharedUi.getColor(ColorType.light),),
-                label: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SharedUi.mediumText("New", colorType: ColorType.secondary),
-
-                        _badge("0", ColorType.secondary)
-                      ],
-                    ),
-
-                    SizedBox(height: 3,),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SharedUi.mediumText("Unread", colorType: ColorType.secondary),
-                        SizedBox(width: 50,),
-                        _badge("0", ColorType.secondary)
-                      ],
-                    ),
-
-
-
-                  ],
-                ),
               )
           ),
 
