@@ -11,6 +11,7 @@ import 'package:hms/services/api/ApiFetcherInterface.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationListDisplayPopperModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationListDisplay/NotificationListDisplayPopperModel.dart';
 
 
 class UserModel extends BaseModel{
@@ -28,6 +29,7 @@ class UserModel extends BaseModel{
 
   late MessageListDisplayPopperModel messageListDisplayPopperModel = MessageListDisplayPopperModel();
   late OrganisationListDisplayPopperModel organisationListDisplayPopperModel = OrganisationListDisplayPopperModel();
+  late NotificationListDisplayPopperModel notificationListDisplayPopperModel = NotificationListDisplayPopperModel();
 
 
 
@@ -58,17 +60,7 @@ class UserModel extends BaseModel{
   }
 
 
-  void openMessageListDisplayPopper(){
 
-    cModalController.changeModalState = CModalStateChanger(
-        state:CModalState.custom2,
-        onOutsideClick: (){
-          popperOpened.value = false;
-        }
-    );
-    popperOpened.value = true;
-
-  }
 
 
 
@@ -78,10 +70,29 @@ class UserModel extends BaseModel{
     cModalController.changeModalState = CModalStateChanger(
         state:CModalState.custom1,
         fadeDuration: Duration(milliseconds: 700),
-        // onOutsideClick: (){
-          // popperOpened.value = false;
-        // }
     );
+    popperOpened.value = true;
+
+  }
+
+  void openMessageListDisplayPopper(){
+
+    cModalController.changeModalState = CModalStateChanger(
+      state:CModalState.custom2,
+      fadeDuration: Duration(milliseconds: 700),
+    );
+    popperOpened.value = true;
+
+  }
+
+
+  void openNotificationListDisplayPopper() {
+
+    cModalController.changeModalState = CModalStateChanger(
+      state:CModalState.custom3,
+      fadeDuration: Duration(milliseconds: 700),
+    );
+
     popperOpened.value = true;
 
   }

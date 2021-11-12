@@ -113,6 +113,33 @@ class SharedWidgets{
 
 
 
+  static Widget badge(String quantity, ColorType colorType){
+
+    return SizedBox(
+      width: 30,
+      height: 30,
+      child: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(.3),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: SharedUi.getColor(colorType))
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: SharedUi.smallText(quantity, colorType: ColorType.outlier, maxLine: 1, bold: true),
+          )
+        ],
+      ),
+    );
+  }
+
+
+
+
 
 
 

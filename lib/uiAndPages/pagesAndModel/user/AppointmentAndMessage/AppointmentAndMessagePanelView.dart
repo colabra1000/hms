@@ -5,6 +5,7 @@ import 'package:hms/uiAndPages/pagesAndModel/base/BaseView.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/AppointmentAndMessagePanelModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
+import 'package:hms/uiAndPages/shared/SharedWidget.dart';
 import 'package:hms/uiAndPages/shared/ui/ButtonAnimator2.dart';
 import 'package:provider/provider.dart';
 
@@ -47,7 +48,7 @@ class AppointmentAndMessagePanelView extends StatelessWidget {
                           children: [
                             SharedUi.mediumText("New", colorType: ColorType.secondary),
 
-                            _badge(model.unSeenMessage, ColorType.secondary)
+                            SharedWidgets.badge(model.unSeenMessage, ColorType.error,),
                           ],
                         ),
 
@@ -58,7 +59,7 @@ class AppointmentAndMessagePanelView extends StatelessWidget {
                           children: [
                             SharedUi.mediumText("Unread", colorType: ColorType.secondary),
                             SizedBox(width: 50,),
-                            _badge(model.unReadMessage, ColorType.secondary)
+                            SharedWidgets.badge(model.unReadMessage, ColorType.secondary)
                           ],
                         ),
 
@@ -97,30 +98,6 @@ class AppointmentAndMessagePanelView extends StatelessWidget {
      );
   }
 
-
-  Widget _badge(String quantity, ColorType colorType){
-
-    return SizedBox(
-      width: 30,
-      height: 30,
-      child: Stack(
-        children: [
-          Container(
-            padding: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(.3),
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: SharedUi.getColor(colorType))
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: SharedUi.smallText(quantity, colorType: ColorType.outlier, maxLine: 1, bold: true),
-          )
-        ],
-      ),
-    );
-  }
 
 
   Widget _lowerButton(BuildContext context, {required Color color, required Icon icon, required Widget label, Function()? onTap}){

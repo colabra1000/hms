@@ -11,7 +11,8 @@ import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageL
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationiListDisplayPopperPanel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/myPlan/MyPlanTab.dart';
-import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationTab.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationListDisplay/NotificationListDisplayPopperPanel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationPanelView.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
 import 'package:hms/uiAndPages/shared/ui/ButtonAnimator2.dart';
 
@@ -48,31 +49,19 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: PopperPanel(
+                      child: OrganisationListDisplayPopperPanel((model)=>this.model.organisationListDisplayPopperModel = model),
 
-                        child: OrganisationListDisplayPopperPanel((model)=>this.model.organisationListDisplayPopperModel = model),
+                      popperOpened: model.popperOpened,
 
-                        popperOpened: model.popperOpened,
+                      onOpen: ()=>model.organisationListDisplayPopperModel.onOpen(),
 
-                        onOpen: (){
-
-                          model.organisationListDisplayPopperModel.onOpen();
-                          // model.displayDoctorList = true;
-
-                        },
-
-                        onClose: (){
-                          model.cModalController.changeModalState = CModalStateChanger(
-                            state: CModalState.none,
-                          );
-                          // model.displayDoctorList = false;
-                        }
+                      onClose: model.cModalController.dismissModal,
                     ),
                   ),
                 );
               }
 
               if(state == CModalState.custom2){
-
                 return SingleChildScrollView(
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height,
@@ -82,18 +71,27 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
 
                         popperOpened: model.popperOpened,
 
-                        onOpen: (){
+                        onOpen: ()=>model.messageListDisplayPopperModel.onOpen(),
 
-                          model.messageListDisplayPopperModel.onOpen();
+                        onClose: model.cModalController.dismissModal,
+                    ),
+                  ),
+                );
+              }
 
-                        },
+              if(state == CModalState.custom3){
+                return SingleChildScrollView(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: PopperPanel(
 
-                        onClose: (){
-                          model.cModalController.changeModalState = CModalStateChanger(
-                            state: CModalState.none,
-                          );
-                          // model.displayDoctorList = false;
-                        }
+                        child: NotificationListDisplayPopperPanel((model)=>this.model.notificationListDisplayPopperModel = model),
+
+                        popperOpened: model.popperOpened,
+
+                        onOpen: ()=>model.messageListDisplayPopperModel.onOpen(),
+
+                        onClose: model.cModalController.dismissModal
                     ),
                   ),
                 );
@@ -150,7 +148,7 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
       physics: NeverScrollableScrollPhysics(),
       children: [
         AppointmentAndMessagePanelView(userModel: model),
-        NotificationTab(),
+        NotificationPanelView(userModel: model,),
         MyPlanTab(),
 
       ],
