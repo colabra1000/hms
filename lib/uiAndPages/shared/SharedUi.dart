@@ -49,32 +49,32 @@ class SharedUi{
 
   
   //texts
-  static Widget largeText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int maxLine:1, double? letterSpacing, double? wordSpacing, double? height}){
+  static Widget largeText(String text, {bool bold : false, TextAlign? alignment, double? size, ColorType colorType: ColorType.dark, int maxLine:1, double? letterSpacing, double? wordSpacing, double? height}){
     return CText(text, size: size ?? 45, fontWeight: bold ? FontWeight.bold : FontWeight.w500,
-      letterSpacing: letterSpacing, wordSpacing: wordSpacing, height: height,
+      letterSpacing: letterSpacing, wordSpacing: wordSpacing, height: height, alignment: alignment,
       color: getColor(colorType), maxLine: maxLine, overflow: TextOverflow.ellipsis,
     );
   }
 
 
 
-  static Widget normalText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int maxLine: 1, double? letterSpacing, double? wordSpacing, double? height}){
+  static Widget normalText(String text, {bool bold : false, TextAlign? alignment, double? size, ColorType colorType: ColorType.dark, int maxLine: 1, double? letterSpacing, double? wordSpacing, double? height}){
     return CText(text, size: size ?? 25, fontWeight: bold ? FontWeight.bold : FontWeight.w500,
-      letterSpacing: letterSpacing, wordSpacing: wordSpacing, height: height,
+      letterSpacing: letterSpacing, wordSpacing: wordSpacing, height: height, alignment: alignment,
       color: getColor(colorType), maxLine: maxLine, overflow: TextOverflow.ellipsis,
     );
   }
 
-  static Widget mediumText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int maxLine:1, double? letterSpacing, double? wordSpacing, double? height}){
+  static Widget mediumText(String text, {bool bold : false, TextAlign? alignment, double? size, ColorType colorType: ColorType.dark, int maxLine:1, double? letterSpacing, double? wordSpacing, double? height}){
     return CText(text, size: size ?? 19, fontWeight: bold ? FontWeight.bold : FontWeight.w500,
-      letterSpacing: letterSpacing, wordSpacing: wordSpacing, height: height,
+      letterSpacing: letterSpacing, wordSpacing: wordSpacing, height: height, alignment: alignment,
       color: getColor(colorType), maxLine: maxLine, overflow: TextOverflow.ellipsis,
     );
   }
 
-  static Widget smallText(String text, {bool bold : false, double? size, ColorType colorType: ColorType.dark, int maxLine:1, double? letterSpacing, double? wordSpacing, double? height}){
+  static Widget smallText(String text, {bool bold : false, TextAlign? alignment, double? size, ColorType colorType: ColorType.dark, int maxLine:1, double? letterSpacing, double? wordSpacing, double? height}){
     return CText(text, size: size ?? 15, fontWeight: bold ? FontWeight.bold : FontWeight.w500,
-      letterSpacing: letterSpacing, wordSpacing: wordSpacing, height: height,
+      letterSpacing: letterSpacing, wordSpacing: wordSpacing, height: height, alignment: alignment,
       color: getColor(colorType), maxLine: maxLine, overflow: TextOverflow.ellipsis,
     );
   }
@@ -196,6 +196,7 @@ class SharedUi{
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           if(append != null) append,
+          if(!((append!=null || prepend!=null) && label == null))
           CText(label ?? "      ", size: fontSize ?? 15, color: getColor(textColorType ?? ColorType.light),),
           if(prepend != null) prepend,
         ],

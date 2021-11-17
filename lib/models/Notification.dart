@@ -1,23 +1,30 @@
-class Message{
+class Notification{
 
   int? id;
-  String? title;
-  String? body;
+  // String? type;
+  int? typeId;
+  int? payloadId;
+  int? organisationId;
+  String? organisationName;
   String? time;
 
 
-  Message.fromJson(Map json){
+  Notification.fromJson(Map json){
     id = json['id'];
-    title = json['title'];
-    body = json['body'];
+    // type = json['type'];
+    payloadId = json['payloadId'];
+    typeId = json['typeId'];
+    organisationId = json['organisationId'];
+    organisationName = json['organisationName'];
     time = json['time'];
 
   }
 
-  Message();
+  Notification();
 
-  List<Message> toList(List jsonData){
-    return jsonData.map((e) => Message.fromJson(e)).toList();
+
+  List<Notification> toList(List jsonData){
+    return jsonData.map((e) => Notification.fromJson(e)).toList();
   }
 
 }

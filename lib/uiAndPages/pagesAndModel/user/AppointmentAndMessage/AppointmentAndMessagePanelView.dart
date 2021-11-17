@@ -10,97 +10,130 @@ import 'package:hms/uiAndPages/shared/ui/ButtonAnimator2.dart';
 import 'package:provider/provider.dart';
 
 
-class AppointmentAndMessagePanelView extends StatelessWidget {
+class AppointmentAndMessagePanelView extends StatefulWidget {
 
   final UserModel userModel;
 
   AppointmentAndMessagePanelView({Key? key, required this.userModel}) : super(key: key);
 
   @override
+  State<AppointmentAndMessagePanelView> createState() => _AppointmentAndMessagePanelViewState();
+}
+
+class _AppointmentAndMessagePanelViewState extends State<AppointmentAndMessagePanelView> {
+  @override
   Widget build(BuildContext context) {
      return BaseView<AppointmentAndMessagePanelModel>(
 
+       onModelReady: (model){
+         model.userModel = widget.userModel;
+         model.fetchMessage();
+       },
 
 
-       builder:(_, model) => Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-              child:
-              Selector(
-
-                selector:(_, AppointmentAndMessagePanelModel model) => model.messages,
-
-                builder : (_, List? value, __){
-               
-                  return _lowerButton(context,
-                    onTap: (){
-                      userModel.openMessageListDisplayPopper();
-                    },
-                    color: SharedUi.getColor(ColorType.success),
-                    icon: Icon(CupertinoIcons.mail, color: SharedUi.getColor(ColorType.light),),
-                    label: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SharedUi.mediumText("New", colorType: ColorType.secondary),
-
-                            SharedWidgets.badge(model.unSeenMessage, ColorType.error,),
-                          ],
-                        ),
-
-                        SizedBox(height: 3,),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SharedUi.mediumText("Unread", colorType: ColorType.secondary),
-                            SizedBox(width: 50,),
-                            SharedWidgets.badge(model.unReadMessage, ColorType.secondary)
-                          ],
-                        ),
-
-
-
-                      ],
-                    ),
-                );
-                },
-              )
-          ),
-
-          SizedBox(width: 20,),
-
-          Expanded(
-              child: _lowerButton(
+        builder:(_, model)
+        => Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+                child: _lowerButton(
                   context,
                   onTap: (){
-                    userModel.openDoctorListDisplayPopper();
+                    model.openMessageListDisplayPopper();
                   },
-                  color: SharedUi.getColor(ColorType.divergent),
-                  icon: Icon(Icons.add_comment_outlined, color: SharedUi.getColor(ColorType.secondary),),
-                  label: SharedUi.mediumText(
-                      "Book Appointment\nAnd Chat Support\n",
-                      maxLine: 5,
-                      colorType: ColorType.secondary
+                  color: SharedUi.getColor(ColorType.success),
+                  icon: Icon(CupertinoIcons.mail, color: SharedUi.getColor(ColorType.light),),
+                  child: FittedBox(
+                    child: Container(
+                      width: 500,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Selector(
+
+                            selector: (_, AppointmentAndMessagePanelModel model)=> model.messageUnSee,
+
+                            builder: (_, int? value, __) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SharedUi.mediumText("New", colorType: ColorType.secondary, size: 50),
+
+                                  SharedWidgets.badge(context, model.messageUnSee, ColorType.error,),
+                                ],
+                              );
+                            }
+                          ),
+
+                          SizedBox(height: 20,),
+
+                          Selector(
+
+                            selector:(_, AppointmentAndMessagePanelModel model)=>model.totalUnReadMessage,
+
+                            builder: (_, int? value, __) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SharedUi.mediumText("Unread", colorType: ColorType.secondary, size: 50),
+
+
+                                  SharedWidgets.badge(context, model.totalUnReadMessage, ColorType.error,),
+                                ],
+                              );
+                            }
+                          ),
+
+
+
+                        ],
+                      ),
+                    ),
                   ),
+                ),
+            ),
+
+            SizedBox(width: 20,),
+
+            Expanded(
+                child: _lowerButton(
+                    context,
+                    onTap: (){
+                      widget.userModel.openOrganisationListDisplayPopper();
+                    },
+                    color: SharedUi.getColor(ColorType.divergent),
+                    icon: Icon(Icons.add_comment_outlined, color: SharedUi.getColor(ColorType.secondary),),
+                    child: FittedBox(
+                      fit: BoxFit.fill,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SharedUi.mediumText(
+                              "Book Appointment",
+                              size: 50,
+                              maxLine: 1,
+                              colorType: ColorType.secondary
+                          ),
+                          SharedUi.mediumText(
+                              "And Chat Support",
+                              size: 50,
+                              maxLine: 1,
+                              colorType: ColorType.secondary
+                          ),
+                        ],
+                      ),
+                    ),
 
 
-              )
-          ),
+                )
+            ),
 
-
-        ],
-    ),
+          ],
+        ),
      );
   }
 
-
-
-  Widget _lowerButton(BuildContext context, {required Color color, required Icon icon, required Widget label, Function()? onTap}){
+  Widget _lowerButton(BuildContext context, {required Color color, required Icon icon, required Widget child, Function()? onTap}){
 
     return ButtonAnimator2(
       onTap2: onTap,
@@ -117,12 +150,9 @@ class AppointmentAndMessagePanelView extends StatelessWidget {
               alignment: Alignment.topLeft,
               child: Container(
 
-                constraints: BoxConstraints(
-                  maxHeight: 50,
-                  maxWidth: 50
-                ),
 
-                height: MediaQuery.of(context).size.width * .2,
+
+                height: MediaQuery.of(context).size.width * .12,
                 // width: 50,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -137,12 +167,10 @@ class AppointmentAndMessagePanelView extends StatelessWidget {
             SizedBox(height: 10,),
 
             Expanded(
-              child: FittedBox(
-                child: Container(
-                  width: (MediaQuery.of(context).size.width / 2) - (30),
-                  alignment: Alignment.centerLeft,
-                  child: label,
-                ),
+              child: Container(
+                // width: (MediaQuery.of(context).size.width / 2) - (30),
+                alignment: Alignment.centerLeft,
+                child: child,
               ),
             )
           ],
@@ -150,6 +178,4 @@ class AppointmentAndMessagePanelView extends StatelessWidget {
       ),
     );
   }
-
-
 }

@@ -29,24 +29,19 @@ class _OrganisationListDisplayPopperPanelState extends State<OrganisationListDis
     return BaseView<OrganisationListDisplayPopperModel>(
 
         onModelReady: (model){
-
           this.model = model;
           widget.exposeModel(model);
-
         },
-
 
         builder: (context, model){
 
-
-
           return Selector(
 
-            selector: (_, OrganisationListDisplayPopperModel model)=>model.loading,
+            selector: (_, OrganisationListDisplayPopperModel model)=>model.organisations,
 
-            builder: (_, bool value, __)=>AnimatedSwitcher(
+            builder: (_, List? value, __)=>AnimatedSwitcher(
                 duration: Duration(milliseconds: 800),
-                child: model.loading ? _displayLoadingIndicator() :
+                child: value == null ? _displayLoadingIndicator() :
                     _body(model),
             ),
           );
@@ -81,19 +76,18 @@ class _OrganisationListDisplayPopperPanelState extends State<OrganisationListDis
   Widget _displayDoctorsList(OrganisationListDisplayPopperModel model){
     return  ListView.builder(
       itemBuilder: (_, int i){
-        if(i == model.organisations.length - 1){
+        if(i == model.organisations!.length - 1){
           return Column(
             children: [
-              _doctorListItemDisplay(organisation : model.organisations[i],),
+              _doctorListItemDisplay(organisation : model.organisations![i],),
               SizedBox(height: 20,)
             ],
           );
         }
 
-        return _doctorListItemDisplay(organisation : model.organisations[i],);
+        return _doctorListItemDisplay(organisation : model.organisations![i],);
       },
-      itemCount: model.organisations.length,
-
+      itemCount: model.organisations!.length,
     );
   }
 
@@ -111,7 +105,7 @@ class _OrganisationListDisplayPopperPanelState extends State<OrganisationListDis
     return ButtonAnimator1(
 
       onTap2: (){
-        model.navigateToAppointmentAndChatPage(context, doctor: organisation);
+        model.navigateToAppointmentAndChatPage(context, organisation: organisation);
       },
 
       child: Container(

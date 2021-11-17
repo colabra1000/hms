@@ -9,7 +9,7 @@ class CText extends StatelessWidget {
 
   final FontWeight fontWeight;
 
-  final TextAlign alignment;
+  final TextAlign? alignment;
 
   final Color? color;
 
@@ -39,7 +39,7 @@ class CText extends StatelessWidget {
   final double? height;
 
 
-  CText(this.text, {this.fontStyle, this.fontFamily, this.height, this.letterSpacing, this.wordSpacing, this.textStyle, this.asterixColor, this.required:false, this.size:20, this.overflow:TextOverflow.visible, this.fontWeight = FontWeight.normal, this.alignment:TextAlign.center, this.color, this.padding:const EdgeInsets.all(3), this.underline = false, this.maxLine, }):
+  CText(this.text, {this.fontStyle, this.fontFamily, this.height, this.letterSpacing, this.wordSpacing, this.textStyle, this.asterixColor, this.required:false, this.size:20, this.overflow:TextOverflow.visible, this.fontWeight = FontWeight.normal, this.alignment, this.color, this.padding:const EdgeInsets.all(3), this.underline = false, this.maxLine, }):
 
 
    _textStyle= textStyle ?? TextStyle(fontSize: size, color: color ?? Colors.grey[800],
@@ -63,6 +63,7 @@ class CText extends StatelessWidget {
      return Padding(
       padding: padding,
       child: RichText(
+        textAlign: alignment ?? TextAlign.left,
         maxLines: maxLine,
           overflow: overflow,
           text:  TextSpan(

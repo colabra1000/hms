@@ -13,7 +13,9 @@ class OrganisationService {
 
   List? get organisations => _organisations;
 
-
+  set organisations(List? value) {
+    _organisations = value;
+  }
 
   // should not return error;
   // should keep trying to fetch until value is gotten.
@@ -31,9 +33,7 @@ class OrganisationService {
 
     return _api.fetchOrganisations(
         onSuccess: (result){
-          _organisations = Organisation().toList(result);
-
-
+          organisations = Organisation().toList(result);
         }, onError: (e)async{
       if(!model.mounted){
         return false;

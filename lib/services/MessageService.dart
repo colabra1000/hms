@@ -5,22 +5,45 @@ import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 
 class MessageService {
 
+  static const int UNSEEN = 0;
+  static const int UNREAD = 1;
+  static const int READ = 2;
+
+
   ApiFetcherInterface _api = locator<ApiFetcherInterface>();
 
-  late Message message;
+  Message? message;
   List? _messages;
+
+  int? messageId;
 
   List? get messages => _messages;
 
+  set messages(List? value) {
+    _messages = value;
+  }
 
-  _sortMessages(){
-    _messages?.sort((a,b){
-      return a.readStatus == "UNSEEN" ? -1 : 1;
+  seeAllMessages(){
+    messages = messages?.map((e){
+      if(e.readStatus == UNSEEN){
+        e.readStatus = UNREAD;
+      }
+      return e;
+    }).toList();
+  }
+
+  sortMessages(){
+    List messages = List.from(this._messages ?? []);
+
+    messages.sort((a,b){
+      return a.readStatus == UNSEEN ? -1 : 1;
     });
 
-    _messages?.sort((a,b){
-      return a.readStatus == "READ" ? 1 : 0;
+    messages.sort((a,b){
+      return a.readStatus == READ ? 1 : -1;
     });
+
+    this.messages = messages;
   }
 
   // should not return error;
@@ -39,8 +62,8 @@ class MessageService {
 
     return _api.fetchMessages(
         onSuccess: (result){
-          _messages = Message().toList(result);
-          _sortMessages();
+          messages = Message().toList(result);
+          sortMessages();
 
         }, onError: (e)async{
       if(!model.mounted){
@@ -51,5 +74,33 @@ class MessageService {
     });
   }
 
+
+
+
+
+  Future<bool> fetchSingleMessage(int id, BaseModel model) async {
+
+    await _fetch2(id, model);
+    return true;
+  }
+
+
+  // recursively fetching indefinitely until doctors is returned
+  _fetch2(int id, BaseModel model){
+
+    return _api.fetchSingleMessage(
+        id: id,
+        onSuccess: (result){
+          message = Message.fromJson(result);
+          // _sortMessages();
+
+        }, onError: (e)async{
+      if(!model.mounted){
+        return false;
+      }
+      await Future.delayed(Duration(seconds: 2));
+      await _fetch2(id, model);
+    });
+  }
 
 }

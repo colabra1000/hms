@@ -3,7 +3,7 @@ class Organisation{
   int? id;
   String? name;
   String? city;
-  List specialization = List.empty();
+  List? specialization = List.empty();
 
   Organisation.fromJson(Map json){
     id = json['id'];

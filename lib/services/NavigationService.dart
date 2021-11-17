@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hms/logger.dart';
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/AppointmentAndChatPage.dart';
+import 'package:hms/uiAndPages/pagesAndModel/appointmentAndChat/appointment/viewAppointment/ViewAppointmentPage.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/landing/LandingPage.dart';
 import 'package:hms/uiAndPages/pagesAndModel/login/LoginDisplayPage.dart';
@@ -71,4 +72,10 @@ class NavigationService {
     );
   }
 
+  Future navigateToViewAppointment(BuildContext context) {
+    return Navigator.push(
+      context, MaterialPageRoute(
+        builder: (context) => ViewAppointmentPage()),
+    );
+  }
 }

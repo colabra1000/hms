@@ -1,8 +1,8 @@
- import 'package:date_format/date_format.dart';
+ import 'package:c_input/c_input.dart';
+import 'package:c_input/src/CInputController.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 
-import 'CInputController.dart';
-import 'CTextField.dart';
 
 
 class CDatePicker extends StatefulWidget {

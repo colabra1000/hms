@@ -1,11 +1,9 @@
 import 'package:c_input/c_input.dart';
 import 'package:flutter/material.dart';
 import 'package:hms/enums.dart';
-import 'package:hms/models/Organisation.dart';
 import 'package:hms/models/Message.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseView.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperModel.dart';
-import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
 import 'package:hms/uiAndPages/shared/SharedWidget.dart';
 import 'package:hms/uiAndPages/shared/ui/ButtonAnimator1.dart';
@@ -35,7 +33,6 @@ class _MessageListDisplayPopperPanelState extends State<MessageListDisplayPopper
         onModelReady: (model){
 
           this.model = model;
-          // model.onOpen = ()=>onOpen(model);
           widget.exposeModel(model);
 
         },
@@ -43,22 +40,19 @@ class _MessageListDisplayPopperPanelState extends State<MessageListDisplayPopper
 
         builder: (context, model){
 
-
-
           return Selector(
 
-            selector: (_, MessageListDisplayPopperModel model)=>model.loading,
+            selector: (_, MessageListDisplayPopperModel model)=>model.messages,
 
-            builder: (_, bool value, __)=>AnimatedSwitcher(
+            builder: (_, List? value, __)=>AnimatedSwitcher(
                 duration: Duration(milliseconds: 800),
-                child: model.loading ? _displayLoadingIndicator() :
+                child: value == null ? _displayLoadingIndicator() :
                     _body(model),
             ),
           );
         },
     );
   }
-
 
 
 
@@ -72,7 +66,7 @@ class _MessageListDisplayPopperPanelState extends State<MessageListDisplayPopper
             child: _searchBar(),
           ),
 
-          Expanded(child: _displayDoctorsList(model)),
+          Expanded(child: _messageListPanel(model)),
 
         ],
       ),
@@ -83,21 +77,22 @@ class _MessageListDisplayPopperPanelState extends State<MessageListDisplayPopper
     return CircularProgressIndicator();
   }
 
-  Widget _displayDoctorsList(MessageListDisplayPopperModel model){
+  Widget _messageListPanel(MessageListDisplayPopperModel model){
+
     return  ListView.builder(
       itemBuilder: (_, int i){
-        if(i == model.messages.length - 1){
+        if(i == model.messages!.length - 1){
           return Column(
             children: [
-              _doctorListItemDisplay(message : model.messages[i], context: context),
+              _messageListItem(index : i, context: context),
               SizedBox(height: 20,)
             ],
           );
         }
 
-        return _doctorListItemDisplay(message : model.messages[i], context: context);
+        return _messageListItem(index : i, context: context);
       },
-      itemCount: model.messages.length,
+      itemCount: model.messages!.length,
 
     );
   }
@@ -111,7 +106,10 @@ class _MessageListDisplayPopperPanelState extends State<MessageListDisplayPopper
     );
   }
 
-  Widget _doctorListItemDisplay({required Message message, required BuildContext context}){
+  Widget _messageListItem({required int index, required BuildContext context}){
+
+    Message message = model.messages![index];
+
     return ButtonAnimator1(
 
       onTap2: (){
@@ -146,8 +144,12 @@ class _MessageListDisplayPopperPanelState extends State<MessageListDisplayPopper
               ),
             ),
 
-           SharedWidgets.readStatus(message.readStatus ?? ""),
-            
+           Selector(
+             selector: (_, MessageListDisplayPopperModel model) => (model.messages![index] as Message).readStatus,
+             builder: (_, int? value, __) {
+               return SharedWidgets.indicateItemState(context, value);
+             }
+           ),
             
           ],
         ),

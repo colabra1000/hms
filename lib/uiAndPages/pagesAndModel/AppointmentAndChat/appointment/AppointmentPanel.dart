@@ -3,13 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hms/enums.dart';
 import 'package:hms/models/Appointment.dart';
-import 'package:hms/services/HelperService.dart';
+import 'package:hms/services/AppointmentService.dart';
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/appointment/AppointmentModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseView.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
-
-import 'package:hms/uiAndPages/shared/ui/ButtonAnimator1.dart';
-
+import 'package:hms/uiAndPages/shared/SharedWidget.dart';
 import 'package:hms/uiAndPages/shared/ui/ButtonAnimator2.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -62,6 +60,8 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
                         bool bookingAppointment = model.appointmentBookingState != AppointmentBookingState.idle;
                         return Column(
                           children: [
+
+
                             Row(
                               children: [
 
@@ -81,8 +81,7 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
 
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(color: SharedUi.getColor(ColorType.dark2))
-                                    // color: SharedUi.getColor(ColorType.light)
+                                    border: Border.all(color: SharedUi.getColor(ColorType.faint))
                                 ),
 
                                 child: Stack(
@@ -208,7 +207,7 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
           model.pageModalController.changeModalState = CModalStateChanger(
             state: CModalState.custom4,
             dismissOnOutsideClick: true,
-            modalDisplay: _confirmAppointmentModal(),
+            displayedModal: _confirmAppointmentModal(),
             fadeDuration: Duration(milliseconds: 100)
 
           );
@@ -258,7 +257,7 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SharedUi.mButton(label: "back", buttonColorType: ColorType.error,
+                child: SharedUi.mButton(append: Icon(Icons.arrow_back_rounded, color: SharedUi.getColor(ColorType.light),), buttonColorType: ColorType.danger,
                     height: 3, edgePads: 20,
                     onTap: (){
 
@@ -279,7 +278,7 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
 
   Widget _confirmAppointmentModal(){
 
-    return _modalScaffold(
+    return SharedWidgets.modalScaffold( context,
         child: Column(
 
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -289,9 +288,9 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
 
 
             SizedBox(height: 40,),
-            SharedUi.normalText("Book Appointment with", maxLine: 10, colorType: ColorType.divergent),
-            SharedUi.normalText("Dr ${model.organisationName}", bold: true, maxLine: 10, colorType: ColorType.divergent),
-            SharedUi.mediumText("${model.getLongAppointmentDateDescription(model.appointmentDate.toString())}", maxLine: 10, colorType: ColorType.light),
+            SharedUi.mediumText("Book Appointment with", maxLine: 10, colorType: ColorType.dark, alignment: TextAlign.center),
+            SharedUi.mediumText("${model.organisationName}", bold: true, maxLine: 10, colorType: ColorType.dark, alignment: TextAlign.center),
+            SharedUi.mediumText("${model.getLongAppointmentDateDescription(model.appointmentDate.toString())}", maxLine: 10, colorType: ColorType.dark, alignment: TextAlign.center),
 
             SizedBox(height: 20,),
 
@@ -311,8 +310,6 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
 
                         model.addNewAppointment();
                         model.appointmentBookingState = AppointmentBookingState.idle;
-
-                        model.pageModalController.dismissModal();
 
                       }
                   ),
@@ -335,7 +332,6 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
     );
 
   }
-
 
   Widget _calenderDisplay(){
     return Selector(
@@ -393,17 +389,16 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
 
           child: ListView.builder(
             itemBuilder: (_, int i){
-              Appointment appointment = model.appointments[i];
 
               if(i == 0)
                 return Column(
                   children: [
-                    SizedBox(height: 20,),
-                    _appointmentListItem(appointment),
+                    SizedBox(height: 30,),
+                    _appointmentListItem(i),
                   ],
                 );
 
-              return _appointmentListItem(appointment);
+              return _appointmentListItem(i);
             },
 
             itemCount: model.appointments.length,
@@ -414,183 +409,41 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
     );
   }
 
-  Widget _appointmentListItem(Appointment appointment){
+  Widget _appointmentListItem(int i){
 
+    Appointment appointment = model.appointments[i];
 
-    return ButtonAnimator1(
+    return ButtonAnimator2(
       onTap2: (){
 
-        model.pageModalController.changeModalState = CModalStateChanger(
-            state: CModalState.custom1,
-            modalDisplay: _appointmentListItemDescriptionModal(appointment),
-            dismissOnOutsideClick: true,
-        );
+        model.navigateToViewAppointment(context, appointment);
 
       },
-      child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      child: Selector(
+        selector: (_, AppointmentModel model) => (model.appointments[i]).status,
 
-          decoration: BoxDecoration(
-            border: Border.all(color: SharedUi.getColor(ColorType.dark2)),
-            borderRadius: BorderRadius.circular(10),
-            color: SharedUi.getColor(ColorType.light2)
-          ),
+        builder: (_, dynamic value, __) {
+          return Container(
+              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
 
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SharedUi.mediumText(appointment.organisationName ?? "", colorType: ColorType.dark),
-              Row(
-                children: [
-                  Expanded(child: SharedUi.smallText(appointment.accepted == true ? model.getShortAppointmentDateFormat(appointment.time) : "Pending", colorType: ColorType.secondary)),
-
-                  GestureDetector(
-                    onTap: (){
-                      model.pageModalController.changeModalState =
-                      CModalStateChanger(
-                          state: CModalState.custom1,
-                          modalDisplay: _deleteAppointmentConfirmationModal(appointment),
-                          dismissOnOutsideClick: true,
-
-                      );
-
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(7),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        color: SharedUi.getColor(ColorType.light),
-                        ),
-                        child: Icon(Icons.close_rounded, color: SharedUi.getColor(ColorType.warning),)),
-                  )
-
-                ],
+              decoration: BoxDecoration(
+                border: Border.all(color: SharedUi.getColor(AppointmentService.getAppointmentStatusColor(appointment.status))),
+                borderRadius: BorderRadius.circular(10),
+                color: SharedUi.getColor(ColorType.light2)
               ),
-            ],
-          )
 
-      ),
-    );
-  }
-
-  Widget _appointmentListItemDescriptionModal(Appointment appointment){
-
-    String verb = appointment.accepted == false ? "booked" : "have";
-
-    return _modalScaffold(
-        child : Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-                SizedBox(height: 30,),
-              SharedUi.mediumText("You $verb an appointment with ${appointment.organisationName}", maxLine: 10, colorType: ColorType.light),
-              SizedBox(height: 30,),
-              SharedUi.mediumText("${model.getLongAppointmentDateDescription(appointment.time)}", maxLine: 10, colorType: ColorType.light),
-              SizedBox(height: 50,),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SharedUi.mButton(label: "Dismiss", 
-                      height: 3, append: Icon(Icons.close_rounded, color: SharedUi.getColor(ColorType.light),),
-                      buttonColorType: ColorType.danger,
-                      onTap: (){
-                        model.pageModalController.changeModalState = CModalStateChanger(
-                          state: CModalState.none,
-                          modalDisplay: _appointmentListItemDescriptionModal(appointment),
-                          dismissOnOutsideClick: true,
-                        );
-                  }),
+                  SharedUi.mediumText(appointment.organisationName ?? "", colorType: ColorType.dark),
+                  SharedUi.smallText(model.getAppointmentStatus(appointment), colorType: ColorType.secondary),
                 ],
               )
 
-
-            ],
-          ),
-        )
-    );
-  }
-
-  Widget _modalScaffold({required Widget child}){
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-
-          margin: EdgeInsets.symmetric(horizontal: 10),
-
-          decoration: BoxDecoration(
-            color: Colors.grey.shade900,
-            borderRadius: BorderRadius.circular(20),
-          ),
-
-          height: MediaQuery.of(context).size.height * .5,
-
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: child,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _deleteAppointmentConfirmationModal(Appointment appointment){
-    return _modalScaffold(
-        child: Column(
-
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-
-          children: [
-            SizedBox(height: 40,),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: SharedUi.mediumText("Are you sure you want to cancel appointment at ${appointment.organisationName}",
-                  height: 2,
-                  colorType: ColorType.light, maxLine: 50),
-            ),
-
-            SizedBox(height: 30,),
-
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children:[
-
-                  SharedUi.mButton(label: "Yes",
-                      buttonColorType: ColorType.danger,
-                      edgePads: 35, height: 3,
-                      onTap: (){
-
-                        model.deleteAppointment(appointment);
-                       model.pageModalController.dismissModal();
-
-                      }
-                  ),
-
-
-
-
-                  SharedUi.mButton(
-                      label: "No", height: 3, textColorType: ColorType.dark,
-                      edgePads: 40, buttonColorType: ColorType.dark2,
-                      onTap: (){
-                        model.pageModalController.dismissModal();
-                      }
-                  ),
-
-                ]
-            ),
-
-            SizedBox(height: 40,)
-
-          ],
-        )
+          );
+        }
+      ),
     );
   }
 

@@ -3,7 +3,7 @@ import 'package:hms/models/User.dart';
 
 class UserService{
 
-  User? user;
+  late User user;
 
 
 }

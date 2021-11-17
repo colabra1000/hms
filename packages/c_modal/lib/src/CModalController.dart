@@ -32,6 +32,9 @@ class CModalController{
   // called when back is pressed when modal is visible.
   void Function()? _onBackPress;
 
+  // called when modal is dismissed.
+  void Function()? _onCloseModal;
+
   // when set to true, page is popped when back is pressed.
   bool? _popOnBackPress;
 
@@ -41,6 +44,8 @@ class CModalController{
   // determines the duration as modal background is fadded in.
   Duration? _fadeDuration;
 
+
+
   /// Changes the state of the modal.
   ///
   /// Assigned [CModalStateChanger].
@@ -48,6 +53,10 @@ class CModalController{
   /// See [CModalStateChanger] for options that can be provided when changing
   /// state of the modal.
   set changeModalState(CModalStateChanger cModalStateChanger){
+
+    //if cmodalStateChange state is none then should not set onCloseModal function.
+    assert((cModalStateChanger.state == CModalState.none && cModalStateChanger.onCloseModal == null)||
+        (cModalStateChanger.state != CModalState.none));
 
     this._popOnBackPress = cModalStateChanger.popOnBackPress;
     this._onBackPress = cModalStateChanger.onBackPress;
@@ -57,7 +66,16 @@ class CModalController{
     this._onOutsideClick = cModalStateChanger.onOutsideClick;
     this._fadeDuration = cModalStateChanger.fadeDuration;
     this._state = cModalStateChanger.state;
-    this._modalDisplay = cModalStateChanger.modalDisplay;
+    this._modalDisplay = cModalStateChanger.displayedModal;
+    this._onCloseModal = cModalStateChanger.onCloseModal ?? this._onCloseModal;
+
+
+    if(cModalStateChanger.state == CModalState.none){
+      this._onCloseModal?.call();
+      this._onCloseModal = null;
+    }
+
+
 
   }
 

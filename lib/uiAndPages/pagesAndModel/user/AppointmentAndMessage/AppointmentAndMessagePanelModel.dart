@@ -1,52 +1,58 @@
 
 import 'package:hms/locator.dart';
-import 'package:hms/models/Message.dart';
 import 'package:hms/services/MessageService.dart';
-import 'package:hms/services/api/ApiFetcherInterface.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
 
 class AppointmentAndMessagePanelModel extends BaseModel{
+
+  late UserModel userModel;
 
   MessageService _messageService = locator<MessageService>();
 
 
 
-  List? get messages {
-    if(_messageService.messages == null){
+  List? get messages => _messageService.messages;
 
-      _messageService.fetchMessages(this).then((value){
 
-        if(mounted) notifyListeners();
-      });
 
+  fetchMessage() async {
+    if(messages == null){
+      await _messageService.fetchMessages(this);
     }
+    totalUnreadMessage = (messageUnSee ?? 0) + (messageUnRead ?? 0);
+    if(mounted) notifyListeners();
 
-    return _messageService.messages;
   }
 
 
 
 
-  String get unReadMessage{
-      String qty = messages?.where((message) => message.readStatus == "UNREAD").length.toString() ?? "..";
-      if(qty.toString().length > 2)
-        return "∞";
-      else return qty;
+  int? get messageUnRead{
+      return messages
+          ?.where((message) => message.readStatus == MessageService.UNREAD).length;
   }
 
-  String get unSeenMessage {
+  int? get messageUnSee {
+    return messages
+        ?.where((message) => message.readStatus == MessageService.UNSEEN).length;
+  }
 
+  int _totalUnreadMessage = 0;
 
-    String qty = messages?.where((message) {
-      return message.readStatus == "UNSEEN";
-    }).length.toString() ?? "..";
+  set totalUnreadMessage(int value) {
+    _totalUnreadMessage = value;
+    // notifyListeners();
+  }
 
-    if(qty.toString().length > 2)
+  int get totalUnReadMessage => _totalUnreadMessage;
 
-      return "∞";
-
-    else return qty;
-
+  Future<void> openMessageListDisplayPopper() {
+    return userModel.openMessageListDisplayPopper().then((value){
+      _messageService.seeAllMessages();
+      totalUnreadMessage = (messageUnSee ?? 0) + (messageUnRead ?? 0);
+      notifyListeners();
+    });
   }
 
 

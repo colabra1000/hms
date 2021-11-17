@@ -9,7 +9,7 @@ class MyPaint extends StatelessWidget {
   final double quantity2;
   final double quantity3;
   final double range;
-  final double strokeWidth;
+  final double? strokeWidth;
   final Color? color1;
   final Color? color2;
   final Color? color3;
@@ -23,7 +23,7 @@ class MyPaint extends StatelessWidget {
     this.color1,
     this.color2,
     this.color3,
-    this.strokeWidth: 7,
+    this.strokeWidth,
     this.range:1,
   }): super(key: key);
 
@@ -42,7 +42,7 @@ class MyPaint extends StatelessWidget {
             color1: color1,
             color2: color2,
             color3: color3,
-
+            strokeWidth: strokeWidth,
             range: range),
       ),
     );
@@ -57,7 +57,7 @@ class CircleStuff extends CustomPainter{
   final double quantity2;
   final double quantity3;
   final double range;
-  final double strokeWidth;
+  final double? strokeWidth;
   final Color? color1;
   final Color? color2;
   final Color? color3;
@@ -72,7 +72,7 @@ class CircleStuff extends CustomPainter{
     this.color1,
     this.color2,
     this.color3,
-    this.strokeWidth: 7,
+    this.strokeWidth : 7,
     this.range:1,
   });
 
@@ -84,7 +84,7 @@ class CircleStuff extends CustomPainter{
     // double remainingQuantity = totalQuantity - (quantity1 + quantity2 + quantity3);
 
     double height = size.height == 0 ? size.width : size.width == 0 ? size.height : math.min(size.height, size.width);
-    double strokeWidth = 15;
+    double strokeWidth = this.strokeWidth!;
 
     height -= strokeWidth;
 

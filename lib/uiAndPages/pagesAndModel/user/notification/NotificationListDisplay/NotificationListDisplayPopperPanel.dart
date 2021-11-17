@@ -1,16 +1,17 @@
 import 'package:c_input/c_input.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Notification;
 import 'package:hms/enums.dart';
-import 'package:hms/models/Organisation.dart';
-import 'package:hms/models/Message.dart';
+import 'package:hms/models/Notification.dart';
+import 'package:hms/services/NotificationService.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseView.dart';
-import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperModel.dart';
-import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationListDisplay/NotificationListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
 import 'package:hms/uiAndPages/shared/SharedWidget.dart';
 import 'package:hms/uiAndPages/shared/ui/ButtonAnimator1.dart';
+import 'package:hms/uiAndPages/shared/ui/ButtonAnimator2.dart';
 import 'package:provider/provider.dart';
+
+
 
 class NotificationListDisplayPopperPanel extends StatefulWidget {
 
@@ -36,7 +37,6 @@ class _NotificationListDisplayPopperPanelState extends State<NotificationListDis
         onModelReady: (model){
 
           this.model = model;
-          // model.onOpen = ()=>onOpen(model);
           widget.exposeModel(model);
 
         },
@@ -48,11 +48,11 @@ class _NotificationListDisplayPopperPanelState extends State<NotificationListDis
 
           return Selector(
 
-            selector: (_, NotificationListDisplayPopperModel model)=>model.loading,
+            selector: (_, NotificationListDisplayPopperModel model)=>model.notifications,
 
-            builder: (_, bool value, __)=>AnimatedSwitcher(
+            builder: (_, List? value, __)=>AnimatedSwitcher(
                 duration: Duration(milliseconds: 800),
-                child: model.loading ? _displayLoadingIndicator() :
+                child: value == null ? _displayLoadingIndicator() :
                     _body(model),
             ),
           );
@@ -85,21 +85,27 @@ class _NotificationListDisplayPopperPanelState extends State<NotificationListDis
   }
 
   Widget _displayNotificationList(NotificationListDisplayPopperModel model){
-    return  ListView.builder(
-      itemBuilder: (_, int i){
-        if(i == model.messages.length - 1){
-          return Column(
-            children: [
-              _notificationListItemDisplay(message : model.messages[i], context: context),
-              SizedBox(height: 20,)
-            ],
-          );
-        }
+    return  Selector(
+      selector: (_, NotificationListDisplayPopperModel model)=>model.notifications!.length,
+      builder: (_, int value, __) {
+        return value == 0 ?
+          Center(child: SharedUi.mediumText("You have no new Notification", maxLine: 4, bold: true)):
+          ListView.builder(
+          itemBuilder: (_, int i){
+            return i == model.notifications!.length - 1 ?
+                Column(
+                  children: [
+                    _notificationListItemDisplay(notification : model.notifications![i], context: context),
+                    SizedBox(height: 20,)
+                  ],
+                ) :
+                _notificationListItemDisplay(notification : model.notifications![i], context: context);
+          },
 
-        return _notificationListItemDisplay(message : model.messages[i], context: context);
-      },
-      itemCount: model.messages.length,
+          itemCount: model.notifications!.length,
 
+        );
+      }
     );
   }
 
@@ -112,12 +118,15 @@ class _NotificationListDisplayPopperPanelState extends State<NotificationListDis
     );
   }
 
-  Widget _notificationListItemDisplay({required Message message, required BuildContext context}){
+
+
+  Widget _notificationListItemDisplay({required Notification notification, required BuildContext context}){
     return ButtonAnimator1(
 
       onTap2: (){
-        // model.navigateToMessagePage(context, message: message);
-      },
+        model.navigateToNotificationObject(context, notification);
+
+        },
 
       child: Container(
 
@@ -125,41 +134,45 @@ class _NotificationListDisplayPopperPanelState extends State<NotificationListDis
 
         margin: const EdgeInsets.symmetric(vertical: 10),
 
+        height: 150,
+
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(15)
+          borderRadius: BorderRadius.circular(15),
         ),
 
         child: Row(
           children: [
 
-            SharedWidgets.profileBox(),
+            Align(
+                alignment: Alignment.topLeft,
+                child: SharedWidgets.profileBox()),
 
             SizedBox(width: 10,),
 
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SharedUi.mediumText("${message.organisationName ?? ""}" , colorType: ColorType.dark,),
-                  SharedUi.smallText(message.subject ?? "", colorType: ColorType.secondary,),
+                  SharedUi.mediumText("${model.interpretType(notification.typeId)}", colorType: NotificationService.getNotificationColorType(notification.typeId),),
+                  SharedUi.smallText("${model.explainNotification(notification)}", maxLine: 2),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ButtonAnimator2(child: SharedUi.mediumText("view", colorType: NotificationService.getNotificationColorType(notification.typeId))),
+
+                      // ButtonAnimator2(child: SharedUi.mediumText("dismiss", colorType: ColorType.warning,), onTap2: (){
+                      //   model.removeNotification(notification);
+                      // },),
+                    ],
+                  ),
                 ],
               ),
             ),
-
-           SharedWidgets.readStatus(message.readStatus ?? ""),
-            
-            
           ],
         ),
       ),
     );
   }
-
-
-
-
-
-
-
 }

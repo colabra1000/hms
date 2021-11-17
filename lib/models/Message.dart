@@ -3,9 +3,10 @@ class Message{
   int? id;
   int? organisationId;
   String? organisationName;
-  String? readStatus;
+  int? readStatus;
   String? subject;
   String? message;
+  String? time;
 
   Message.fromJson(Map json){
     id = json['id'];
@@ -14,6 +15,7 @@ class Message{
     readStatus = json['readStatus'];
     subject = json['subject'];
     message = json['message'];
+    time = json['time'];
   }
 
   Message();

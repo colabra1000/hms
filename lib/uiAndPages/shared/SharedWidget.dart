@@ -2,6 +2,7 @@ import 'package:c_input/src/CInputController.dart';
 import 'package:c_ui/c_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:hms/enums.dart';
+import 'package:hms/services/MessageService.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
 import 'package:hms/variables/GlobalData.dart';
 import 'package:provider/provider.dart';
@@ -76,7 +77,7 @@ class SharedWidgets{
   }
 
   static Widget mSelectGender({required CInputController genderInputController, String label: "Gender", String hint: "Select Gender"}) {
-    return SharedUi.mDropDown(dropDownList: GlobalData.gender,
+    return SharedUi.mDropDown(dropDownList: GlobalData.genders,
         inputController: genderInputController, label: label, hint: hint,);
 
   }
@@ -95,12 +96,12 @@ class SharedWidgets{
   }
 
 
-  static Widget readStatus(String readStatus){
+  static Widget indicateItemState(BuildContext context, int? readStatus){
     return  Container(
-      height: 10,
+      height: MediaQuery.of(context).size.height * .015,
       decoration: BoxDecoration(
-          color: readStatus == "UNSEEN" ? SharedUi.getColor(ColorType.danger) :
-          readStatus == "UNREAD" ? SharedUi.getColor(ColorType.success) :
+          color: readStatus == MessageService.UNSEEN ? SharedUi.getColor(ColorType.danger) :
+          readStatus == MessageService.UNREAD ? SharedUi.getColor(ColorType.success) :
           null,
 
           borderRadius: BorderRadius.circular(5)
@@ -112,31 +113,60 @@ class SharedWidgets{
   }
 
 
+  static Widget badge(BuildContext context, int? quantity, ColorType colorType){
 
-  static Widget badge(String quantity, ColorType colorType){
-
+    String qty = "${(quantity?.toString().length ?? 0) > 3 ? "∞" : quantity ?? "..."}";
     return SizedBox(
-      width: 30,
-      height: 30,
-      child: Stack(
-        children: [
-          Container(
-            padding: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(.3),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: SharedUi.getColor(colorType))
+      width: MediaQuery.of(context).size.width * .2,
+      // height: 30,
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(.3),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: SharedUi.getColor(colorType))
+              ),
             ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: SharedUi.smallText(quantity, colorType: ColorType.outlier, maxLine: 1, bold: true),
-          )
-        ],
+            Align(
+              alignment: Alignment.center,
+              child: SharedUi.smallText(qty, colorType: ColorType.outlier, maxLine: 1, bold: true, size: MediaQuery.of(context).size.width * .15),
+            )
+          ],
+        ),
       ),
     );
   }
 
+
+  static Widget modalScaffold(context, {required Widget child}){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+
+          margin: EdgeInsets.symmetric(horizontal: 10),
+
+          decoration: BoxDecoration(
+            color: SharedUi.getColor(ColorType.light2),
+            borderRadius: BorderRadius.circular(20),
+          ),
+
+          height: MediaQuery.of(context).size.height * .5,
+
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: child,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
 
 

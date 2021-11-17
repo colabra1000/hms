@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:c_modal/c_modal.dart';
 import 'package:hms/locator.dart';
@@ -12,6 +14,7 @@ import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationListDisplay/NotificationListDisplayPopperModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationPanelModel.dart';
 
 
 class UserModel extends BaseModel{
@@ -34,7 +37,7 @@ class UserModel extends BaseModel{
 
 
   //service getters
-  User get user => _userService.user!;
+  User get user => _userService.user;
   String get nameOfUser => "${user.firstName} ${user.lastName}";
 
 
@@ -53,6 +56,8 @@ class UserModel extends BaseModel{
   bool _displayDoctorList = false;
   bool get displayDoctorList => _displayDoctorList;
 
+  late NotificationPanelModel notificationPanelModel;
+
 
   set displayDoctorList(bool value){
     _displayDoctorList = value;
@@ -64,36 +69,53 @@ class UserModel extends BaseModel{
 
 
 
-  void openDoctorListDisplayPopper() {
+  void openOrganisationListDisplayPopper() {
 
 
     cModalController.changeModalState = CModalStateChanger(
         state:CModalState.custom1,
         fadeDuration: Duration(milliseconds: 700),
+        onCloseModal: (){
+        }
     );
     popperOpened.value = true;
 
   }
 
-  void openMessageListDisplayPopper(){
+  Future<void> openMessageListDisplayPopper()async {
+
+    Completer completer = Completer();
 
     cModalController.changeModalState = CModalStateChanger(
       state:CModalState.custom2,
       fadeDuration: Duration(milliseconds: 700),
+      onCloseModal: (){
+        completer.complete(null);
+      }
+
     );
     popperOpened.value = true;
+
+    await completer.future;
 
   }
 
 
-  void openNotificationListDisplayPopper() {
+  Future<void> openNotificationListDisplayPopper() async {
+
+    Completer completer = Completer();
 
     cModalController.changeModalState = CModalStateChanger(
       state:CModalState.custom3,
       fadeDuration: Duration(milliseconds: 700),
+      onCloseModal: (){
+        completer.complete(null);
+      }
     );
 
     popperOpened.value = true;
+
+    await completer.future;
 
   }
 

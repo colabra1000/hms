@@ -11,20 +11,9 @@ import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 class MessageListDisplayPopperModel extends BaseModel{
 
 
-  ApiFetcherInterface _api = locator<ApiFetcherInterface>();
   MessageService _messageService = locator<MessageService>();
 
-  bool _loading = true;
-
-  bool get loading => _loading;
-
-  set loading(bool value) {
-    _loading = value;
-    notifyListeners();
-  }
-
-
-  List get messages => _messageService.messages ?? [];
+  List? get messages => _messageService.messages;
 
   CInputController searchInputController = CInputController();
 
@@ -32,24 +21,22 @@ class MessageListDisplayPopperModel extends BaseModel{
 
   void onOpen() async{
 
-    if(_messageService.messages == null)
+    if(_messageService.messages == null){
       await _messageService.fetchMessages(this);
-
-    if(mounted){
-      loading = false;
     }
+
+    notifyListeners();
+
   }
 
 
   void navigateToMessagePage(BuildContext context, {required Message message}) {
     _messageService.message = message;
-    navigationService.navigateToMessagePage(context);
+    navigationService.navigateToMessagePage(context).then((value) {
+      _messageService.sortMessages();
+      notifyListeners();
+    });
   }
-
-
-
-
-
 
 }
 

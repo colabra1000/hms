@@ -16,6 +16,8 @@ import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationPanel
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
 import 'package:hms/uiAndPages/shared/ui/ButtonAnimator2.dart';
 
+import 'notification/NotificationPanelModel.dart';
+
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -89,9 +91,13 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
 
                         popperOpened: model.popperOpened,
 
-                        onOpen: ()=>model.messageListDisplayPopperModel.onOpen(),
+                        onOpen: ()=>model.notificationListDisplayPopperModel.onOpen(),
 
-                        onClose: model.cModalController.dismissModal
+                        onClose: (){
+                          model.cModalController.dismissModal();
+                          model.notificationPanelModel.reloadNotifications();
+                        }
+
                     ),
                   ),
                 );
@@ -148,7 +154,11 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
       physics: NeverScrollableScrollPhysics(),
       children: [
         AppointmentAndMessagePanelView(userModel: model),
-        NotificationPanelView(userModel: model,),
+        // needless complexity, exposing notificationPanelModel here
+        // just to call one function. but Wtf..
+        // userModel is needed to open popper.
+        NotificationPanelView(userModel: model, expose: (NotificationPanelModel notificationPanelModel)
+                                                          => model.notificationPanelModel = notificationPanelModel),
         MyPlanTab(),
 
       ],

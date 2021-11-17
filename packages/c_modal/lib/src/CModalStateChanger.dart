@@ -8,7 +8,7 @@ class CModalStateChanger{
   ///
   /// When set, this modal would always be displayed,
   /// irrespective of the [state] assigned.
-  Widget? modalDisplay;
+  Widget? displayedModal;
 
   /// When set to true, modal is dismissed when modal background is
   /// tapped.
@@ -31,6 +31,9 @@ class CModalStateChanger{
   /// Called when back button is tapped when modal is visible.
   void Function()? onBackPress;
 
+  /// Called when the modal is dismissed.
+  void Function()? onCloseModal;
+
   /// When set to true, Navigates back when modal is visible and
   /// back is pressed.
   bool? popOnBackPress;
@@ -46,7 +49,7 @@ class CModalStateChanger{
   CModalStateChanger({required this.state, this.onBackPress,
     this.popOnBackPress, this.dismissOnBackPress: true,
     this.displayMessage, this.onOutsideClick, this.dismissOnOutsideClick, this.fadeDuration,
-    this.modalDisplay
-  }):assert((modalDisplay != null && displayMessage == null) || displayMessage == null);
+    this.displayedModal, this.onCloseModal,
+  }):assert((displayedModal != null && displayMessage == null) || displayMessage == null);
 
 }

@@ -87,6 +87,7 @@ class _CModalState extends State<CModal> {
 
         builder: (BuildContext context, CModalState cState, _){
 
+
           _widgetChildren.clear();
 
           final modalBackGround = _getModalBackGround();
@@ -114,7 +115,7 @@ class _CModalState extends State<CModal> {
 
             //very annoying bug
             //difficult to trace.
-            //dont even know what it was doing here
+            //don't even know what it was doing here
             //the culprit...
 
             //when modal is display, dismiss keyboard if it is visible

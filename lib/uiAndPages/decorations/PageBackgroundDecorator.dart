@@ -20,7 +20,8 @@ class PageBackGroundDecorator extends StatelessWidget {
                       Colors.blue.shade100,
                       Colors.purple.shade100
                     ]
-                )
+                ),
+                // color: SharedUi.getColor(ColorType.faint)
             ),
         ),
 

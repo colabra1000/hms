@@ -4,7 +4,9 @@
 import 'package:hms/enums.dart';
 import 'package:hms/environment.dart';
 import 'package:hms/logger.dart';
+import 'package:hms/services/AppointmentService.dart';
 import 'package:hms/services/ChatAutomationService.dart';
+import 'package:hms/services/NotificationService.dart';
 import 'package:hms/services/OrganisationService.dart';
 import 'package:hms/services/ErrorService.dart';
 import 'package:hms/services/MessageService.dart';
@@ -17,6 +19,7 @@ import 'package:hms/services/api/MockApiFetcher.dart';
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/AppointmentAndChatModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/appointment/AppointmentModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/chat/ChatModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/appointmentAndChat/appointment/viewAppointment/ViewAppointmentModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/landing/LandingPageModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/login/LoginDisplayModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/message/MessageModel.dart';
@@ -51,6 +54,8 @@ void setupLocator() {
   locator.registerLazySingleton(() => MessageService());
   locator.registerLazySingleton(() => ChatAutomationService());
   locator.registerLazySingleton(() => UserService());
+  locator.registerLazySingleton(() => NotificationService());
+  locator.registerLazySingleton(() => AppointmentService());
 
 
   locator.registerLazySingleton<ApiFetcherInterface>((){
@@ -88,5 +93,6 @@ void setupLocator() {
   locator.registerFactory(() => MessageModel());
   locator.registerFactory(() => NotificationPanelModel());
   locator.registerFactory(() => NotificationListDisplayPopperModel());
+  locator.registerFactory(() => ViewAppointmentModel());
 
 }
