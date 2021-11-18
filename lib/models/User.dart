@@ -1,4 +1,5 @@
 import 'package:hms/models/Appointment.dart';
+import 'package:hms/models/Notification.dart';
 
 class User{
 
@@ -6,6 +7,7 @@ class User{
   String? firstName;
   String? lastName;
   List? appointments;
+  List? notifications;
 
   User.fromJson(Map json){
 
@@ -13,6 +15,7 @@ class User{
     firstName = json["firstName"];
     lastName = json["lastName"];
     appointments = Appointment().toList(json["appointments"]);
+    notifications = Notification().toList(json["notifications"]);
 
   }
 

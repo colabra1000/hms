@@ -58,27 +58,24 @@ class UserModel extends BaseModel{
 
   late NotificationPanelModel notificationPanelModel;
 
-
   set displayDoctorList(bool value){
     _displayDoctorList = value;
     notifyListeners();
   }
 
-
-
-
-
-
-  void openOrganisationListDisplayPopper() {
-
+  Future<void> openOrganisationListDisplayPopper() async {
+    Completer completer = Completer();
 
     cModalController.changeModalState = CModalStateChanger(
         state:CModalState.custom1,
         fadeDuration: Duration(milliseconds: 700),
         onCloseModal: (){
+          completer.complete(null);
         }
     );
     popperOpened.value = true;
+
+    await completer.future;
 
   }
 

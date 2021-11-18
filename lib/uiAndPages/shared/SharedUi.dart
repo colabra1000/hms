@@ -72,7 +72,7 @@ class SharedUi{
     );
   }
 
-  static Widget smallText(String text, {bool bold : false, TextAlign? alignment, double? size, ColorType colorType: ColorType.dark, int maxLine:1, double? letterSpacing, double? wordSpacing, double? height}){
+  static Widget smallText(String text, {bool bold : false, TextAlign? alignment, double? size, ColorType colorType: ColorType.dark, int maxLine:100000, double? letterSpacing, double? wordSpacing, double? height}){
     return CText(text, size: size ?? 15, fontWeight: bold ? FontWeight.bold : FontWeight.w500,
       letterSpacing: letterSpacing, wordSpacing: wordSpacing, height: height, alignment: alignment,
       color: getColor(colorType), maxLine: maxLine, overflow: TextOverflow.ellipsis,

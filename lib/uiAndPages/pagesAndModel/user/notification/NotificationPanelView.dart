@@ -62,10 +62,10 @@ class _NotificationPanelViewState extends State<NotificationPanelView> with Sing
 
           Future.delayed(Duration(milliseconds: 300), (){
 
-            model.fetchNotifications().then((value){
+            // model.fetchNotifications().then((value){
               if(mounted)
                 animationController.forward();
-            });
+            // });
 
           });
 
@@ -150,7 +150,7 @@ class _NotificationPanelViewState extends State<NotificationPanelView> with Sing
                             alignment: Alignment.center,
                             child: ButtonAnimator2(
                                 onTap2: (){
-                                  widget.userModel.openNotificationListDisplayPopper();
+                                  model.openNotificationListDisplayPopper(NotificationService.FILTER_NONE);
                                 },
                                 child: SharedUi.mediumText("VIEW ALL", bold: true, colorType: ColorType.dark),),
                           )
@@ -176,22 +176,31 @@ class _NotificationPanelViewState extends State<NotificationPanelView> with Sing
 
     String mLabel;
     int? quantity;
+    int filter;
 
     switch (type){
       case NotificationService.UNREAD_MESSAGES :
-        mLabel = "New Message";
+        mLabel = "New Messages";
         quantity =  model.newMessages;
+        filter = NotificationService.FILTER_MESSAGE;
         break;
       case NotificationService.APPOINTMENT_BOOKED :
-        mLabel = "Booked Appointment";
+        mLabel = "Accepted Appointments";
         quantity = model.appointmentBooked;
+        filter = NotificationService.FILTER_BOOKED_NOTIFICATIONS;
         break;
       default :
-        mLabel = "Cancelled Appointment";
+        mLabel = "Cancelled Appointments";
         quantity = model.appointmentCancelled;
+        filter = NotificationService.FILTER_CANCELLED_NOTIFICATIONS;
     }
 
     return   ButtonAnimator2(
+      onTap2: (){
+
+        model.openNotificationListDisplayPopper(filter);
+
+      },
       child: Row(
         children: [
           SharedWidgets.badge(context, quantity, NotificationService.getNotificationColorType(type)),

@@ -13,7 +13,7 @@ class OrganisationListDisplayPopperModel extends BaseModel{
 
     if(_organisationService.organisations == null){
       await _organisationService.fetchOrganisations(this);
-      notifyListeners();
+      if(mounted) notifyListeners();
     }
 
 

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hms/enums.dart';
 import 'package:hms/models/Message.dart';
+import 'package:hms/services/HelperService.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseView.dart';
 import 'package:hms/uiAndPages/pagesAndModel/message/MessageModel.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
@@ -79,16 +80,20 @@ class MessagePage extends StatelessWidget {
                                           children: [
                                             SharedWidgets.profileBox(),
                                             SizedBox(width: 20,),
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                SharedUi.smallText(model.message!.organisationName ?? "", colorType: ColorType.info),
-                                                SharedUi.smallText(model.message!.subject ?? "", bold: true),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  SharedUi.smallText(model.message!.organisationName ?? "", colorType: ColorType.info),
+                                                  SharedUi.smallText(model.message!.subject ?? "", bold: true, maxLine: 2),
 
-                                              ],
+                                                ],
+                                              ),
                                             ),
-                                            Spacer(),
-                                            SharedWidgets.indicateItemState(context, model.message!.readStatus),
+                                            // Spacer(),
+                                            SharedUi.smallText(HelperService.timeFormat2(model.message!.time))
+
+                                            // SharedWidgets.indicateItemState(context, model.message!.readStatus),
                                           ],
                                         ),
 

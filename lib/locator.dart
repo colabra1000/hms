@@ -1,6 +1,7 @@
 
 
 
+import 'package:hms/data/variables/VariableGetterInterface.dart';
 import 'package:hms/enums.dart';
 import 'package:hms/environment.dart';
 import 'package:hms/logger.dart';
@@ -29,9 +30,8 @@ import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/Organisa
 import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationListDisplay/NotificationListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationPanelModel.dart';
-import 'package:hms/variables/LiveVariables.dart';
-import 'package:hms/variables/TestVariables.dart';
-import 'package:hms/variables/VariableGetterInterface.dart';
+import 'package:hms/data/variables/LiveVariables.dart';
+import 'package:hms/data/variables/TestVariables.dart';
 import 'package:get_it/get_it.dart';
 
 

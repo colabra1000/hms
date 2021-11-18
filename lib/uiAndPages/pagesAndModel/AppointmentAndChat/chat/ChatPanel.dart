@@ -54,26 +54,35 @@ class _ChatPanelState extends State<ChatPanel> with AutomaticKeepAliveClientMixi
                   selector: (_, ChatModel model)=> model.chatMessages.length,
 
                   builder:(_, int value, __)=> Expanded(
-                    child: ListView.builder(
-                      controller: model.scrollController,
-                      itemBuilder: (_, int i){
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SharedUi.smallText("chat with support", colorType: ColorType.secondary),
+                        Expanded(
+                          child: ListView.builder(
 
-                        if(i == model.chatMessages.length - 1)
-                          return Column(
-                            children: [
-                              _messageBoardBox(chatMessage: model.chatMessages[i], context: context),
-                              SizedBox(height: model.chatMessageBoxHeight,)
-                            ],
-                          );
+                            controller: model.scrollController,
+                            itemBuilder: (_, int i){
+
+                              if(i == model.chatMessages.length - 1)
+                                return Column(
+                                  children: [
+                                    _messageBoardBox(chatMessage: model.chatMessages[i], context: context),
+                                    SizedBox(height: model.chatMessageBoxHeight,)
+                                  ],
+                                );
 
 
-                        return _messageBoardBox(chatMessage: model.chatMessages[i], context: context);
+                              return _messageBoardBox(chatMessage: model.chatMessages[i], context: context);
 
-                      },
+                            },
 
-                      itemCount: model.chatMessages.length,
+                            itemCount: model.chatMessages.length,
 
 
+                          ),
+                        ),
+                      ],
                     ),
 
 

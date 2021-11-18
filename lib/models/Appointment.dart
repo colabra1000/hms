@@ -4,7 +4,8 @@ class Appointment{
   int? userId;
   int? organisationId;
   String? organisationName;
-  String? time;
+  String? timeDue;
+  String? timeBooked;
   int? status;
   String? message;
 
@@ -15,7 +16,8 @@ class Appointment{
     userId = json["userId"];
     organisationId = json["organisationId"];
     organisationName = json["organisationName"];
-    time = json["time"];
+    timeDue = json["timeDue"];
+    timeBooked = json["timeBooked"];
     status = json["status"];
     message = json["message"];
   }
@@ -32,7 +34,7 @@ class Appointment{
       "userId" : userId,
       "organisationId" : organisationId,
       "organisationName" : organisationName,
-      "time" : time,
+      "time" : timeDue,
       "status" : status,
       "message" : message,
     };

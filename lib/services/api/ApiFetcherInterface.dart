@@ -10,7 +10,7 @@ abstract class ApiFetcherInterface{
 
   Future<bool> fetchMessages({required Function(dynamic) onError, required Function(dynamic) onSuccess});
 
-  Future<bool> fetchNotifications({required Function(dynamic) onError, required Function(dynamic) onSuccess});
+  // Future<bool> fetchNotifications({required Function(dynamic) onError, required Function(dynamic) onSuccess});
 
   Future<bool> fetchSingleMessage({required int id, required Function(dynamic) onError, required Function(dynamic) onSuccess});
 

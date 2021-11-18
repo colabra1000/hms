@@ -147,6 +147,7 @@ class _AppointmentAndChatPageState extends State<AppointmentAndChatPage> with Si
                                           child: TabBarView(
 
                                             controller: model.tabController,
+                                            physics: NeverScrollableScrollPhysics(),
                                             children: [
                                               ChatPanel(exposeModel: (ChatModel model){
                                                 this.model.chatModel = model;
@@ -184,11 +185,8 @@ class _AppointmentAndChatPageState extends State<AppointmentAndChatPage> with Si
                                               child: model.chatModel?.chatBox ?? Container()
                                           )
                                       );
-
                                     }
                                 ),
-
-
                               ],
                             ),
                           ),
@@ -201,11 +199,6 @@ class _AppointmentAndChatPageState extends State<AppointmentAndChatPage> with Si
             ),
     );
   }
-
-
-
-
-
 
   Widget _tabButton(String label, {required bool selected, required Function() onTap}){
     return  ButtonAnimator2(

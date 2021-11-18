@@ -99,7 +99,7 @@ class _AppointmentAndMessagePanelViewState extends State<AppointmentAndMessagePa
                 child: _lowerButton(
                     context,
                     onTap: (){
-                      widget.userModel.openOrganisationListDisplayPopper();
+                      model.openOrganisationListDisplayPopper();
                     },
                     color: SharedUi.getColor(ColorType.divergent),
                     icon: Icon(Icons.add_comment_outlined, color: SharedUi.getColor(ColorType.secondary),),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hms/enums.dart';
 import 'package:hms/models/Appointment.dart';
 import 'package:hms/services/AppointmentService.dart';
+import 'package:hms/services/HelperService.dart';
 import 'package:hms/uiAndPages/pagesAndModel/AppointmentAndChat/appointment/AppointmentModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseView.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
@@ -290,7 +291,7 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
             SizedBox(height: 40,),
             SharedUi.mediumText("Book Appointment with", maxLine: 10, colorType: ColorType.dark, alignment: TextAlign.center),
             SharedUi.mediumText("${model.organisationName}", bold: true, maxLine: 10, colorType: ColorType.dark, alignment: TextAlign.center),
-            SharedUi.mediumText("${model.getLongAppointmentDateDescription(model.appointmentDate.toString())}", maxLine: 10, colorType: ColorType.dark, alignment: TextAlign.center),
+            SharedUi.mediumText("for ${HelperService.timeFormatS(time: model.appointmentDate.toString(), sDatePrefix: " on the ")}", colorType: ColorType.dark, alignment: TextAlign.center),
 
             SizedBox(height: 20,),
 

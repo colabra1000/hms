@@ -3,8 +3,8 @@ import 'package:hms/models/LoginRequest.dart';
 import 'package:hms/models/Message.dart';
 import 'package:hms/services/UserService.dart';
 import 'package:hms/services/api/ApiFetcherInterface.dart';
-import 'package:hms/variables/DataHelper.dart';
-import 'package:hms/variables/GlobalData.dart';
+import 'package:hms/data/DataHelper.dart';
+import 'package:hms/data/GlobalData.dart';
 
 class MockApiFetcher implements ApiFetcherInterface{
 
@@ -45,15 +45,15 @@ class MockApiFetcher implements ApiFetcherInterface{
   }
 
 
-  @override
-  Future<bool> fetchNotifications({required Function(dynamic) onError, required Function(dynamic) onSuccess}) async {
-
-    await Future.delayed(Duration(seconds: 3));
-    await onSuccess(GlobalData.notifications);
-    // await onError("e");
-    return true;
-
-  }
+  // @override
+  // Future<bool> fetchNotifications({required Function(dynamic) onError, required Function(dynamic) onSuccess}) async {
+  //
+  //   await Future.delayed(Duration(seconds: 3));
+  //   await onSuccess(GlobalData.notifications);
+  //   // await onError("e");
+  //   return true;
+  //
+  // }
 
   @override
   Future<bool> fetchSingleMessage({required int id, required Function(dynamic) onError, required Function(dynamic) onSuccess}) async{

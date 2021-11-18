@@ -3,8 +3,9 @@ part of data;
 List _messages = [
   {
     "id" : 0,
+    "userId" : 0,
     "organisationId" : 5,
-    "time" : "2021-04-07:56:14.592815",
+    "time" : DateTime.now().toString(),
     "organisationName" : DataHelper.getOrganisationName(5, GlobalData.organisations),
     "readStatus" : 0,
     // "readStatus" : DataHelper.getMessageReadStatus(0, GlobalData.readStatus),
@@ -15,11 +16,12 @@ List _messages = [
 
   {
     "id" : 1,
+    "userId" : 0,
     "organisationId" : 3,
-    "time" : "2021-05-07:56:14.592815",
+    "time" : "2021-05-03 20:18:04.865617",
     "organisationName" : DataHelper.getOrganisationName(3, GlobalData.organisations),
     // "readStatus" : DataHelper.getMessageReadStatus(2, GlobalData.readStatus),
-    "readStatus" : 1,
+    "readStatus" : 2,
     "subject" : "Reminder (Appointment)",
     "message" : "Hi, Aitem. this blake from downtown medical center."
                 "this is a friendly reminder that you have an appointment scheduled for august 2nd"
@@ -28,8 +30,9 @@ List _messages = [
 
   {
     "id" : 2,
+    "userId" : 0,
     "organisationId" : 6,
-    "time" : "2021-06-07:56:14.592815",
+    "time" : "2021-06-22 20:18:04.865617",
     "organisationName" : DataHelper.getOrganisationName(6, GlobalData.organisations),
     "readStatus" : 1,
     // "readStatus" : DataHelper.getMessageReadStatus(1, GlobalData.readStatus),
@@ -42,8 +45,9 @@ List _messages = [
 
   {
     "id" : 3,
+    "userId" : 0,
     "organisationId" : 1,
-    "time" : "2021-07-07:56:14.592815",
+    "time" : DateTime.now().subtract(Duration(days: 1)).toString(),
     "organisationName" : DataHelper.getOrganisationName(1, GlobalData.organisations),
     // "readStatus" : DataHelper.getMessageReadStatus(0, GlobalData.readStatus),
     "readStatus" : 0,
@@ -55,8 +59,9 @@ List _messages = [
 
   {
     "id" : 4,
+    "userId" : 0,
     "organisationId" : 2,
-    "time" : "2021-01-07:56:14.592815",
+    "time" : "2021-01-16 20:18:04.865617",
     "organisationName" : DataHelper.getOrganisationName(2, GlobalData.organisations),
     // "readStatus" : DataHelper.getMessageReadStatus(2, GlobalData.readStatus),
     "readStatus" : 1,

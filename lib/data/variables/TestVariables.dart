@@ -1,4 +1,4 @@
-import 'VariableGetterInterface.dart';
+import 'package:hms/data/variables/VariableGetterInterface.dart';
 
 class TestVariables implements VariableGetterInterface{
 

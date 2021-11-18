@@ -2,6 +2,7 @@ import 'package:c_input/c_input.dart';
 import 'package:flutter/material.dart';
 import 'package:hms/enums.dart';
 import 'package:hms/models/Message.dart';
+import 'package:hms/services/HelperService.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseView.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
@@ -34,6 +35,7 @@ class _MessageListDisplayPopperPanelState extends State<MessageListDisplayPopper
 
           this.model = model;
           widget.exposeModel(model);
+          model.sortMessage();
 
         },
 
@@ -79,7 +81,9 @@ class _MessageListDisplayPopperPanelState extends State<MessageListDisplayPopper
 
   Widget _messageListPanel(MessageListDisplayPopperModel model){
 
-    return  ListView.builder(
+    return model.messages!.length == 0 ?
+    Center(child: SharedUi.mediumText("You have no new Message", maxLine: 4, bold: true)):
+    ListView.builder(
       itemBuilder: (_, int i){
         if(i == model.messages!.length - 1){
           return Column(
@@ -127,31 +131,41 @@ class _MessageListDisplayPopperPanelState extends State<MessageListDisplayPopper
           borderRadius: BorderRadius.circular(15)
         ),
 
-        child: Row(
-          children: [
+        child: IntrinsicHeight(
+          child: Row(
+            children: [
 
-            SharedWidgets.profileBox(),
+              SharedWidgets.profileBox(),
 
-            SizedBox(width: 10,),
+              SizedBox(width: 10,),
 
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SharedUi.mediumText("${message.organisationName ?? ""}" , colorType: ColorType.dark,),
-                  SharedUi.smallText(message.subject ?? "", colorType: ColorType.secondary,),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SharedUi.mediumText("${message.organisationName ?? ""}" , colorType: ColorType.dark, maxLine: 1),
+                    SharedUi.smallText(message.subject ?? "", colorType: ColorType.secondary, maxLine: 1),
+                  ],
+                ),
               ),
-            ),
 
-           Selector(
-             selector: (_, MessageListDisplayPopperModel model) => (model.messages![index] as Message).readStatus,
-             builder: (_, int? value, __) {
-               return SharedWidgets.indicateItemState(context, value);
-             }
-           ),
-            
-          ],
+              Column(
+               crossAxisAlignment: CrossAxisAlignment.end,
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               children: [
+                 Selector(
+                   selector: (_, MessageListDisplayPopperModel model) => (model.messages![index] as Message).readStatus,
+                   builder: (_, int? value, __) {
+                     return SharedWidgets.indicateItemState(context, value);
+                   }
+                 ),
+                 
+                 SharedUi.smallText(HelperService.timeFormat2(message.time), colorType: ColorType.secondary)
+               ],
+             ),
+
+            ],
+          ),
         ),
       ),
     );

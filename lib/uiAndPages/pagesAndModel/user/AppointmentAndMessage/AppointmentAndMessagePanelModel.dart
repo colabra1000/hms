@@ -35,7 +35,7 @@ class AppointmentAndMessagePanelModel extends BaseModel{
 
   int? get messageUnSee {
     return messages
-        ?.where((message) => message.readStatus == MessageService.UNSEEN).length;
+        ?.where((message) => message.readStatus == MessageService.NEW).length;
   }
 
   int _totalUnreadMessage = 0;
@@ -53,6 +53,10 @@ class AppointmentAndMessagePanelModel extends BaseModel{
       totalUnreadMessage = (messageUnSee ?? 0) + (messageUnRead ?? 0);
       notifyListeners();
     });
+  }
+
+  void openOrganisationListDisplayPopper() {
+    userModel.openOrganisationListDisplayPopper();
   }
 
 

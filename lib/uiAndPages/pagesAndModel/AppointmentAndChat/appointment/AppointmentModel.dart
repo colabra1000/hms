@@ -10,10 +10,7 @@ import 'package:hms/services/UserService.dart';
 import 'package:hms/services/api/ApiFetcherInterface.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 import 'package:c_input/src/CInputController.dart';
-import 'package:hms/variables/DataHelper.dart';
-import 'package:hms/variables/GlobalData.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:date_format/date_format.dart';
 
 
 
@@ -33,15 +30,15 @@ class AppointmentModel extends BaseModel{
 
   // service getters.
   List get appointments =>  _appointmentService.appointments;
-  set appointments (List appointments){
-    _appointmentService.appointments = appointments;
-  }
+
+  // set appointments (List appointments){
+  //   _appointmentService.appointments = appointments;
+  // }
 
   Appointment? _appointment;
 
   // ui state.
   AppointmentBookingState _appointmentBookingState = AppointmentBookingState.idle;
-
   AppointmentBookingState get appointmentBookingState => _appointmentBookingState;
 
   // State of the ui.
@@ -57,28 +54,6 @@ class AppointmentModel extends BaseModel{
   String get appointmentNote => appointmentNoteInputController.selectedValue ?? "...";
 
   CalendarFormat calendarFormat = CalendarFormat.month;
-
-  String getLongAppointmentDateDescription(String? date) {
-    if(date == null) return "";
-    try{
-      return formatDate(DateTime.parse(date) , ['for ', DD," ",d,"'th of ", MM, ", ", yyyy,]);
-
-    }catch(e){
-      return "";
-    }
-
-  }
-
-  String getShortAppointmentDateFormat(String? date) {
-    if(date == null) return "";
-    try{
-      return formatDate(DateTime.parse(date) , [DD," ",d,"'th ", MM, ", ", yyyy,]);
-
-    }catch(e){
-      return "";
-    }
-
-  }
 
 
 
@@ -101,8 +76,9 @@ class AppointmentModel extends BaseModel{
     _appointment = null;
     _appointment = Appointment();
 
-    _appointment!.time = _appointmentDate != null ?
+    _appointment!.timeDue = _appointmentDate != null ?
     _appointmentDate!.toString() : "";
+    _appointment!.timeBooked = DateTime.now().toString();
 
     _appointment!.status = 0;
     _appointment!.userId = _userService.user.id;
@@ -146,7 +122,7 @@ class AppointmentModel extends BaseModel{
       case AppointmentService.PENDING:
         return "pending";
       case AppointmentService.ACCEPTED:
-        return getShortAppointmentDateFormat(appointment.time);
+        return "booked";
       default:
         return "";
     }

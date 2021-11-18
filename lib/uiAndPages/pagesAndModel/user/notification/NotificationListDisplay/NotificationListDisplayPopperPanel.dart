@@ -2,6 +2,7 @@ import 'package:c_input/c_input.dart';
 import 'package:flutter/material.dart' hide Notification;
 import 'package:hms/enums.dart';
 import 'package:hms/models/Notification.dart';
+import 'package:hms/services/HelperService.dart';
 import 'package:hms/services/NotificationService.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseView.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationListDisplay/NotificationListDisplayPopperModel.dart';
@@ -38,13 +39,12 @@ class _NotificationListDisplayPopperPanelState extends State<NotificationListDis
 
           this.model = model;
           widget.exposeModel(model);
+          model.sortNotifications();
 
         },
 
 
         builder: (context, model){
-
-
 
           return Selector(
 
@@ -73,7 +73,7 @@ class _NotificationListDisplayPopperPanelState extends State<NotificationListDis
             child: _searchBar(),
           ),
 
-          Expanded(child: _displayNotificationList(model)),
+          Expanded(child: _notificationListPanel(model)),
 
         ],
       ),
@@ -84,7 +84,7 @@ class _NotificationListDisplayPopperPanelState extends State<NotificationListDis
     return CircularProgressIndicator();
   }
 
-  Widget _displayNotificationList(NotificationListDisplayPopperModel model){
+  Widget _notificationListPanel(NotificationListDisplayPopperModel model){
     return  Selector(
       selector: (_, NotificationListDisplayPopperModel model)=>model.notifications!.length,
       builder: (_, int value, __) {
@@ -92,14 +92,40 @@ class _NotificationListDisplayPopperPanelState extends State<NotificationListDis
           Center(child: SharedUi.mediumText("You have no new Notification", maxLine: 4, bold: true)):
           ListView.builder(
           itemBuilder: (_, int i){
-            return i == model.notifications!.length - 1 ?
-                Column(
-                  children: [
-                    _notificationListItemDisplay(notification : model.notifications![i], context: context),
-                    SizedBox(height: 20,)
-                  ],
-                ) :
-                _notificationListItemDisplay(notification : model.notifications![i], context: context);
+
+
+
+
+            return Column(
+              children: [
+
+
+
+                if(model.filter == NotificationService.FILTER_MESSAGE
+                    && model.notifications![i].typeId == NotificationService.UNREAD_MESSAGES)
+                   _notificationListItem(i),
+
+                if (model.filter == NotificationService.FILTER_BOOKED_NOTIFICATIONS
+                    && model.notifications![i].typeId == NotificationService.APPOINTMENT_BOOKED)
+                    _notificationListItem(i),
+
+
+                if(model.filter == NotificationService.FILTER_CANCELLED_NOTIFICATIONS
+                && model.notifications![i].typeId == NotificationService.APPOINTMENT_CANCELLED)
+                    _notificationListItem(i),
+
+
+                if(model.filter == NotificationService.FILTER_NONE)
+                    _notificationListItem(i),
+
+                if(i == model.notifications!.length - 1)
+                  SizedBox(height: 50,),
+
+
+              ],
+            );
+
+
           },
 
           itemCount: model.notifications!.length,
@@ -120,57 +146,87 @@ class _NotificationListDisplayPopperPanelState extends State<NotificationListDis
 
 
 
-  Widget _notificationListItemDisplay({required Notification notification, required BuildContext context}){
+  Widget _notificationListItem(int i){
+
+    Notification notification = model.notifications![i];
+
     return ButtonAnimator1(
+      onTap2: ()=> model.navigateToNotificationObject(context, notification),
 
-      onTap2: (){
-        model.navigateToNotificationObject(context, notification);
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
 
-        },
+          padding: const EdgeInsets.symmetric(horizontal:10, vertical: 15),
 
-      child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 10),
 
-        padding: const EdgeInsets.symmetric(horizontal:10, vertical: 15),
+          // height: 150,
 
-        margin: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color: SharedUi.getColor(ColorType.light2),
+            borderRadius: BorderRadius.circular(15),
+          ),
 
-        height: 150,
+          child: Selector(
 
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-        ),
+            selector: (_, NotificationListDisplayPopperModel model)=>model.notifications![i].typeId as int?,
 
-        child: Row(
-          children: [
+            builder: (_, int? value, __) {
 
-            Align(
-                alignment: Alignment.topLeft,
-                child: SharedWidgets.profileBox()),
+              String typeName = "";
 
-            SizedBox(width: 10,),
+              switch (notification.typeId){
+                case NotificationService.UNREAD_MESSAGES :
+                  typeName = "New message";
+                  break;
+                case NotificationService.APPOINTMENT_BOOKED :
+                  typeName = "Appointment booked";
+                  break;
+                case NotificationService.APPOINTMENT_CANCELLED :
+                  typeName = "Appointment cancelled";
+                  break;
+                default:
+                  typeName = "";
+              }
 
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SharedUi.mediumText("${model.interpretType(notification.typeId)}", colorType: NotificationService.getNotificationColorType(notification.typeId),),
-                  SharedUi.smallText("${model.explainNotification(notification)}", maxLine: 2),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ButtonAnimator2(child: SharedUi.mediumText("view", colorType: NotificationService.getNotificationColorType(notification.typeId))),
 
-                      // ButtonAnimator2(child: SharedUi.mediumText("dismiss", colorType: ColorType.warning,), onTap2: (){
-                      //   model.removeNotification(notification);
-                      // },),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
+
+
+              return IntrinsicHeight(
+                child: Row(
+                  children: [
+
+                    Align(
+                        alignment: Alignment.topLeft,
+                        child: SharedWidgets.profileBox()),
+
+                    SizedBox(width: 10,),
+
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SharedUi.mediumText(typeName, colorType: NotificationService.getNotificationColorType(notification.typeId),),
+
+                          Expanded(
+                            child: SharedUi.smallText("${model.explainNotification(notification)}",),
+                          ),
+
+                        Align(
+                            alignment: Alignment.centerRight,
+                            child: SharedUi.smallText(HelperService.timeFormat2(notification.time))
+                        ),
+
+
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+          ),
         ),
       ),
     );

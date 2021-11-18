@@ -1,10 +1,10 @@
 import 'package:c_input/src/CInputController.dart';
 import 'package:c_ui/c_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:hms/data/GlobalData.dart';
 import 'package:hms/enums.dart';
 import 'package:hms/services/MessageService.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
-import 'package:hms/variables/GlobalData.dart';
 import 'package:provider/provider.dart';
 
 
@@ -100,11 +100,11 @@ class SharedWidgets{
     return  Container(
       height: MediaQuery.of(context).size.height * .015,
       decoration: BoxDecoration(
-          color: readStatus == MessageService.UNSEEN ? SharedUi.getColor(ColorType.danger) :
+          color: readStatus == MessageService.NEW ? SharedUi.getColor(ColorType.danger) :
           readStatus == MessageService.UNREAD ? SharedUi.getColor(ColorType.success) :
           null,
 
-          borderRadius: BorderRadius.circular(5)
+          shape: BoxShape.circle,
       ),
       child: AspectRatio(
         aspectRatio: 1,

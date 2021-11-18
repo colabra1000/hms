@@ -14,21 +14,6 @@ class NotificationPanelModel extends BaseModel {
 
   List? get notifications => _notificationService.notifications;
 
-  Future<bool> fetchNotifications()async{
-    if(_notificationService.notifications == null) {
-      await _notificationService.fetchNotifications(this);
-      if (mounted) {
-        notifyListeners();
-      }
-    }
-      return true;
-
-  }
-
-  void reloadNotifications() {
-    notifyListeners();
-  }
-
   int? get totalNotification=> notifications?.length;
 
   int? get newMessages => notifications
@@ -39,5 +24,16 @@ class NotificationPanelModel extends BaseModel {
 
   int? get appointmentCancelled => notifications
       ?.where((element) => element.typeId == NotificationService.APPOINTMENT_CANCELLED).length;
+
+  void openNotificationListDisplayPopper(int filter) {
+
+    _notificationService.filter = filter;
+
+    userModel.openNotificationListDisplayPopper().then((value) {
+      _notificationService.filter = NotificationService.FILTER_NONE;
+      notifyListeners();
+    });
+
+  }
 
 }

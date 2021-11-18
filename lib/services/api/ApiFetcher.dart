@@ -26,11 +26,10 @@ class ApiFetcher implements ApiFetcherInterface{
     throw UnimplementedError();
   }
 
-  @override
-  Future<bool> fetchNotifications({required Function(dynamic) onError, required Function(dynamic) onSuccess}) {
-    // TODO: implement fetchDoctors
-    throw UnimplementedError();
-  }
+  // @override
+  // Future<bool> fetchNotifications({required Function(dynamic) onError, required Function(dynamic) onSuccess}) {
+  //   throw UnimplementedError();
+  // }
 
   @override
   Future<bool> fetchSingleMessage({required int id, required Function(dynamic) onError, required Function(dynamic) onSuccess}) {

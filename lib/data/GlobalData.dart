@@ -1,14 +1,13 @@
 library data;
 
-import 'package:hms/models/Appointment.dart';
-import 'package:hms/variables/DataHelper.dart';
+import 'package:hms/data/DataHelper.dart';
 
 
-part 'data/Organisations.dart';
-part 'data/Messages.dart';
-part 'data/Specialization.dart';
-part 'data/Notifications.dart';
-part 'data/Appointments.dart';
+part 'repo/Organisations.dart';
+part 'repo/Messages.dart';
+part 'repo/Specialization.dart';
+part 'repo/Notifications.dart';
+part 'repo/Appointments.dart';
 
 
 
@@ -24,14 +23,10 @@ class GlobalData{
   static List messages = _messages;
 
   static List get notifications{
-
     _notifications.removeWhere((element) {
       return element == null;
     });
-
-
     return _notifications;
-
   }
 
   static List appointments = _appointments;
@@ -65,6 +60,7 @@ class GlobalData{
     "firstName" : "Aitem",
     "lastName" : "Quancy",
     "appointments" : DataHelper.getUserAppointments(0, _appointments),
+    "notifications" : DataHelper.getNotifications(0, notifications),
   };
 
 

@@ -24,9 +24,14 @@ class MessageListDisplayPopperModel extends BaseModel{
     if(_messageService.messages == null){
       await _messageService.fetchMessages(this);
     }
-
+      // _messageService.sortMessages();
     notifyListeners();
 
+  }
+
+  void sortMessage(){
+    _messageService.sortMessages();
+    notifyListeners();
   }
 
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hms/enums.dart';
 import 'package:hms/models/Appointment.dart';
 import 'package:hms/services/AppointmentService.dart';
+import 'package:hms/services/HelperService.dart';
 import 'package:hms/uiAndPages/shared/SharedWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:hms/uiAndPages/pagesAndModel/appointmentAndChat/appointment/viewAppointment/ViewAppointmentModel.dart';
@@ -66,9 +67,9 @@ class _ViewAppointmentPageState extends State<ViewAppointmentPage> {
 
                           selector: (_, ViewAppointmentModel model)=> model.appointment,
 
-                          builder: (_, Appointment? appointmentValue, __) {
+                          builder: (_, Appointment? value, __) {
 
-                            return appointmentValue == null ?
+                            return value == null ?
                             Expanded(child: Center(child: _loadingIndicator())):
 
                               Selector(
@@ -77,6 +78,7 @@ class _ViewAppointmentPageState extends State<ViewAppointmentPage> {
                                 selector: (_, ViewAppointmentModel model)=>model.appointment!.status,
 
                                 builder: (_, int? value2, __) {
+
 
                                   return Expanded(
                                     child: SizedBox(
@@ -101,7 +103,6 @@ class _ViewAppointmentPageState extends State<ViewAppointmentPage> {
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       SharedUi.smallText(model.appointment!.organisationName ?? "", colorType: ColorType.info),
-                                                      // SharedUi.smallText(model.appointment ?? "", bold: true),
 
                                                     ],
                                                   ),
@@ -114,9 +115,9 @@ class _ViewAppointmentPageState extends State<ViewAppointmentPage> {
 
                                               Column(
                                                 children: [
-                                                 _labelValue(label: "Booked on", value: "12-oct-2021"),
+                                                 _labelValue(label: "Booked on", value: HelperService.timeFormat2(model.appointment!.timeBooked)),
                                                   SizedBox(height: 10,),
-                                                  _labelValue(label: "Appointment date", value: model.appointmentDate),
+                                                  _labelValue(label: "Appointment date", value: HelperService.timeFormat2(model.appointment!.timeDue)),
                                                   SizedBox(height: 10,),
                                                   _labelValue(label: "Due in", value: model.dueDays()),
                                                   SizedBox(height: 10,),
@@ -188,7 +189,7 @@ class _ViewAppointmentPageState extends State<ViewAppointmentPage> {
                       edgePads: 35, height: 3,
                       onTap: (){
 
-                        model.cancelRemoveAppointment(context);
+                        model.cancelOrRemoveAppointment(context);
                         // model.appointmentStatus == ViewAppointmentModel.CANCELLED
 
                         // model.deleteAppointment(appointment);

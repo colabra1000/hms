@@ -34,6 +34,7 @@ class AppointmentService {
   int? appointmentId;
 
   Appointment? appointment;
+
   List get appointments => userService.user.appointments ?? getAppointments();
 
   set appointments(List appointments){
@@ -49,26 +50,42 @@ class AppointmentService {
 
   Future<bool> fetchSingleAppointment(int id, BaseModel model) async {
 
-    await _fetch2(id, model);
+    await _fetchSingleAppointment(id, model);
     return true;
   }
 
   // recursively fetching indefinitely until doctors is returned
-  _fetch2(int id, BaseModel model){
+  _fetchSingleAppointment(int id, BaseModel model){
 
     return _api.fetchSingleAppointment(
 
         id: id,
 
         onSuccess: (result){
-          appointment = Appointment.fromJson(result);
+
+          if(!model.mounted){
+            return;
+          }
+
+          Appointment m = Appointment.fromJson(result);
+          int? i = appointments.indexWhere((element) => element.id == m.id);
+
+
+          if(i != -1){
+            appointments[i] = appointment = m;
+          }else {
+            appointments.add(m);
+            appointment = appointments.last;
+          }
+
         },
         onError: (e)async{
+
           if(!model.mounted){
             return false;
           }
           await Future.delayed(Duration(seconds: 2));
-          await _fetch2(id, model);
+          await _fetchSingleAppointment(id, model);
         }
     );
   }

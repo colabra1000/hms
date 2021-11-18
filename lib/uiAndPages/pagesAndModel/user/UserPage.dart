@@ -95,7 +95,6 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
 
                         onClose: (){
                           model.cModalController.dismissModal();
-                          model.notificationPanelModel.reloadNotifications();
                         }
 
                     ),

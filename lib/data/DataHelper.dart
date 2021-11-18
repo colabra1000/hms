@@ -52,4 +52,8 @@ class DataHelper{
 
   }
 
+  static getNotifications(int? id, List notifications) {
+    return notifications.where((element) => element["userId"] == id).toList();
+  }
+
 }

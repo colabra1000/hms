@@ -1,10 +1,10 @@
 
 import 'package:c_input/src/CInputController.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:hms/enums.dart';
 import 'package:hms/locator.dart';
 import 'package:hms/models/Notification.dart';
 import 'package:hms/services/AppointmentService.dart';
+import 'package:hms/services/HelperService.dart';
 import 'package:hms/services/MessageService.dart';
 import 'package:hms/services/NavigationService.dart';
 import 'package:hms/services/NotificationService.dart';
@@ -19,33 +19,23 @@ class NotificationListDisplayPopperModel extends BaseModel{
   AppointmentService _appointmentService = locator<AppointmentService>();
   NavigationService _navigationService = locator<NavigationService>();
 
-
-
   List? get notifications => _notificationService.notifications;
 
   CInputController searchInputController = CInputController();
 
+  int get filter => _notificationService.filter;
+
+
+  //redundant.
   void onOpen() async{
 
-    if(_notificationService.notifications == null){
-      await _notificationService.fetchNotifications(this);
-    }
+  }
+
+  sortNotifications(){
+    _notificationService.sortNotifications();
     notifyListeners();
-
   }
 
-  interpretType(int? type) {
-
-    switch (type){
-      case NotificationService.UNREAD_MESSAGES :
-        return "New message";
-      case NotificationService.APPOINTMENT_BOOKED :
-        return "Appointment booked";
-      case NotificationService.APPOINTMENT_CANCELLED :
-        return "Appointment cancelled";
-
-    }
-  }
 
 
 
@@ -64,7 +54,7 @@ class NotificationListDisplayPopperModel extends BaseModel{
   String explainNotification(Notification notification,) {
     switch (notification.typeId){
       case NotificationService.UNREAD_MESSAGES :
-        return "${notification.organisationName ?? ""} sent you a new Message 2 minutes ago";
+        return "${notification.organisationName ?? ""} sent you a new Message ${HelperService.timeFormatS(time: notification.time, sDatePrefix: "on ")}";
       case NotificationService.APPOINTMENT_BOOKED :
         return "Your appointment has been successfully booked with ${notification.organisationName ?? ""}";
       case NotificationService.APPOINTMENT_CANCELLED :
@@ -95,7 +85,6 @@ class NotificationListDisplayPopperModel extends BaseModel{
     Future<void> navigateToNotificationObject(BuildContext context, Notification notification) async {
 
       await _navigateToNotificationObject(context, notification);
-      _notificationService.filterNotifications(_notificationService.object);
       notifyListeners();
 
     }

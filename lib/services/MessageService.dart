@@ -5,7 +5,7 @@ import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 
 class MessageService {
 
-  static const int UNSEEN = 0;
+  static const int NEW = 0;
   static const int UNREAD = 1;
   static const int READ = 2;
 
@@ -25,7 +25,7 @@ class MessageService {
 
   seeAllMessages(){
     messages = messages?.map((e){
-      if(e.readStatus == UNSEEN){
+      if(e.readStatus == NEW){
         e.readStatus = UNREAD;
       }
       return e;
@@ -35,13 +35,27 @@ class MessageService {
   sortMessages(){
     List messages = List.from(this._messages ?? []);
 
+    // messages.sort((a,b){
+    //   return a.readStatus == NEW ? -1 : 1;
+    // });
+    //
+    // messages.sort((a,b){
+    //   return a.readStatus == READ ? 1 : -1;
+    // });
+
     messages.sort((a,b){
-      return a.readStatus == UNSEEN ? -1 : 1;
+      try{
+        return DateTime.parse(a.timeDue).isAfter(DateTime.parse(b.timeDue)) ? -1 : 1;
+      }catch(e){
+        return 1;
+      }
     });
 
     messages.sort((a,b){
-      return a.readStatus == READ ? 1 : -1;
+      return a.readStatus == READ ? 1 : 0;
     });
+
+
 
     this.messages = messages;
   }
@@ -51,14 +65,13 @@ class MessageService {
   // once the calling baseModel is unmounted
   // should stop running irrespective.
   Future<bool> fetchMessages(BaseModel model) async {
-
-    await _fetch(model);
+    await _fetchMessages(model);
     return true;
   }
 
 
   // recursively fetching indefinitely until doctors is returned
-  _fetch(BaseModel model){
+  _fetchMessages(BaseModel model){
 
     return _api.fetchMessages(
         onSuccess: (result){
@@ -70,7 +83,7 @@ class MessageService {
         return false;
       }
       await Future.delayed(Duration(seconds: 2));
-      await _fetch(model);
+      await _fetchMessages(model);
     });
   }
 
@@ -79,27 +92,39 @@ class MessageService {
 
 
   Future<bool> fetchSingleMessage(int id, BaseModel model) async {
-
-    await _fetch2(id, model);
+    await _fetchSingleMessage(id, model);
     return true;
   }
 
 
   // recursively fetching indefinitely until doctors is returned
-  _fetch2(int id, BaseModel model){
+  _fetchSingleMessage(int id, BaseModel model){
 
     return _api.fetchSingleMessage(
         id: id,
         onSuccess: (result){
-          message = Message.fromJson(result);
-          // _sortMessages();
+
+          if(!model.mounted){
+            return null;
+          }
+
+          Message m = Message.fromJson(result);
+          int? i = messages?.indexWhere((element) => element.id == m.id);
+
+
+          if(i != null && i != -1){
+            messages?[i] = message = m;
+          }else{
+            messages?.add(m);
+            message = messages?.last;
+          }
 
         }, onError: (e)async{
       if(!model.mounted){
         return false;
       }
       await Future.delayed(Duration(seconds: 2));
-      await _fetch2(id, model);
+      await _fetchSingleMessage(id, model);
     });
   }
 

@@ -5,15 +5,14 @@ import 'package:hms/locator.dart';
 import 'package:hms/models/Appointment.dart';
 import 'package:hms/services/AppointmentService.dart';
 import 'package:hms/services/ErrorService.dart';
+import 'package:hms/services/HelperService.dart';
 import 'package:hms/services/NotificationService.dart';
 import 'package:hms/services/api/ApiFetcherInterface.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
-import 'package:date_format/date_format.dart';
 import 'package:c_modal/c_modal.dart';
 
 
 class ViewAppointmentModel extends BaseModel{
-
 
 
   ApiFetcherInterface _api = locator<ApiFetcherInterface>();
@@ -30,14 +29,14 @@ class ViewAppointmentModel extends BaseModel{
 
 
   String get _organizationName => _appointmentService.appointment?.organisationName ?? "";
-  String get _appointmentTime => _appointmentService.appointment?.time ?? "";
+  String get _appointmentTime => _appointmentService.appointment?.timeDue ?? "";
   int? get appointmentStatus => appointment!.status;
 
   String get appointmentStatusName{
     int? status = _appointmentService.appointment?.status;
     if(status == null) return "";
 
-    print(status);
+
 
     if(status == AppointmentService.PENDING){
       return "pending";
@@ -49,18 +48,14 @@ class ViewAppointmentModel extends BaseModel{
 
     return "--";
   }
-  String get appointmentDate{
-    DateTime? date = DateTime.tryParse(_appointmentTime);
-    if(date == null) return "";
-    return formatDate(date, [dd,"-",M,"-",yyyy,]);
-  }
+
   String get narrateAppointment {
     return
       appointmentStatus == AppointmentService.ACCEPTED ?
-      "your appointment with $_organizationName is Scheduled ${getLongAppointmentDateDescription(_appointmentTime)}." :
+      "your appointment with $_organizationName is Scheduled ${HelperService.timeFormat2(_appointmentTime)}." :
 
       appointmentStatus ==  AppointmentService.PENDING?
-      "your appointment with $_organizationName booked ${getLongAppointmentDateDescription(_appointmentTime)}"
+      "your appointment with $_organizationName booked ${HelperService.timeFormat2(_appointmentTime)}"
           " is awaiting confirmation!":
       appointmentStatus ==  AppointmentService.CANCELLED?
       "your appointment with $_organizationName is cancelled." : "";
@@ -82,17 +77,6 @@ class ViewAppointmentModel extends BaseModel{
     return "$days" + " days";
 
   }
-  String getLongAppointmentDateDescription(String? date) {
-    if(date == null) return "";
-    try{
-      return formatDate(DateTime.parse(date) , ['on ', DD," ",d,"'th of ", MM, ", ", yyyy,]);
-
-    }catch(e){
-      return "";
-    }
-
-  }
-
 
 
   void fetchSingleAppointment() async {
@@ -100,13 +84,12 @@ class ViewAppointmentModel extends BaseModel{
     if(appointment == null && _appointmentId != null){
 
       await _appointmentService.fetchSingleAppointment(_appointmentService.appointmentId!, this);
-      notifyListeners();
-
+      if(mounted)
+        notifyListeners();
     }
-
   }
 
-  void cancelRemoveAppointment(BuildContext context){
+  void cancelOrRemoveAppointment(BuildContext context){
     if(appointmentStatus == AppointmentService.CANCELLED){
       _removeAppointment(context);
     }else{
@@ -126,8 +109,10 @@ class ViewAppointmentModel extends BaseModel{
     _api.removeAppointment(id: appointment!.id!, onSuccess: (result){
 
       _appointmentService.appointments.remove(appointment);
+      appointment!.status = AppointmentService.REMOVED;
       pageModalController.dismissModal();
-      _notificationService.object = appointment;
+      _notificationService.updateNotifications(appointment);
+      // _notificationService.object = appointment;
       appointment = null;
       navigateBack(context);
 
@@ -152,6 +137,7 @@ class ViewAppointmentModel extends BaseModel{
 
       pageModalController.dismissModal();
       appointment!.status = AppointmentService.CANCELLED;
+      _notificationService.updateNotifications(appointment);
       notifyListeners();
 
     }, onError:(e){
