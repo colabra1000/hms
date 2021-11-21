@@ -44,14 +44,30 @@ class _MyPlanListDisplayPopperPanelState extends State<MyPlanListDisplayPopperPa
 
         builder: (context, model){
 
-          return  Stack(
-            children: [
-              _body(model),
-              //todo put in alignment
-              Align(
-                  alignment: Alignment.bottomCenter,
-                  child: _lowerButton()),
-            ],
+          return  Selector(
+
+            selector: (_, MyPlanListDisplayPopperModel model) => model.canDisplay,
+
+            builder: (_, bool value, __) {
+
+
+              return AnimatedOpacity(
+
+                duration: Duration(milliseconds:300),
+
+                opacity: !value ? 0 : 1,
+
+                child: Stack(
+                  children: [
+                    _body(model),
+                    //todo put in alignment
+                    Align(
+                        alignment: Alignment.bottomCenter,
+                        child: _lowerButton()),
+                  ],
+                ),
+              );
+            }
           );
         },
     );

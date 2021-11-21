@@ -16,6 +16,8 @@ class PlanChangeDetailModel extends BaseModel {
 
   String get planName => MyPlanService.getPlanName(currentPlan);
 
+
+
   int? get timeToConfirmation {
     try{
       return 24 - DateTime.now().difference(DateTime.parse(_myPlanService.planSelectionTime)).inHours;
@@ -31,6 +33,8 @@ class PlanChangeDetailModel extends BaseModel {
   }
 
   List get detailedAttribute => MyPlanService.getDetailedAttributes(currentPlan);
+
+
 
   void navigateBack(BuildContext context) {
     Navigator.of(context).pop();

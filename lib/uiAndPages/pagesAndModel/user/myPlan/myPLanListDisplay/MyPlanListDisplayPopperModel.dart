@@ -18,9 +18,12 @@ class MyPlanListDisplayPopperModel extends BaseModel{
 
   CInputController searchInputController = CInputController();
 
-  //redundant.
-  void onOpen() async{
+  bool _canDisplay = false;
+  bool get canDisplay => _canDisplay;
 
+  void onOpen() async{
+    _canDisplay = true;
+    notifyListeners();
   }
 
   int? _currentlySelectedPlan;

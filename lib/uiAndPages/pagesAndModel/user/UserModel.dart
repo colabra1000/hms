@@ -11,6 +11,7 @@ import 'package:hms/services/UserService.dart';
 import 'package:hms/services/ValidationService.dart';
 import 'package:hms/services/api/ApiFetcherInterface.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/sideNavigationPanel/SideNavigationPanelModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/myPlan/myPLanListDisplay/MyPlanListDisplayPopperModel.dart';
@@ -31,11 +32,12 @@ class UserModel extends BaseModel{
   //controllers declaration.
   CModalController cModalController = CModalController();
 
+  //exposed/child models
   late MessageListDisplayPopperModel messageListDisplayPopperModel = MessageListDisplayPopperModel();
   late OrganisationListDisplayPopperModel organisationListDisplayPopperModel = OrganisationListDisplayPopperModel();
   late NotificationListDisplayPopperModel notificationListDisplayPopperModel = NotificationListDisplayPopperModel();
   late MyPlanListDisplayPopperModel myPlanListDisplayPopperModel = MyPlanListDisplayPopperModel();
-
+  late SideNavigationPanelModel sideNavigationPanelModel = SideNavigationPanelModel();
 
 
   //service getters
@@ -57,6 +59,7 @@ class UserModel extends BaseModel{
 
   bool _displayDoctorList = false;
   bool get displayDoctorList => _displayDoctorList;
+
 
   // late NotificationPanelModel notificationPanelModel;
 

@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:hms/uiAndPages/decorations/PageBackgroundDecorator.dart';
 import 'package:hms/uiAndPages/documents/UserPageDocument.dart';
 import 'package:hms/uiAndPages/pagesAndModel/Base/BaseView.dart';
+import 'package:hms/uiAndPages/pagesAndModel/sideNavigationPanel/SideNavigationPanelDisplay.dart';
+import 'package:hms/uiAndPages/pagesAndModel/sideNavigationPanel/SideNavigationPanelModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/AppointmentAndMessagePanelView.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperPanel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationiListDisplayPopperPanel.dart';
@@ -142,7 +144,25 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
                                   model.navigateToLandingPage(context);
                               }),
 
-                              Icon(CupertinoIcons.ellipsis)
+                              ButtonAnimator2(
+                                  onTap2: (){
+                                    model.cModalController.changeModalState = CModalStateChanger(
+                                      state: CModalState.custom5,
+                                      dismissOnOutsideClick: false,
+                                      fadeDuration: Duration(milliseconds: 200),
+                                      displayedModal: SideNavigationPanelDisplay(expose: (SideNavigationPanelModel model) {
+                                         this.model.sideNavigationPanelModel = model;
+                                         model.onDeactivate = ()=>this.model.cModalController.dismissModal();
+                                      }
+
+                                      ),
+                                      onOutsideClick: () =>model.sideNavigationPanelModel.activate = false,
+                                      onBackPress: () =>model.sideNavigationPanelModel.activate = false,
+                                    );
+
+
+                                  },
+                                  child: Icon(CupertinoIcons.ellipsis))
                             ],
                           ),
 

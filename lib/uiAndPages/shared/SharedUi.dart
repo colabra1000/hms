@@ -37,7 +37,7 @@ class SharedUi{
       case ColorType.secondary:
         return Colors.grey.shade700;
       case ColorType.secondary2:
-        return Colors.blueGrey;
+        return Colors.grey.shade400;
       case ColorType.divergent:
         return Colors.yellow.shade200;
       case ColorType.divergentLight:
@@ -167,16 +167,17 @@ class SharedUi{
   }
 
 
-  static Widget mSwitch({String? label, required bool switchValue, void onSwitchChange(bool? val)?, }){
+  static Widget mSwitch({String? label, ColorType? colorType, required bool switchValue, void onSwitchChange(bool? val)?, }){
     return Row(
       children: [
+
+        Expanded(child: mediumText(label ?? "", colorType: colorType ?? ColorType.dark)),
 
         Switch(
             value: switchValue,
             onChanged: onSwitchChange
         ),
 
-        Flexible(child: CText(label ?? "", size: 15,)),
 
       ],
     );

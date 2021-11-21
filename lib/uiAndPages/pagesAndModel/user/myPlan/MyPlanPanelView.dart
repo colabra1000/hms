@@ -67,30 +67,31 @@ class _MyPlanPanelViewState extends State<MyPlanPanelView> with SingleTickerProv
               children: [
                 Expanded(
                   flex: 5,
-                  child: Column(
-                    children: [
-                      FittedBox(
-                        child: SharedUi.smallText("Get Constant chat,\nconsultancy\nand \nreal-time notifications\n with avalon",
-                            alignment: TextAlign.center, colorType: ColorType.outlier, bold: true, maxLine: 200),
-                      ),
+                  child: FittedBox(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SharedUi.smallText("your current plan is",
+                            alignment: TextAlign.center, colorType: ColorType.dark, maxLine: 200),
+
+                        SharedUi.smallText("100% coverage",
+                            alignment: TextAlign.center, colorType: ColorType.dark, maxLine: 200),
+
+                        Row(
+                          children: [
+                            SharedUi.smallText("Active : ",
+                                alignment: TextAlign.center, colorType: ColorType.dark, maxLine: 200),
+
+                            SharedUi.smallText("Yes",
+                                alignment: TextAlign.center, colorType: ColorType.danger, bold: true, maxLine: 200),
+
+                          ],
+                        ),
 
 
 
-                      //
-                      // ButtonAnimator2(child: SharedUi.mediumText("see More",
-                      //   colorType: ColorType.info
-                      // ))
-
-
-
-
-                      // SharedUi.mediumText("Current plan : Avalon"),
-                      // SharedUi.mediumText("Coverage Extent : 80%"),
-                      // SharedUi.mediumText("Active : yes"),
-                      // SharedUi.mediumText("Active until: 12-aug-23"),
-                      // SharedUi.mediumText("TTE: 12 months"),
-
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 
@@ -121,7 +122,7 @@ class _MyPlanPanelViewState extends State<MyPlanPanelView> with SingleTickerProv
                           Expanded(
                             child: FittedBox(
                                 // fit: BoxFit.fitHeight,
-                                child: Icon(Icons.add_moderator_outlined, size: 900, color: SharedUi.getColor(ColorType.secondary2),)),
+                                child: Icon(Icons.add_moderator_outlined, size: 900, color: SharedUi.getColor(ColorType.dark),)),
                           )
                         ],
                       ),
