@@ -185,7 +185,7 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
         ),
         child:
         bookingAppointment ? Icon(Icons.close, color: SharedUi.getColor(ColorType.light), size: 25,) :
-        SharedUi.smallText("Book Appointment", colorType: ColorType.secondary
+        SharedUi.smallText("Book Appointment", colorType: ColorType.secondary, maxLine: 1
         ),
       ),
     );
@@ -259,6 +259,7 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SharedUi.mButton(append: Icon(Icons.arrow_back_rounded, color: SharedUi.getColor(ColorType.light),), buttonColorType: ColorType.danger,
+                    label: "calender",
                     height: 3, edgePads: 20,
                     onTap: (){
 
@@ -345,7 +346,7 @@ class _AppointmentPanelState extends State<AppointmentPanel>{
           child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               child: TableCalendar(
-                firstDay: DateTime.utc(2010, 10, 16),
+                firstDay: DateTime.now(),
                 lastDay: DateTime.utc(2030, 3, 14),
                 focusedDay: model.appointmentDate ?? DateTime.now(),
                 onDaySelected: (selectedDay, focusedDay) {

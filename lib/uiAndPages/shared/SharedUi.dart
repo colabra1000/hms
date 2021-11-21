@@ -21,7 +21,7 @@ class SharedUi{
       case ColorType.success:
         return Colors.green.shade700;
       case ColorType.successLight:
-        return Colors.green.shade200;
+        return Colors.lightGreen.shade500;
       case ColorType.outlier:
         return Colors.purple.shade900;
       case ColorType.light:
@@ -49,7 +49,7 @@ class SharedUi{
 
   
   //texts
-  static Widget largeText(String text, {bool bold : false, TextAlign? alignment, double? size, ColorType colorType: ColorType.dark, int maxLine:1, double? letterSpacing, double? wordSpacing, double? height}){
+  static Widget largeText(String text, {bool bold : false, TextAlign? alignment, double? size, ColorType colorType: ColorType.dark, int maxLine:100000, double? letterSpacing, double? wordSpacing, double? height}){
     return CText(text, size: size ?? 45, fontWeight: bold ? FontWeight.bold : FontWeight.w500,
       letterSpacing: letterSpacing, wordSpacing: wordSpacing, height: height, alignment: alignment,
       color: getColor(colorType), maxLine: maxLine, overflow: TextOverflow.ellipsis,
@@ -58,14 +58,14 @@ class SharedUi{
 
 
 
-  static Widget normalText(String text, {bool bold : false, TextAlign? alignment, double? size, ColorType colorType: ColorType.dark, int maxLine: 1, double? letterSpacing, double? wordSpacing, double? height}){
+  static Widget normalText(String text, {bool bold : false, TextAlign? alignment, double? size, ColorType colorType: ColorType.dark, int maxLine: 100000, double? letterSpacing, double? wordSpacing, double? height}){
     return CText(text, size: size ?? 25, fontWeight: bold ? FontWeight.bold : FontWeight.w500,
       letterSpacing: letterSpacing, wordSpacing: wordSpacing, height: height, alignment: alignment,
       color: getColor(colorType), maxLine: maxLine, overflow: TextOverflow.ellipsis,
     );
   }
 
-  static Widget mediumText(String text, {bool bold : false, TextAlign? alignment, double? size, ColorType colorType: ColorType.dark, int maxLine:1, double? letterSpacing, double? wordSpacing, double? height}){
+  static Widget mediumText(String text, {bool bold : false, TextAlign? alignment, double? size, ColorType colorType: ColorType.dark, int maxLine:100000, double? letterSpacing, double? wordSpacing, double? height}){
     return CText(text, size: size ?? 19, fontWeight: bold ? FontWeight.bold : FontWeight.w500,
       letterSpacing: letterSpacing, wordSpacing: wordSpacing, height: height, alignment: alignment,
       color: getColor(colorType), maxLine: maxLine, overflow: TextOverflow.ellipsis,

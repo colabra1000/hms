@@ -7,6 +7,7 @@ import 'package:hms/environment.dart';
 import 'package:hms/logger.dart';
 import 'package:hms/services/AppointmentService.dart';
 import 'package:hms/services/ChatAutomationService.dart';
+import 'package:hms/services/MyPlanService.dart';
 import 'package:hms/services/NotificationService.dart';
 import 'package:hms/services/OrganisationService.dart';
 import 'package:hms/services/ErrorService.dart';
@@ -24,10 +25,13 @@ import 'package:hms/uiAndPages/pagesAndModel/appointmentAndChat/appointment/view
 import 'package:hms/uiAndPages/pagesAndModel/landing/LandingPageModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/login/LoginDisplayModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/message/MessageModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/planChange/PlanChangeDetailModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/AppointmentAndMessagePanelModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/myPlan/MyPlanPanelModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/myPlan/myPLanListDisplay/MyPlanListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationListDisplay/NotificationListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationPanelModel.dart';
 import 'package:hms/data/variables/LiveVariables.dart';
@@ -56,6 +60,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => UserService());
   locator.registerLazySingleton(() => NotificationService());
   locator.registerLazySingleton(() => AppointmentService());
+  locator.registerLazySingleton(() => MyPlanService());
 
 
   locator.registerLazySingleton<ApiFetcherInterface>((){
@@ -93,6 +98,9 @@ void setupLocator() {
   locator.registerFactory(() => MessageModel());
   locator.registerFactory(() => NotificationPanelModel());
   locator.registerFactory(() => NotificationListDisplayPopperModel());
+  locator.registerFactory(() => MyPlanListDisplayPopperModel());
+  locator.registerFactory(() => MyPlanPanelModel());
   locator.registerFactory(() => ViewAppointmentModel());
+  locator.registerFactory(() => PlanChangeDetailModel());
 
 }

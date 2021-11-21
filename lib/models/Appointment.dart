@@ -34,7 +34,8 @@ class Appointment{
       "userId" : userId,
       "organisationId" : organisationId,
       "organisationName" : organisationName,
-      "time" : timeDue,
+      "timeDue" : timeDue,
+      "timeBooked" : timeBooked,
       "status" : status,
       "message" : message,
     };

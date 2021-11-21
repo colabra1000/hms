@@ -13,8 +13,6 @@ part 'repo/Appointments.dart';
 
 class GlobalData{
 
-  GlobalData(){
-  }
 
   static List specialization = _specialization;
 
@@ -59,6 +57,7 @@ class GlobalData{
     "id" : 0,
     "firstName" : "Aitem",
     "lastName" : "Quancy",
+    "myPlan" : 1,
     "appointments" : DataHelper.getUserAppointments(0, _appointments),
     "notifications" : DataHelper.getNotifications(0, notifications),
   };

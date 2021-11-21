@@ -188,12 +188,7 @@ class _ViewAppointmentPageState extends State<ViewAppointmentPage> {
                       buttonColorType: ColorType.danger,
                       edgePads: 35, height: 3,
                       onTap: (){
-
                         model.cancelOrRemoveAppointment(context);
-                        // model.appointmentStatus == ViewAppointmentModel.CANCELLED
-
-                        // model.deleteAppointment(appointment);
-                        // model.pageModalController.dismissModal();
                       }
                   ),
 

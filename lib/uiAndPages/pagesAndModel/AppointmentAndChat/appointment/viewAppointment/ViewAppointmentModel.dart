@@ -158,6 +158,9 @@ class ViewAppointmentModel extends BaseModel{
   }
 
 
+  ViewAppointmentModel(){
+    // print(appointment?.timeBooked);
+  }
 
 
 

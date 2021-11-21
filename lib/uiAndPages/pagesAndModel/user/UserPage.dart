@@ -10,7 +10,8 @@ import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/Appointm
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperPanel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationiListDisplayPopperPanel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/UserModel.dart';
-import 'package:hms/uiAndPages/pagesAndModel/user/myPlan/MyPlanTab.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/myPlan/MyPlanPanelView.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/myPlan/myPLanListDisplay/MyPlanListDisplayPopperPanel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationListDisplay/NotificationListDisplayPopperPanel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationPanelView.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
@@ -102,6 +103,27 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
                 );
               }
 
+              if(state == CModalState.custom4){
+                return SingleChildScrollView(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: PopperPanel(
+
+                        child: MyPlanListDisplayPopperPanel((model)=>this.model.myPlanListDisplayPopperModel = model),
+
+                        popperOpened: model.popperOpened,
+
+                        onOpen: ()=>model.myPlanListDisplayPopperModel.onOpen(),
+
+                        onClose: (){
+                          model.cModalController.dismissModal();
+                        }
+
+                    ),
+                  ),
+                );
+              }
+
             },
 
             child: SafeArea(
@@ -156,9 +178,8 @@ class _UserPageState extends State<UserPage> with SingleTickerProviderStateMixin
         // needless complexity, exposing notificationPanelModel here
         // just to call one function. but Wtf..
         // userModel is needed to open popper.
-        NotificationPanelView(userModel: model, expose: (NotificationPanelModel notificationPanelModel)
-                                                          => model.notificationPanelModel = notificationPanelModel),
-        MyPlanTab(),
+        NotificationPanelView(userModel: model),
+        MyPlanPanelView(userModel: model),
 
       ],
     );

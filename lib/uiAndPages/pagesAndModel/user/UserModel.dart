@@ -13,6 +13,7 @@ import 'package:hms/services/api/ApiFetcherInterface.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationListDisplayPopperModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/user/myPlan/myPLanListDisplay/MyPlanListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationListDisplay/NotificationListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationPanelModel.dart';
 
@@ -33,6 +34,7 @@ class UserModel extends BaseModel{
   late MessageListDisplayPopperModel messageListDisplayPopperModel = MessageListDisplayPopperModel();
   late OrganisationListDisplayPopperModel organisationListDisplayPopperModel = OrganisationListDisplayPopperModel();
   late NotificationListDisplayPopperModel notificationListDisplayPopperModel = NotificationListDisplayPopperModel();
+  late MyPlanListDisplayPopperModel myPlanListDisplayPopperModel = MyPlanListDisplayPopperModel();
 
 
 
@@ -56,7 +58,9 @@ class UserModel extends BaseModel{
   bool _displayDoctorList = false;
   bool get displayDoctorList => _displayDoctorList;
 
-  late NotificationPanelModel notificationPanelModel;
+  // late NotificationPanelModel notificationPanelModel;
+
+
 
   set displayDoctorList(bool value){
     _displayDoctorList = value;
@@ -97,7 +101,6 @@ class UserModel extends BaseModel{
 
   }
 
-
   Future<void> openNotificationListDisplayPopper() async {
 
     Completer completer = Completer();
@@ -108,6 +111,24 @@ class UserModel extends BaseModel{
       onCloseModal: (){
         completer.complete(null);
       }
+    );
+
+    popperOpened.value = true;
+
+    await completer.future;
+
+  }
+
+  Future<void> openMyPlanListDisplayPopper() async {
+
+    Completer completer = Completer();
+
+    cModalController.changeModalState = CModalStateChanger(
+        state:CModalState.custom4,
+        fadeDuration: Duration(milliseconds: 700),
+        onCloseModal: (){
+          completer.complete(null);
+        }
     );
 
     popperOpened.value = true;

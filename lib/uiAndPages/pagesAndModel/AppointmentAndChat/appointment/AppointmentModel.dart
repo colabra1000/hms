@@ -31,10 +31,6 @@ class AppointmentModel extends BaseModel{
   // service getters.
   List get appointments =>  _appointmentService.appointments;
 
-  // set appointments (List appointments){
-  //   _appointmentService.appointments = appointments;
-  // }
-
   Appointment? _appointment;
 
   // ui state.
@@ -80,7 +76,7 @@ class AppointmentModel extends BaseModel{
     _appointmentDate!.toString() : "";
     _appointment!.timeBooked = DateTime.now().toString();
 
-    _appointment!.status = 0;
+    _appointment!.status = AppointmentService.PENDING;
     _appointment!.userId = _userService.user.id;
     _appointment!.organisationId = _organisationService.organisation.id;
     _appointment!.message = appointmentNote;
@@ -129,18 +125,6 @@ class AppointmentModel extends BaseModel{
 
   }
 
-  // _sortAppointments(){
-  //   _appointments.sort((a, b){
-  //     if(a.status == 0) return -1;
-  //     else return 0;
-  //   });
-  //
-  //   _appointments.sort((a, b){
-  //     print(a.status);
-  //     if(a.status == 2) return 1;
-  //     else return 0;
-  //   });
-  // }
 
 
   void navigateToViewAppointment(BuildContext context, Appointment appointment) {

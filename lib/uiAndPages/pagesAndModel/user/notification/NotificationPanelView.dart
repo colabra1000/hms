@@ -13,9 +13,9 @@ import 'package:provider/provider.dart';
 class NotificationPanelView extends StatefulWidget {
 
   final UserModel userModel;
-  final Function(NotificationPanelModel) expose;
+  // final Function(NotificationPanelModel) expose;
 
-  const NotificationPanelView({Key? key, required this.userModel, required this.expose}) : super(key: key);
+  const NotificationPanelView({Key? key, required this.userModel}) : super(key: key);
 
   @override
   State<NotificationPanelView> createState() => _NotificationPanelViewState();
@@ -56,7 +56,7 @@ class _NotificationPanelViewState extends State<NotificationPanelView> with Sing
         onModelReady: (model){
           this.model = model;
 
-          widget.expose(model);
+          // widget.expose(model);
 
           model.userModel = widget.userModel;
 

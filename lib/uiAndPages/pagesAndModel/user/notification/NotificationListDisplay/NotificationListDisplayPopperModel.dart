@@ -38,19 +38,6 @@ class NotificationListDisplayPopperModel extends BaseModel{
 
 
 
-
-  String getLongAppointmentDateDescription(String? date) {
-    if(date == null) return "";
-    try{
-      return formatDate(DateTime.parse(date) , ['on ', DD," ",d,"'th of ", MM, ", ", yyyy,]);
-
-    }catch(e){
-      return "";
-    }
-
-  }
-
-
   String explainNotification(Notification notification,) {
     switch (notification.typeId){
       case NotificationService.UNREAD_MESSAGES :
