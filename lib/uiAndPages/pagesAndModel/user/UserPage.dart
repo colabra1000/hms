@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:hms/uiAndPages/decorations/PageBackgroundDecorator.dart';
 import 'package:hms/uiAndPages/documents/UserPageDocument.dart';
 import 'package:hms/uiAndPages/pagesAndModel/Base/BaseView.dart';
-import 'package:hms/uiAndPages/pagesAndModel/sideNavigationPanel/SideNavigationPanelDisplay.dart';
-import 'package:hms/uiAndPages/pagesAndModel/sideNavigationPanel/SideNavigationPanelModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/sideNavigation/sideNavigationPanel/SideNavigationPanelDisplay.dart';
+import 'package:hms/uiAndPages/pagesAndModel/sideNavigation/sideNavigationPanel/SideNavigationPanelModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/AppointmentAndMessagePanelView.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperPanel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationiListDisplayPopperPanel.dart';
@@ -18,8 +18,6 @@ import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationListD
 import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationPanelView.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
 import 'package:hms/uiAndPages/shared/ui/ButtonAnimator2.dart';
-
-import 'notification/NotificationPanelModel.dart';
 
 
 class UserPage extends StatefulWidget {

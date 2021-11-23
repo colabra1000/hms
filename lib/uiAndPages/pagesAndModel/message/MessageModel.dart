@@ -35,8 +35,7 @@ class MessageModel extends BaseModel {
 
 
   void navigateBack(BuildContext context) {
-    // _notificationService.object = message;
-    _notificationService.updateNotifications(message);
+     _notificationService.updateNotifications(message);
     _messageService.message = null;
     Navigator.of(context).pop();
   }

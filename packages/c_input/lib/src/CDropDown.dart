@@ -165,9 +165,6 @@ class _CDropDownState extends State<CDropDown> {
   }
 
     dynamic _getSelectedValue(){
-
-
-
       //only returns for the first instance
       if(valueIsUnChanged){
 

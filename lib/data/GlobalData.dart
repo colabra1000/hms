@@ -8,6 +8,7 @@ part 'repo/Messages.dart';
 part 'repo/Specialization.dart';
 part 'repo/Notifications.dart';
 part 'repo/Appointments.dart';
+part 'repo/User.dart';
 
 
 
@@ -30,37 +31,29 @@ class GlobalData{
   static List appointments = _appointments;
 
 
-  static List readStatus = [
-    {"id": 0, "value": "UNSEEN"},
-    {"id": 1, "value": "UNREAD"},
-    {"id": 2, "value": "READ"},
-  ];
+  // static List readStatus = [
+  //   {"id": 0, "value": "UNSEEN"},
+  //   {"id": 1, "value": "UNREAD"},
+  //   {"id": 2, "value": "READ"},
+  // ];
 
-  static List notificationTypes = [
-    {"id" : 0, "value" : "NEW_MESSAGE"},
-    {"id" : 1, "value" : "APPOINTMENT_BOOKED"},
-    {"id" : 2, "value" : "APPOINTMENT_CANCELLED"},
-  ];
+  // static List notificationTypes = [
+  //   {"id" : 0, "value" : "NEW_MESSAGE"},
+  //   {"id" : 1, "value" : "APPOINTMENT_BOOKED"},
+  //   {"id" : 2, "value" : "APPOINTMENT_CANCELLED"},
+  // ];
 
-  static List appointmentStatus = [
-    {"id" : 0, "value" : "PENDING"},
-    {"id" : 1, "value" : "ACCEPTED"},
-    {"id" : 2, "value" : "CANCELLED"},
-  ];
+  // static List appointmentStatus = [
+  //   {"id" : 0, "value" : "PENDING"},
+  //   {"id" : 1, "value" : "ACCEPTED"},
+  //   {"id" : 2, "value" : "CANCELLED"},
+  // ];
 
-  static List genders = [
-    "Male", "Female"
-  ];
+  // static List genders = [
+  //   "Male", "Female"
+  // ];
 
-
-  static Map user = {
-    "id" : 0,
-    "firstName" : "Aitem",
-    "lastName" : "Quancy",
-    "myPlan" : 1,
-    "appointments" : DataHelper.getUserAppointments(0, _appointments),
-    "notifications" : DataHelper.getNotifications(0, notifications),
-  };
+  static Map user = _user;
 
 
 }

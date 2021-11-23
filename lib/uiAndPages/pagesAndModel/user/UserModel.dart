@@ -4,19 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:c_modal/c_modal.dart';
 import 'package:hms/locator.dart';
 import 'package:hms/logger.dart';
-import 'package:hms/models/Message.dart';
 import 'package:hms/models/User.dart';
-import 'package:hms/services/MessageService.dart';
 import 'package:hms/services/UserService.dart';
 import 'package:hms/services/ValidationService.dart';
-import 'package:hms/services/api/ApiFetcherInterface.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
-import 'package:hms/uiAndPages/pagesAndModel/sideNavigationPanel/SideNavigationPanelModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/sideNavigation/sideNavigationPanel/SideNavigationPanelModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/myPlan/myPLanListDisplay/MyPlanListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationListDisplay/NotificationListDisplayPopperModel.dart';
-import 'package:hms/uiAndPages/pagesAndModel/user/notification/NotificationPanelModel.dart';
 
 
 class UserModel extends BaseModel{

@@ -4,6 +4,7 @@ import 'package:hms/enums.dart';
 import 'package:hms/models/Appointment.dart';
 import 'package:hms/services/AppointmentService.dart';
 import 'package:hms/services/HelperService.dart';
+import 'package:hms/uiAndPages/pagesAndModel/pageLayouts/pageLayout.dart';
 import 'package:hms/uiAndPages/shared/SharedWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:hms/uiAndPages/pagesAndModel/appointmentAndChat/appointment/viewAppointment/ViewAppointmentModel.dart';
@@ -31,129 +32,78 @@ class _ViewAppointmentPageState extends State<ViewAppointmentPage> {
         builder: (_, model)
           => CModal(
                 controller: model.pageModalController,
-                child: Scaffold(
-              backgroundColor: SharedUi.getColor(ColorType.light2),
-              body: SafeArea(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                    width: double.infinity,
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 30.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: PageLayout.layout<ViewAppointmentModel>(
+                  onBackPressed: ()=>model.navigateBack(context),
+                  isLoading: (model)=>model.appointment == null,
+                  title: "Appointment",
+                  titleIcon: Icon(CupertinoIcons.arrow_right_arrow_left_circle),
+                  body:  Selector(
+                    selector: (_, ViewAppointmentModel model)=>model.appointment!.status,
+
+                    builder: (_, int? value2, __) {
+
+                      return SizedBox(
+                        height: double.infinity,
+                        child: SingleChildScrollView(
+                          child: Container(
+
+                            padding: EdgeInsets.symmetric(horizontal : 20, vertical: 30),
+                            decoration: BoxDecoration(
+                              color: SharedUi?.getColor(ColorType.light),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child:  Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                SharedUi.mediumText("Appointment"),
-                                SharedUi.mButton(
-                                    height: 3,
-                                    prepend: Icon(CupertinoIcons.back, size: 15,),
-                                    edgePads: 20,
-                                    buttonColorType: ColorType.infoLight,
-                                    textColorType: ColorType.dark,
-                                    label: "back",
-                                    onTap: (){
-                                      model.navigateBack(context);
-                                    }
+
+                                Row(
+                                  children: [
+                                    SharedWidgets.profileBox(),
+                                    SizedBox(width: 20,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SharedUi.smallText(model.appointment!.organisationName ?? "", colorType: ColorType.info),
+
+                                      ],
+                                    ),
+                                    // Spacer(),
+                                    // SharedWidgets.readStatus(model.message!.readStatus ?? ""),
+                                  ],
                                 ),
+
+                                SizedBox(height: 20,),
+
+                                Column(
+                                  children: [
+                                    _labelValue(label: "Booked on", value: HelperService.formatToDate(model.appointment!.timeBooked)),
+                                    SizedBox(height: 10,),
+                                    _labelValue(label: "Appointment date", value: HelperService.formatToDate(model.appointment!.timeDue)),
+                                    SizedBox(height: 10,),
+                                    _labelValue(label: "Due in", value: model.dueDays()),
+                                    SizedBox(height: 10,),
+                                    _labelValue(label: "Status", value: model.appointmentStatusName, valueColorType:
+                                    AppointmentService.getAppointmentStatusColor(model.appointmentStatus)),
+
+                                  ],
+                                ),
+
+                                SizedBox(height: 20,),
+
+                                SharedUi.mediumText(model.narrateAppointment, maxLine: 200, letterSpacing: 1, wordSpacing: 3, height: 2, colorType: ColorType.dark),
+                                SizedBox(height: 40,),
+
+
+
+                                _cancelRemoveButton(model),
                               ],
                             ),
                           ),
                         ),
-
-                        Selector(
-
-                          selector: (_, ViewAppointmentModel model)=> model.appointment,
-
-                          builder: (_, Appointment? value, __) {
-
-                            return value == null ?
-                            Expanded(child: Center(child: _loadingIndicator())):
-
-                              Selector(
-
-
-                                selector: (_, ViewAppointmentModel model)=>model.appointment!.status,
-
-                                builder: (_, int? value2, __) {
-
-
-                                  return Expanded(
-                                    child: SizedBox(
-                                      height: double.infinity,
-                                      child: SingleChildScrollView(
-                                        child: Container(
-
-                                          padding: EdgeInsets.symmetric(horizontal : 20, vertical: 30),
-                                          decoration: BoxDecoration(
-                                            color: SharedUi?.getColor(ColorType.light),
-                                            borderRadius: BorderRadius.circular(20),
-                                          ),
-                                          child:  Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-
-                                              Row(
-                                                children: [
-                                                  SharedWidgets.profileBox(),
-                                                  SizedBox(width: 20,),
-                                                  Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      SharedUi.smallText(model.appointment!.organisationName ?? "", colorType: ColorType.info),
-
-                                                    ],
-                                                  ),
-                                                  // Spacer(),
-                                                  // SharedWidgets.readStatus(model.message!.readStatus ?? ""),
-                                                ],
-                                              ),
-
-                                              SizedBox(height: 20,),
-
-                                              Column(
-                                                children: [
-                                                 _labelValue(label: "Booked on", value: HelperService.timeFormat2(model.appointment!.timeBooked)),
-                                                  SizedBox(height: 10,),
-                                                  _labelValue(label: "Appointment date", value: HelperService.timeFormat2(model.appointment!.timeDue)),
-                                                  SizedBox(height: 10,),
-                                                  _labelValue(label: "Due in", value: model.dueDays()),
-                                                  SizedBox(height: 10,),
-                                                  _labelValue(label: "Status", value: model.appointmentStatusName, valueColorType:
-                                                  AppointmentService.getAppointmentStatusColor(model.appointmentStatus)),
-
-                                                ],
-                                              ),
-
-                                              SizedBox(height: 20,),
-
-                                              SharedUi.mediumText(model.narrateAppointment, maxLine: 200, letterSpacing: 1, wordSpacing: 3, height: 2, colorType: ColorType.dark),
-                                              SizedBox(height: 40,),
-
-
-
-                                              _cancelRemoveButton(model),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-
-
-                                }
-                            );
-                          }
-                        ),
-
-
-                      ],
-                    ),
-                  )
-              )
-          ),
+                      );
+                    }
+                  ),
+                )
             ),
     );
   }
@@ -182,8 +132,7 @@ class _ViewAppointmentPageState extends State<ViewAppointmentPage> {
 
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children:[
-
+                children: [
                   SharedUi.mButton(label: "Yes",
                       buttonColorType: ColorType.danger,
                       edgePads: 35, height: 3,
@@ -244,13 +193,6 @@ class _ViewAppointmentPageState extends State<ViewAppointmentPage> {
             }
         ),
       ],
-    );
-  }
-
-
-  Widget _loadingIndicator(){
-    return Center(
-      child: CircularProgressIndicator(),
     );
   }
 }

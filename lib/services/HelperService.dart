@@ -36,7 +36,7 @@ class HelperService{
     }
   }
 
-  static String timeFormat2(String? time) {
+  static String formatToDate(String? time) {
     if(time == null) return "";
 
     try{

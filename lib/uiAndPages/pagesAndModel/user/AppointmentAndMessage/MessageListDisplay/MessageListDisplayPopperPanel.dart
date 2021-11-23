@@ -160,7 +160,7 @@ class _MessageListDisplayPopperPanelState extends State<MessageListDisplayPopper
                    }
                  ),
                  
-                 SharedUi.smallText(HelperService.timeFormat2(message.time), colorType: ColorType.secondary)
+                 SharedUi.smallText(HelperService.formatToDate(message.time), colorType: ColorType.secondary)
                ],
              ),
 

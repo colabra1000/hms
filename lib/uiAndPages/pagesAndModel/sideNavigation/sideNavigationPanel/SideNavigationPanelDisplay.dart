@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:hms/enums.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseView.dart';
-import 'package:hms/uiAndPages/pagesAndModel/sideNavigationPanel/SideNavigationPanelModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/sideNavigation/sideNavigationPanel/SideNavigationPanelModel.dart';
 import 'package:hms/uiAndPages/shared/SharedUi.dart';
 import 'package:hms/uiAndPages/shared/ui/ButtonAnimator1.dart';
 import 'package:provider/provider.dart';
@@ -110,7 +110,10 @@ class _SideNavigationPanelDisplayState extends State<SideNavigationPanelDisplay>
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
                                     SizedBox(height: 20,),
-                                    _button(label : "Account Information"),
+                                    _button(label : "Account Information", onTap : (){
+
+                                      model.navigateToAccountInformationPage(context);
+                                    }),
                                     SizedBox(height: 20,),
                                     _button(label : "FAQ / Help"),
                                     SizedBox(height: 20,),
@@ -137,16 +140,17 @@ class _SideNavigationPanelDisplayState extends State<SideNavigationPanelDisplay>
   }
 
 
-  Widget _button({required String label}){
+  Widget _button({required String label, Function()? onTap}){
     return   ButtonAnimator1(
+      onTap2: onTap,
         child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: SharedUi.getColor(ColorType.secondary2), width: .8)
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+            // decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(30),
+            //     border: Border.all(color: SharedUi.getColor(ColorType.secondary2), width: .8)
+            // ),
 
-            child: SharedUi.mediumText(label, maxLine: 1, bold: true, colorType: ColorType.dark)
+            child: SharedUi.mediumText(label, maxLine: 1, bold: true, colorType: ColorType.secondary)
         )
     );
   }

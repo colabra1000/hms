@@ -215,7 +215,7 @@ class _NotificationListDisplayPopperPanelState extends State<NotificationListDis
 
                         Align(
                             alignment: Alignment.centerRight,
-                            child: SharedUi.smallText(HelperService.timeFormat2(notification.time))
+                            child: SharedUi.smallText(HelperService.formatToDate(notification.time))
                         ),
 
 

@@ -1,10 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:hms/locator.dart';
-import 'package:hms/models/Message.dart';
-import 'package:hms/services/HelperService.dart';
-import 'package:hms/services/MessageService.dart';
-import 'package:hms/services/MyPlanService.dart';
-import 'package:hms/services/NotificationService.dart';
 import 'package:hms/uiAndPages/pagesAndModel/base/BaseModel.dart';
 
 
@@ -24,6 +18,13 @@ class SideNavigationPanelModel extends BaseModel {
 
   void navigateBack(BuildContext context) {
     // Navigator.of(context).pop();
+  }
+
+  Future navigateToAccountInformationPage(BuildContext context) {
+
+    return navigationService.navigateToAccountInformationPage(context);
+
+
   }
 
 

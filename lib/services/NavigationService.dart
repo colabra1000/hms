@@ -7,13 +7,15 @@ import 'package:hms/uiAndPages/pagesAndModel/landing/LandingPage.dart';
 import 'package:hms/uiAndPages/pagesAndModel/login/LoginDisplayPage.dart';
 import 'package:hms/uiAndPages/pagesAndModel/message/MessagePage.dart';
 import 'package:hms/uiAndPages/pagesAndModel/planChange/PlanChangeDetailPage.dart';
+import 'package:hms/uiAndPages/pagesAndModel/sideNavigation/userInformation/UserInformationPage.dart';
+
 import 'package:hms/uiAndPages/pagesAndModel/user/UserPage.dart';
 
 class NavigationService {
 
   late BaseModel baseModel;
 
-  Logger _log = getLogger("NavigationService");
+  // Logger _log = getLogger("NavigationService");
 
   //used to know which model is calling
   NavigationService injectModel(BaseModel baseModel) {
@@ -84,6 +86,13 @@ class NavigationService {
     return Navigator.push(
       context, MaterialPageRoute(
         builder: (context) => PlanChangeDetailPage()),
+    );
+  }
+
+  Future navigateToAccountInformationPage(BuildContext context) {
+    return Navigator.push(
+      context, MaterialPageRoute(
+        builder: (context) => UserInformationPage()),
     );
   }
 }

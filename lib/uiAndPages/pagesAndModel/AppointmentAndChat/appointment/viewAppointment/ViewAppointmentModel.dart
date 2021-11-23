@@ -52,11 +52,11 @@ class ViewAppointmentModel extends BaseModel{
   String get narrateAppointment {
     return
       appointmentStatus == AppointmentService.ACCEPTED ?
-      "your appointment with $_organizationName is Scheduled ${HelperService.timeFormat2(_appointmentTime)}." :
+      "your appointment with $_organizationName is Scheduled ${HelperService.formatToDate(_appointmentTime)}." :
 
-      appointmentStatus ==  AppointmentService.PENDING?
-      "your appointment with $_organizationName booked ${HelperService.timeFormat2(_appointmentTime)}"
-          " is awaiting confirmation!":
+      appointmentStatus == AppointmentService.PENDING ?
+      "your appointment with $_organizationName booked ${HelperService.formatToDate(_appointmentTime)}"
+          " is awaiting cformatToDate!":
       appointmentStatus ==  AppointmentService.CANCELLED?
       "your appointment with $_organizationName is cancelled." : "";
   }
@@ -158,9 +158,6 @@ class ViewAppointmentModel extends BaseModel{
   }
 
 
-  ViewAppointmentModel(){
-    // print(appointment?.timeBooked);
-  }
 
 
 

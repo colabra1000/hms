@@ -26,7 +26,8 @@ import 'package:hms/uiAndPages/pagesAndModel/landing/LandingPageModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/login/LoginDisplayModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/message/MessageModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/planChange/PlanChangeDetailModel.dart';
-import 'package:hms/uiAndPages/pagesAndModel/sideNavigationPanel/SideNavigationPanelModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/sideNavigation/sideNavigationPanel/SideNavigationPanelModel.dart';
+import 'package:hms/uiAndPages/pagesAndModel/sideNavigation/userInformation/UserInformationModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/AppointmentAndMessagePanelModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/MessageListDisplay/MessageListDisplayPopperModel.dart';
 import 'package:hms/uiAndPages/pagesAndModel/user/AppointmentAndMessage/OrganisationListDisplay/OrganisationListDisplayPopperModel.dart';
@@ -104,5 +105,6 @@ void setupLocator() {
   locator.registerFactory(() => ViewAppointmentModel());
   locator.registerFactory(() => PlanChangeDetailModel());
   locator.registerFactory(() => SideNavigationPanelModel());
+  locator.registerFactory(() => UserInformationModel());
 
 }

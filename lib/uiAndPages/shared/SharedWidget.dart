@@ -76,11 +76,11 @@ class SharedWidgets{
     );
   }
 
-  static Widget mSelectGender({required CInputController genderInputController, String label: "Gender", String hint: "Select Gender"}) {
-    return SharedUi.mDropDown(dropDownList: GlobalData.genders,
-        inputController: genderInputController, label: label, hint: hint,);
-
-  }
+  // static Widget mSelectGender({required CInputController genderInputController, String label: "Gender", String hint: "Select Gender"}) {
+  //   return SharedUi.mDropDown(dropDownList: GlobalData.genders,
+  //       inputController: genderInputController, label: label, hint: hint,);
+  //
+  // }
 
   static Widget profileBox() {
     return   Container(
